@@ -23,7 +23,7 @@ const topKFrequent = function (nums, k) {
   // iterate through the bucket backwards to get the most frequent elements
   for (let i = bucket.length - 1; i >= 0; i--) {
     // add the entire bucket to res array
-    if (bucket[i]) resizeBy.push(...bucket[i]);
+    if (bucket[i]) res.push(...bucket[i]);
     // if bucket length === k, done
     if (res.length === k) return res;
   }
