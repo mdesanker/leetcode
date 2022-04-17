@@ -4,9 +4,13 @@
  */
 
 const isValidSudoku = function (board) {
+<<<<<<< HEAD
   // iterate through each row of board
   for (let r = 0; r < 9; r++) {
     // will check all rows, all columns, and all 3 x 3 squares are valid
+=======
+  for (let r = 0; r < 9; r++) {
+>>>>>>> 47f5a396680a4840c3f10206d2291f827ad0a2d7
     let rows = new Set(),
       cols = new Set(),
       squares = new Set();
