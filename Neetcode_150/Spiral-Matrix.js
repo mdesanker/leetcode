@@ -13,7 +13,7 @@ const spiralOrder = function (matrix) {
 
   let dir = 0;
 
-  while (top < bottom && left < right) {
+  while (top <= bottom && left <= right) {
     if (dir === 0) {
       // add elements left to right along top
       for (let i = left; i <= right; i++) {
