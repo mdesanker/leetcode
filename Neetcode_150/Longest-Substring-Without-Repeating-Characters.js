@@ -10,7 +10,7 @@ const lengthOfLongestSubstring = function (s) {
 
   // extend sliding window
   for (let end = 0; end < s.length; end++) {
-    let rightChar = s[windowEnd];
+    let rightChar = s[end];
 
     // if rightChar in map, jump window forward
     if (rightChar in charMap) {
