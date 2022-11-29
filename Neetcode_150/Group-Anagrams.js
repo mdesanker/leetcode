@@ -19,7 +19,7 @@ const groupAnagrams = function (strs) {
 
     res[key] ? res[key].push(str) : (res[key] = [str]);
   }
-  return res;
+  return Object.values(res);
 };
 
 /*
