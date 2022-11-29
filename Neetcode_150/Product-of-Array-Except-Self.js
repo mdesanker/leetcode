@@ -23,5 +23,5 @@ const productExceptSelf = function (nums) {
 
 /*
 Time: O(N)
-Space: O(N)
+Space: O(1) because output array does not count as extra space for space complexity analysis
 */
