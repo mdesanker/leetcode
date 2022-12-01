@@ -6,18 +6,28 @@
 const threeSum = function (nums) {
   const res = [];
 
-  // sort array so can use two-pointer
+  // sort array to use two pointer pattern
   nums.sort((a, b) => a - b);
 
-  for (let i = 0; i < nums.length - 2; i++) {
-    // skip if repeat digit
-    if (i > 0 && nums[i] === nums[i - 1]) continue;
+  // iterate through array
+  for (let i = 0; i < nums.length; i++) {
+    // if current num is same as previous num, skip to prevent duplicate
+    if (i > 0 && nums[i] === nums[i - 1]) {
+      continue;
+    }
 
-    let left = i + 1,
-      right = nums.length - 1;
+    // instantiate two pointers
+    let left = i + 1;
+    let right = nums.length - 1;
 
     while (left < right) {
-      if (nums[i] + nums[left] + nums[right] === 0) {
+      let sum = nums[i] + nums[left] + nums[right];
+
+      if (sum < 0) {
+        left++;
+      } else if (sum > 0) {
+        right--;
+      } else {
         res.push([nums[i], nums[left], nums[right]]);
 
         left++;
@@ -26,13 +36,10 @@ const threeSum = function (nums) {
         // skip repeats
         while (left < right && nums[left] === nums[left - 1]) left++;
         while (left < right && nums[right] === nums[right + 1]) right--;
-      } else if (nums[i] + nums[left] + nums[right] < 0) {
-        left++;
-      } else {
-        right--;
       }
     }
   }
+
   return res;
 };
 
