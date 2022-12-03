@@ -20,10 +20,12 @@ const checkInclusion = function (s1, s2) {
     requiredLength = s1.length;
 
   while (right < s2.length) {
+    const rightChar = s2[right];
+
     // if we find a neededChar, reduce required length by 1
-    if (neededChar[s2[right]] > 0) requiredLength--;
+    if (neededChar[rightChar] > 0) requiredLength--;
     // reduce count of new char in neededChar
-    neededChar[s2[right]]--;
+    neededChar[rightChar]--;
     right++;
 
     // if we found all the neededChars
@@ -31,10 +33,12 @@ const checkInclusion = function (s1, s2) {
 
     // if window length === s1.length, have to remove left element of window (new element on right added in next iteration)
     if (right - left === s1.length) {
+      const leftChar = s2[left];
+
       // if left element was neededChar, increase requiredLength because that element no longer part of window
-      if (neededChar[s2[left]] >= 0) requiredLength++;
+      if (neededChar[leftChar] >= 0) requiredLength++;
       // increase count of left element removed from window
-      neededChar[s2[left]]++;
+      neededChar[leftChar]++;
       left++;
     }
   }
