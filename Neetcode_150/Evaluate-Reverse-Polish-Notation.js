@@ -18,7 +18,7 @@ const evalRPN = function (tokens) {
     } else if (char === "/") {
       let a = stack.pop(),
         b = stack.pop();
-      stack.push(Math.trunc(b - a));
+      stack.push(Math.trunc(b / a));
     } else {
       stack.push(Number(char));
     }
