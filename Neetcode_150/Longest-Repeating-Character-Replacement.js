@@ -33,3 +33,36 @@ const characterReplacement = function (s, k) {
 Time: O(N)
 Space: O(1) - fixed number of chars in input str (26)
 */
+
+// While loop implementation
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+var characterReplacement = function (s, k) {
+  let left = 0,
+    right = 0,
+    max = 0,
+    mostFreq = 0;
+  const charMap = {};
+
+  while (right < s.length) {
+    const rightChar = s[right];
+    // add to charMap
+    charMap[rightChar] = (charMap[rightChar] || 0) + 1;
+
+    // check most freq
+    mostFreq = Math.max(mostFreq, charMap[rightChar]);
+
+    // if mostFreq > k, then move left pointer
+    if (right - left + 1 - mostFreq > k) {
+      const leftChar = s[left];
+      charMap[leftChar]--;
+      left++;
+    }
+    max = Math.max(max, right - left + 1);
+    right++;
+  }
+  return max;
+};
