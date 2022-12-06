@@ -3,14 +3,14 @@
  * @param {number} target
  * @return {number}
  */
-
-const search = function (nums, target) {
+var search = function (nums, target) {
   let left = 0,
     right = nums.length - 1;
 
   while (left <= right) {
-    // find the midpoint of array
-    let mid = Math.floor(left + (right - left) / 2);
+    // avoid overflow error if left and right and close to the integer max (Number.MAX_VALUE)
+    // this way, you are not going to exceed the integer max because it will always be < right
+    const mid = left + Math.floor((right - left) / 2);
 
     if (nums[mid] === target) {
       return mid;
@@ -23,7 +23,5 @@ const search = function (nums, target) {
   return -1;
 };
 
-/*
-Time: O(logN)
-Space: O(1)
-*/
+// Time: O(logN)
+// Space: O(1)
