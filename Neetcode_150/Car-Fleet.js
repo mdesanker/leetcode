@@ -8,7 +8,7 @@ var carFleet = function (target, position, speed) {
   // create pair array
   const pair = [];
   position.forEach((pos, i) => pair.push([position[i], speed[i]]));
-  // sort by position
+  // sort by position in descending order to start with car closest to end point
   pair.sort((a, b) => b[0] - a[0]);
 
   const stack = [];
