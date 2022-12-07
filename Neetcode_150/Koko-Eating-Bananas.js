@@ -29,5 +29,5 @@ var minEatingSpeed = function (piles, h) {
   return res;
 };
 
-// Time: O(log(maxP))
+// Time: O(log(maxP)) where P is largest pile in piles
 // Space: O(1)
