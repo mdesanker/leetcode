@@ -11,31 +11,57 @@
  * @return {ListNode}
  */
 
-const removeNthFromEnd = function (head, n) {
-  let p1 = head,
+// Dummy node implementation
+var removeNthFromEnd = function (head, n) {
+  // initialize p1 at dummy node that points to head
+  let dummy = new ListNode(0, head);
+  let p1 = dummy,
     p2 = head;
 
   // move p2 ahead n spaces
-  while (n--) {
+  while (n > 0 && p2) {
     p2 = p2.next;
+    n--;
   }
 
-  // edge case: n = length of list, remove first element
-  if (!p2) return head.next;
-
-  // iterate to end of list
-  while (p2 && p2.next) {
+  // move p1 and p2 until end of list
+  while (p2) {
     p1 = p1.next;
     p2 = p2.next;
   }
 
-  // remove nth node
-  p1.next = p1.next ? p1.next.next : null;
+  // skip p1's next node
+  p1.next = p1.next.next;
 
-  return head;
+  // return head of list
+  return dummy.next;
 };
 
 /*
 Time: O(N)
 Space: O(1)
 */
+
+// const removeNthFromEndOld = function (head, n) {
+//   let p1 = head,
+//     p2 = head;
+
+//   // move p2 ahead n spaces
+//   while (n--) {
+//     p2 = p2.next;
+//   }
+
+//   // edge case: n = length of list, remove first element
+//   if (!p2) return head.next;
+
+//   // iterate to end of list
+//   while (p2 && p2.next) {
+//     p1 = p1.next;
+//     p2 = p2.next;
+//   }
+
+//   // remove nth node
+//   p1.next = p1.next ? p1.next.next : null;
+
+//   return head;
+// };
