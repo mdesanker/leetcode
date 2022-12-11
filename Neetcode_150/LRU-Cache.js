@@ -24,13 +24,6 @@ var LRUCache = function (capacity) {
 };
 
 LRUCache.prototype.remove = function (node) {
-  if (!node.prev && !node.next) {
-    // only one node
-    this.head.next = this.tail;
-    this.tail.prev = this.head;
-  } else {
-    // is tail node
-  }
   // make prev and next pointers point to each other
   let prev = node.prev,
     next = node.next;
