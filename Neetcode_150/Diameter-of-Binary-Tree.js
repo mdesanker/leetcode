@@ -17,13 +17,14 @@ var diameterOfBinaryTree = function (root) {
     // base case
     if (!root) return -1;
 
+    // find height of left and right subtree
     let left = dfs(root.left);
     let right = dfs(root.right);
 
-    // if path doesn't go through root, get the largest of the two
+    // check diameter of current node using left and right height
     max = Math.max(max, left + right);
 
-    // path goes through root so add 1 for root
+    // return heigh running through root node
     return 1 + Math.max(left, right);
   }
 
