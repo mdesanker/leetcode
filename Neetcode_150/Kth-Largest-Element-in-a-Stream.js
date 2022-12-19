@@ -6,15 +6,15 @@
  */
 https: var KthLargest = function (k, nums) {
   // Use available JS library to create min heap
-  this.heap = new MinPriorityQueue();
+  this.minHeap = new MinPriorityQueue();
   this.k = k;
   // add elements from nums into heap
   for (const num of nums) {
-    this.head.enqueue(num);
+    this.minHeap.enqueue(num);
   }
   // remove min elements while size of heap > k
-  while (this.heap.size() > k) {
-    this.heap.dequeue().element;
+  while (this.minHeap.size() > k) {
+    this.minHeap.dequeue().element;
   }
 };
 
@@ -24,13 +24,13 @@ https: var KthLargest = function (k, nums) {
  */
 KthLargest.prototype.add = function (val) {
   // add val to heap
-  this.heap.enqueue(val);
+  this.minHeap.enqueue(val);
   // if heap too large, remove smallest element
-  if (this.heap.size() > this.k) {
-    this.heap.dequeue().element;
+  if (this.minHeap.size() > this.k) {
+    this.minHeap.dequeue().element;
   }
   // return smallest element in heap
-  return this.heap.front().element;
+  return this.minHeap.front().element;
 };
 
 // Time: O((n - k)log(n)) log n to remove elements, repeated n - k times for number of elements added. O(nlog(n)) worst case scenario
