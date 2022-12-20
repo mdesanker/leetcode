@@ -17,13 +17,13 @@ var subsetsWithDup = function (nums) {
     }
 
     // recursive cases
-    // include
+    // include nums[i]
     subset.push(nums[i]);
     dfs(i + 1);
-    subset.pop();
 
-    // exclude
-    // while i in range and repeat nums, increment i
+    // exclude nums[i]
+    subset.pop();
+    // must skip all duplicates of nums[i] in order to exclude
     while (i + 1 < nums.length && nums[i] === nums[i + 1]) i++;
     dfs(i + 1);
   }
