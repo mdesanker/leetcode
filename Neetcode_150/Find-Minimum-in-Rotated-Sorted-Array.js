@@ -4,7 +4,8 @@
  */
 var findMin = function (nums) {
   let left = 0,
-    right = nums.length - 1;
+    right = nums.length - 1,
+    res = nums[0];
 
   while (left <= right) {
     // if array is sorted, set result to left value
