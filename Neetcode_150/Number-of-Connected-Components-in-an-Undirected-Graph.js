@@ -54,4 +54,4 @@ var countComponents = function (n, edges) {
 };
 
 // Time: O(v + e)
-// Space: O(v + e)
+// Space: O(v)  to store the parent of each vertex
