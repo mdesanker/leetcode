@@ -41,7 +41,8 @@ export class Solution {
 
     let dist = 0;
     while (q.length) {
-      for (let i = 0; i < q.length; i++) {
+      let length = q.length;
+      for (let i = 0; i < length; i++) {
         // dequeue and mark distance
         const [r, c] = q.shift();
         rooms[r][c] = dist;
