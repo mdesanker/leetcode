@@ -7,7 +7,7 @@
 var networkDelayTime = function (times, n, k) {
   // build adjacency list
   const adj = {};
-  for (let i = 0; i < n; i++) {
+  for (let i = 1; i < n + 1; i++) {
     adj[i] = [];
   }
 
@@ -20,7 +20,7 @@ var networkDelayTime = function (times, n, k) {
   const minHeap = new MinPriorityQueue();
   minHeap.enqueue([0, k], 0); // [weight, node]
   const visited = new Set();
-  let t = 0;
+  let time = 0;
 
   while (minHeap.size()) {
     const [w1, n1] = minHeap.dequeue().element;
@@ -28,7 +28,7 @@ var networkDelayTime = function (times, n, k) {
     if (visited.has(n1)) continue;
 
     visited.add(n1);
-    t = Math.max(t, w1);
+    time = Math.max(time, w1);
 
     // check neighbors
     for (const [n2, w2] of adj[n1]) {
@@ -40,7 +40,7 @@ var networkDelayTime = function (times, n, k) {
   }
 
   // if every node was visited return t, otherwise -1
-  return visited.size === n ? t : -1;
+  return visited.size === n ? time : -1;
 };
 
 // Time: O(n + elogn) Djikstra's takes O(elogn) where e is number of edges and n is number of nodes. Finding min time requires O(n)
