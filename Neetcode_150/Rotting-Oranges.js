@@ -58,3 +58,45 @@ var orangesRotting = function (grid) {
 
 // Time: O(n * m) each cell visited at least once
 // Space: O(n * m) worst case scenario every orange is rotten and needs to be stored in queue
+
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var orangesRotting = function (grid) {
+  const ROWS = grid.length,
+    COLS = grid[0].length;
+  const q = [];
+  let fresh = 0,
+    time = 0;
+
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (grid[r][c] === 2) q.push([r, c]);
+      if (grid[r][c] === 1) fresh++;
+    }
+  }
+
+  function addOrange(r, c) {
+    if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return;
+    if (grid[r][c] !== 1) return;
+
+    q.push([r, c]);
+    grid[r][c] = 2;
+    fresh--;
+  }
+
+  while (q.length && fresh) {
+    let length = q.length;
+    for (let i = 0; i < length; i++) {
+      const [r, c] = q.shift();
+
+      addOrange(r + 1, c);
+      addOrange(r - 1, c);
+      addOrange(r, c + 1);
+      addOrange(r, c - 1);
+    }
+    time++;
+  }
+  return fresh === 0 ? time : -1;
+};
