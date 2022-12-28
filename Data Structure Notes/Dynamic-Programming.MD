@@ -1,5 +1,7 @@
 # Dynamic Programming
 
+Notes taken from [Dynamic Programming - Learn to Solve Algorithmic Problems & Coding Challenges](https://www.youtube.com/watch?v=oBt53YbR9Kk)
+
 Pattern of overlapping subproblems
 
 Fibonacci Sequence - write a function fib(n) that takes in a number as an argument and returns the nth number of the Fibonacci sequence.
@@ -274,4 +276,248 @@ console.log(bestSum(100, [1, 2, 5, 25])); // [25, 25, 25, 25]
 
 // Time: O(m^2 * n)
 // Space: O(m^2) m possible memo keys with value which is array of length m
+```
+
+### canConstruct
+
+`canConstruct(target, wordBank)` that returns boolean indicating whether can make target by concatenating elements of wordBank array. May reuse elements of wordBank as many times as needed.
+
+```js
+const canConstruct = (target, wordBank) => {
+  if (target === "") return true;
+
+  for (const word of wordBank) {
+    // check if word is at beginning of target
+    if (target.indexOf(word) === 0) {
+      // call recursively on suffix of target
+      if (canConstruct(target.slice(word.length), wordBank)) return true;
+    }
+  }
+
+  return false;
+};
+
+console.log(canConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"])); // true (abc + def)
+console.log(canConstruct("", ["cat", "dog", "mouse"])); // true (use no elements from array)
+console.log(
+  canConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"])
+); // false
+console.log(
+  canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", [
+    "e",
+    "ee",
+    "eee",
+    "eeee",
+    "eeeeeeee",
+  ])
+); // false
+
+// m = target.length
+// n = wordBank.length
+
+// Time: O(n^m * m) branching factor ^ height, * m for slice operation
+// Space: O(m^2) m height * m for the copy of the string on each stack frame
+```
+
+```js
+const canConstruct = (target, wordBank, memo = {}) => {
+  if (target in memo) return memo[target];
+
+  if (target === "") return true;
+
+  for (const word of wordBank) {
+    // check if word is at beginning of target
+    if (target.indexOf(word) === 0) {
+      // call recursively on suffix of target
+      if (canConstruct(target.slice(word.length), wordBank, memo)) {
+        memo[target] = true;
+        return true;
+      }
+    }
+  }
+
+  memo[target] = false;
+  return false;
+};
+
+console.log(canConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"])); // true (abc + def)
+console.log(canConstruct("", ["cat", "dog", "mouse"])); // true (use no elements from array)
+console.log(
+  canConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"])
+); // false
+console.log(
+  canConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", [
+    "e",
+    "ee",
+    "eee",
+    "eeee",
+    "eeeeeeee",
+  ])
+); // false
+
+// m = target.length
+// n = wordBank.length
+
+// Time: O(n * m^2)
+// Space: O(m^2)
+```
+
+### countConstruct
+
+`countConstruct(target, wordBank)` returns number of ways the target can be cosntructed by concatenating elements of wordBank array. May reuse wordBank elements.
+
+```js
+const countConstruct = (target, wordBank) => {
+  let total = 0;
+
+  if (target === "") return 1;
+
+  for (const word of wordBank) {
+    if (target.indexOf(word) === 0) {
+      total += countConstruct(target.slice(word.length), wordBank);
+    }
+  }
+  return total;
+};
+
+console.log(countConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"])); // 1
+console.log(countConstruct("purple", ["purp", "p", "ur", "le", "purpl"])); // 2
+console.log(
+  countConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"])
+); // 0
+console.log(
+  countConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", [
+    "e",
+    "ee",
+    "eee",
+    "eeee",
+    "eeeeeeee",
+  ])
+); // 0
+
+// m = target.length
+// n = wordBank.length
+
+// Time: O(n^m * m) branching factor ^ height, * m for slice operation
+// Space: O(m^2) m height * m for the copy of the string on each stack frame
+```
+
+```js
+const countConstruct = (target, wordBank, memo = {}) => {
+  if (target in memo) return memo[target];
+
+  let total = 0;
+
+  if (target === "") return 1;
+
+  for (const word of wordBank) {
+    if (target.indexOf(word) === 0) {
+      total += countConstruct(target.slice(word.length), wordBank, memo);
+    }
+  }
+  memo[target] = total;
+  return total;
+};
+
+console.log(countConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd"])); // 1
+console.log(countConstruct("purple", ["purp", "p", "ur", "le", "purpl"])); // 2
+console.log(
+  countConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"])
+); // 0
+console.log(
+  countConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", [
+    "e",
+    "ee",
+    "eee",
+    "eeee",
+    "eeeeeeee",
+  ])
+); // 0
+
+// Time: O(n * m^2)
+// Space: O(m^2)
+```
+
+### allConstruct
+
+`allConstruct(target, wordBank)` returns 2D array containing all the ways the target can be constructed by concatenating elements of the wordBank array. Can reuse wordBank elements
+
+```js
+const allConstruct = (target, wordBank) => {
+  if (target === "") return [[]];
+
+  const res = [];
+
+  for (const word of wordBank) {
+    if (target.indexOf(word) === 0) {
+      const suffixWays = allConstruct(target.slice(word.length), wordBank);
+      const targetWays = suffixWays.map((way) => [word, ...way]);
+      result.push(...targetWays);
+    }
+  }
+  return res;
+};
+
+console.log(
+  allConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd", "ef", "c"])
+); // [["ab", "cd", "ef"], ["ab", "c", "def"], ["abc", "def"], ["abcd", "ef"]]
+console.log(allConstruct("purple", ["purp", "p", "ur", "le", "purpl"])); // [["purp", "le"], ["p", "ur", "p", "le"]]
+console.log(
+  allConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"])
+); // [[]]
+console.log(
+  allConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", [
+    "e",
+    "ee",
+    "eee",
+    "eeee",
+    "eeeeeeee",
+  ])
+); // [[]]
+```
+
+Because this answer requies you to traverse entire tree to return all options, memoization doesn't provide much benefit
+
+```js
+const allConstruct = (target, wordBank, memo = {}) => {
+  if (target in memo) return memo[target];
+
+  if (target === "") return [[]];
+
+  const res = [];
+
+  for (const word of wordBank) {
+    if (target.indexOf(word) === 0) {
+      const suffixWays = allConstruct(
+        target.slice(word.length),
+        wordBank,
+        memo
+      );
+      const targetWays = suffixWays.map((way) => [word, ...way]);
+      res.push(...targetWays);
+    }
+  }
+  memo[target] = res;
+  return res;
+};
+
+console.log(
+  allConstruct("abcdef", ["ab", "abc", "cd", "def", "abcd", "ef", "c"])
+); // [["ab", "cd", "ef"], ["ab", "c", "def"], ["abc", "def"], ["abcd", "ef"]]
+console.log(allConstruct("purple", ["purp", "p", "ur", "le", "purpl"])); // [["purp", "le"], ["p", "ur", "p", "le"]]
+console.log(
+  allConstruct("skateboard", ["bo", "rd", "ate", "t", "ska", "sk", "boar"])
+); // [[]]
+console.log(
+  allConstruct("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef", [
+    "e",
+    "ee",
+    "eee",
+    "eeee",
+    "eeeeeeee",
+  ])
+); // [[]] This is no longer worst case - worst case is when you have to create a massive 2D array
+
+// Time: O(n^m) can't get away from exponential complexity because need all possibilities
+// Space: O(m) only refering to call stack space
 ```
