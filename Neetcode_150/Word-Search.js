@@ -43,4 +43,9 @@ var exist = function (board, word) {
   return false;
 };
 
-// Time: O(n * m * 4^wordLength)
+// l = word.length
+// n = ROWS
+// m = COLS
+
+// Time: O(n * m * 3^l) initially 4^l options, but after first char only 3 directions to choose from
+// Space: O(l)
