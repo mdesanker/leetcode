@@ -4,6 +4,10 @@
  * @param {number} k
  * @return {number}
  */
+
+// 1. Build adjacency list
+// 2. Use Djikstra's algorithm to find path to each node
+
 var networkDelayTime = function (times, n, k) {
   // build adjacency list
   const adj = {};
@@ -22,13 +26,15 @@ var networkDelayTime = function (times, n, k) {
   const visited = new Set();
   let time = 0;
 
+  // loop until heap is empty
   while (minHeap.size()) {
     const [w1, n1] = minHeap.dequeue().element;
     // skip if already visited
     if (visited.has(n1)) continue;
 
-    visited.add(n1);
+    // update time to new max weight of path travelled
     time = Math.max(time, w1);
+    visited.add(n1);
 
     // check neighbors
     for (const [n2, w2] of adj[n1]) {
