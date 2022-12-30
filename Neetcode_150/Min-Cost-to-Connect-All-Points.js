@@ -5,10 +5,10 @@
 
 // problem says minimum cost to connect all points --> minimum spanning tree (MST)
 
-var minCostConnectPoints = function (points) {
-  // 1. build edges from manhattan distance of each pair of points
-  // 2. Prim's
+// 1. Build edges (adjacency list) from manhattan distance of each pair of points
+// 2. Use Prim's Algorithm to connect edges
 
+var minCostConnectPoints = function (points) {
   const N = points.length;
 
   // build adjacency list
@@ -32,21 +32,26 @@ var minCostConnectPoints = function (points) {
   }
 
   // Prim's
-  let res = 0; // total cost
+  let res = 0;
   const visit = new Set();
+  // use minHeap to find node with next lowest cost
   const minHeap = new MinPriorityQueue();
+  // first node is the origin
   minHeap.enqueue([0, 0], 0);
 
+  // loop until every node has been connected
   while (visit.size < N) {
-    const [cost, i] = minHeap.dequeue().element;
-    if (visit.has(i)) continue; // skip if point already visited
+    // pop next node from heap
+    const [cost, node] = minHeap.dequeue().element;
+    // skip if point already visited
+    if (visit.has(node)) continue;
 
     // add cost to result and add to visited
     res += cost;
-    visit.add(i);
+    visit.add(node);
 
     // check every neighbor in adjacency list
-    for (const [neiCost, nei] of adj[i]) {
+    for (const [neiCost, nei] of adj[node]) {
       if (!visit.has(nei)) {
         // for every new nei, push to heap, ordering by cost
         minHeap.enqueue([neiCost, nei], neiCost);
@@ -56,5 +61,5 @@ var minCostConnectPoints = function (points) {
   return res;
 };
 
-// Time: O(n^2 * logn) where n^2 is number of edges and log n is from Prim's algorithm (minHeap)
+// Time: O(n^2 * logn) where n^2 is number of edges and log n is for every heap operation (every node is added to queue)
 // Space: O(n^2 + n) -> O(n^2) worst case push n^2 edges into heap, and mark n nodes as visited
