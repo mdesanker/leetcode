@@ -24,3 +24,12 @@ var canJump = function (nums) {
 
 // Time: O(n)
 // Space: O(1)
+
+/**
+ * Brute Force
+ * Time: O(2^n)
+ *
+ * DP
+ * Time: O(n^2)
+ * Space: O(n)
+ */
