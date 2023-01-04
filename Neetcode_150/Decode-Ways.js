@@ -5,7 +5,7 @@
 var numDecodings = function (s) {
   // edge cases
   if (!s || s.length === 0) return 0;
-  if (s[0] === 0) return 0;
+  if (s[0] === "0") return 0;
 
   const dp = new Array(s.length + 1).fill(0);
 
