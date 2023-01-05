@@ -14,7 +14,7 @@ var longestCommonSubsequence = function (text1, text2) {
   const dp = [];
   // create 2D matrix with m + 1 and n + 1 as dimensions fill with 0s
   for (let i = 0; i < m + 1; i++) {
-    dp[i] = new Array(n + 1).fill(0);
+    dp.push(new Array(n + 1).fill(0));
   }
 
   // iterate backwards through grid
