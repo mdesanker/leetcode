@@ -16,5 +16,5 @@ var canAttendMeetings = function (intervals) {
   return true;
 };
 
-// Time: O(n)
+// Time: O(nlogn)
 // Space: O(1)
