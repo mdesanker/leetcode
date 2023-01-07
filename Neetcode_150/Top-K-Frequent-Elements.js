@@ -3,7 +3,7 @@
  * @param {number} k
  * @return {number[]}
  */
-
+// Bucket Sort Implementation
 const topKFrequent = function (nums, k) {
   const count = new Map(),
     bucket = [];
@@ -33,3 +33,19 @@ const topKFrequent = function (nums, k) {
 Time: O(N)
 Space: O(N)
 */
+
+// Heap Implementation
+var topKFrequentHeap = function (nums, k) {
+  const count = new Map();
+  for (let num of nums) count.set(num, count.get(num) + 1 || 1);
+
+  const maxHeap = new MaxPriorityQueue();
+  for (let [key, val] of count) maxHeap.enqueue(key, val);
+
+  const res = [];
+  while (res.length < k) res.push(maxHeap.dequeue().element);
+  return res;
+};
+
+// Time: O(nlogn) each heap operation is logn, done n times
+// Space: O(n)
