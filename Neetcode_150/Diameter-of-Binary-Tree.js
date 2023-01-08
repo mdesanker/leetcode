@@ -15,7 +15,7 @@ var diameterOfBinaryTree = function (root) {
 
   function dfs(root) {
     // base case
-    if (!root) return -1;
+    if (!root) return 0;
 
     // find height of left and right subtree
     let left = dfs(root.left);
@@ -24,7 +24,7 @@ var diameterOfBinaryTree = function (root) {
     // check diameter of current node using left and right height
     max = Math.max(max, left + right);
 
-    // return heigh running through root node
+    // return height running through root node
     return 1 + Math.max(left, right);
   }
 
