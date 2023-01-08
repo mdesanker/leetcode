@@ -26,10 +26,10 @@ var findTargetSumWays = function (nums, target) {
     // iterate over both options, add or subtract
     let plus = dfs(i + 1, total + nums[i]);
     let minus = dfs(i + 1, total - nums[i]);
-    let coount = plus + minus;
+    let count = plus + minus;
 
-    cache.set(key, coount);
-    return coount;
+    cache.set(key, count);
+    return count;
   }
 
   return dfs(0, 0);
