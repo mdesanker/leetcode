@@ -7,7 +7,7 @@ var countBits = function (n) {
   // highest power of 2
   let offset = 1;
 
-  for (let i = 0; i < n + 1; i++) {
+  for (let i = 1; i < n + 1; i++) {
     if (offset * 2 === i) {
       offset = i;
     }
