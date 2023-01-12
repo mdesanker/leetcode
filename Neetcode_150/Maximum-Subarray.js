@@ -22,6 +22,17 @@ var maxSubArray = function (nums) {
 // Time: O(n)
 // Space: O(1)
 
+// Alternate way to calculate currSum
+var maxSubArray = function (nums) {
+  let res = nums[0],
+    currSum = 0;
+  for (let num of nums) {
+    currSum = Math.max(currSum + num, num);
+    res = Math.max(res, currSum);
+  }
+  return res;
+};
+
 /**
  * Brute force
  * Compute every subarray
