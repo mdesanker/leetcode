@@ -16,7 +16,7 @@ var findOrder = function (numCourses, prerequisites) {
   }
 
   const visit = new Set(), // crs and prereqs have been visited and has been added to res
-    cycle = new Set(); // crs in process of being visited, not yet visited prereqs, not yet added to res
+    cycle = new Set(); // track courses visited in current path to check for loops
 
   function dfs(crs) {
     // base cases
