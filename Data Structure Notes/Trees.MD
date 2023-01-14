@@ -143,3 +143,154 @@ function DFSPostOrder(root) {
 ```
 
 # Basic Binary Tree Problems
+
+## Same Tree
+
+```js
+var isSameTree = function (p, q) {
+  if (!p && !q) return true;
+  if (!p || !q) return false;
+  if (p.val !== q.val) return false;
+
+  return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+};
+```
+
+## Symmetric Tree
+
+```js
+var isSymmetric = function (root) {
+  function isMirror(p, q) {
+    if (!p && !q) return true;
+    if (!p || !q) return false;
+    if (p.val !== q.val) return false;
+
+    return isMirror(p.left, q.right) && isMirror(p.right, q.left);
+  }
+
+  if (!root) return true;
+
+  return isMirror(root.left, root.right);
+};
+```
+
+## Maximum Depth of Binary Tree
+
+```js
+var maxDepth = function (root) {
+  if (!root) return 0;
+
+  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+};
+```
+
+## Minimum Depth of Binary Tree
+
+```js
+var minDepth = function (root) {
+  if (!root) return 0;
+  if (!root.left && !root.right) return 1;
+
+  if (!root.left) return 1 + minDepth(root.right);
+  if (!root.right) return 1 + minDepth(root.left);
+
+  return 1 + Math.min(minDepth(root.left), minDepth(root.right));
+};
+```
+
+## Balanced Binary Tree
+
+```js
+var isBalanced = function (root) {
+  function dfs(node) {
+    if (!node) return [true, 0];
+
+    let left = dfs(node.left);
+    let right = dfs(node.right);
+
+    const balanced = left[0] && right[0] && Math.abs(left[1] - right[1]) <= 1;
+
+    return [balanced, 1 + Math.max(left[1], right[1])];
+  }
+  return dfs(root)[0];
+};
+```
+
+## Merge Two Binary Trees
+
+```js
+var mergeTrees = function (root1, root2) {
+  if (!root1) return root2;
+  if (!root2) return root1;
+
+  // merge both roots into root1
+  root1.val = root1.val + root2.val;
+
+  root1.left = mergeTrees(root1.left, root2.left);
+  root1.right = mergeTrees(root1.right, root2.right);
+
+  return root1;
+};
+```
+
+## Diameter of Binary Tree
+
+```js
+var diameterOfBinaryTree = function (root) {
+  let max = 0;
+
+  function dfs(node) {
+    if (!node) return 0;
+
+    let left = dfs(node.left);
+    let right = dfs(node.right);
+
+    max = Math.max(max, left + right);
+
+    return 1 + Math.max(left, right);
+  }
+
+  dfs(root);
+  return max;
+};
+```
+
+## Binary Tree Tilt
+
+```js
+var findTilt = function (root) {
+  let count = 0;
+
+  function valueSum(node) {
+    if (!node) return 0;
+
+    let left = valueSum(node.left);
+    let right = valueSum(node.right);
+
+    let tilt = Math.abs(left - right);
+    count += tilt;
+
+    return left + right + node.val;
+  }
+
+  valueSum(root);
+  return count;
+};
+```
+
+## Invert Binary Tree
+
+```js
+var invertTree = function (root) {
+  if (!root) return null;
+
+  let tmp = root.left;
+  root.left = root.right;
+  root.right = tmp;
+
+  invertTree(root.left);
+  invertTree(root.right);
+
+  return root;
+};
+```
