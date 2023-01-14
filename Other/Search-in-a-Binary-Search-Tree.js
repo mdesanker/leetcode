@@ -14,10 +14,18 @@
 var searchBST = function (root, val) {
   if (!root) return null;
 
-  if (val < root.val) return searchBST(root.left, val);
-  else if (val > root.val) return searchBST(root.right, val);
-  else return root;
+  if (root.val === val) return root;
+
+  return searchBST(root.left, val) || searchBST(root.right, val);
 };
 
 // Time: O(logn)
 // Space: O(h) where h is height of BST (n in worse case scenario)
+
+// var searchBST = function (root, val) {
+//   if (!root) return null;
+
+//   if (val < root.val) return searchBST(root.left, val);
+//   else if (val > root.val) return searchBST(root.right, val);
+//   else return root;
+// };
