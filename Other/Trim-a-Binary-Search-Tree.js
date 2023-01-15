@@ -23,6 +23,7 @@ var trimBST = function (root, low, high) {
     return trimBST(root.left, low, high);
     // root val is in range, keep both left and right subtree, return node itself
   } else {
+    // might need to update left and right subtrees
     root.left = trimBST(root.left, low, high);
     root.right = trimBST(root.right, low, high);
     return root;
