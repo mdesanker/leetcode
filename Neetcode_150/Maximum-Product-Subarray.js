@@ -14,7 +14,7 @@ var maxProduct = function (nums) {
   for (let i = 1; i < nums.length; i++) {
     let curr = nums[i];
     let tempMax = Math.max(curr, currentMax * curr, currentMin * curr);
-    currentMin = Math.max(curr, currentMax * curr, currentMin * curr);
+    currentMin = Math.min(curr, currentMax * curr, currentMin * curr);
 
     currentMax = tempMax;
 
