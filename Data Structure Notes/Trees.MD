@@ -9,6 +9,7 @@ Commonly used to represent hierarchical data, e.g. file systems, JSON, HTML docu
 1. [Background](#background)
 2. [Traversals](#traversals)
 3. [Basic Binary Tree](#basic-binary-tree-problems)
+4. [Binary Search Tree](#binary-search-tree)
 
 # Background
 
@@ -292,5 +293,181 @@ var invertTree = function (root) {
   invertTree(root.right);
 
   return root;
+};
+```
+
+# Binary Search Tree
+
+## Search in a Binary Search Tree
+
+```js
+var searchBST = function (root, val) {
+  if (!root) return null;
+
+  if (root.val === val) return root;
+
+  return searchBST(root.left, val) || searchBST(root.right, val);
+};
+```
+
+## Two Sum IV - Input is a BST
+
+```js
+var findTarget = function (root, k) {
+  const visited = new Set();
+
+  function traverse(node) {
+    if (!node) return false;
+
+    if (visited.has(k - node.val)) return true;
+
+    visited.add(node.val);
+
+    return traverse(node.left) || traverse(node.right);
+  }
+  return traverse(root);
+};
+```
+
+## Minimum Absolute Difference in BST
+
+```js
+var getMinimumDifference = function (root) {
+  let res = Infinity,
+    prev = Infinity;
+
+  function inOrder(node) {
+    if (!node) return null;
+
+    inOrder(node.left);
+    res = Math.min(res, Math.abs(node.val - prev));
+    prev = node.val;
+    inOrder(node.right);
+  }
+  inOrder(root);
+  return res;
+};
+```
+
+## Range Sum of BST
+
+```js
+var rangeSumBST = function (root, low, high) {
+  let res = 0;
+
+  function traverse(node) {
+    if (!node) return null;
+
+    if (node.val >= low && node.val <= high) res += node.val;
+
+    if (node.val > low) traverse(node.left);
+    if (node.val < high) traverse(node.right);
+  }
+
+  traverse(root);
+  return res;
+};
+```
+
+## Delete Node in a BST
+
+```js
+var deleteNode = function (root, key) {
+  function findMin(node) {
+    while (node.left) {
+      node = node.left;
+    }
+    return node;
+  }
+
+  if (!root) return null;
+
+  if (key < root.val) {
+    root.left = deleteNode(root.left, key);
+  } else if (key > root.val) {
+    root.right = deleteNode(root.right, key);
+  } else {
+    if (!root.left) return root.right;
+    else if (!root.right) return root.left;
+    else {
+      const minNode = findMin(root.right);
+      root.val = minNode.val;
+      root.right = deleteNode(root.right, root.val);
+    }
+  }
+  return root;
+};
+```
+
+## Insert into a Binary Search Tree
+
+```js
+var insertIntoBST = function (root, val) {
+  if (!root) return new TreeNode(val);
+
+  if (val < root.val) {
+    root.left = insertIntoBST(root.left, val);
+  } else if (val > root.val) {
+    root.right = insertIntoBST(root.right, val);
+  }
+  return root;
+};
+```
+
+## Trim a Binary Search Tree
+
+```js
+var trimBST = function (root, low, high) {
+  if (!root) return null;
+
+  if (root.val < low) {
+    return trimBST(root.right, low, high);
+  } else if (root.val > high) {
+    return trimBST(root.left, low, high);
+  } else {
+    root.left = trimBST(root.left, low, high);
+    root.right = trimBST(root.right, low, high);
+    return root;
+  }
+};
+```
+
+## Kth Smallest Element in a BST
+
+```js
+var kthSmallest = function (root, k) {
+  const inOrder = [];
+
+  function traverse(node) {
+    if (!node) return null;
+
+    traverse(node.left);
+    inOrder.push(node.val);
+    traverse(node.right);
+  }
+
+  traverse(root);
+  return inOrder[k - 1];
+};
+```
+
+## All Elements in Two Binary Search Trees
+
+```js
+var getAllElements = function (root1, root2) {
+  const res = [];
+
+  function traverse(node) {
+    if (!node) return null;
+
+    traverse(node.left);
+    res.push(node.val);
+    traverse(node.right);
+  }
+
+  traverse(root1);
+  traverse(root2);
+
+  return res.sort((a, b) => a - b);
 };
 ```
