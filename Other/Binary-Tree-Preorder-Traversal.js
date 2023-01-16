@@ -10,6 +10,7 @@
  * @param {TreeNode} root
  * @return {number[]}
  */
+// Recursive
 var inorderTraversal = function (root) {
   const res = [];
 
@@ -26,3 +27,19 @@ var inorderTraversal = function (root) {
 
 // Time: O(n)
 // Space: O(n)
+
+// Iterative
+var preorderTraversal = function (root) {
+  const res = [];
+  const stack = [root];
+
+  while (stack.length) {
+    let currNode = stack.pop();
+    if (currNode) {
+      res.push(currNode.val);
+      stack.push(currNode.right);
+      stack.push(currNode.left);
+    }
+  }
+  return res;
+};
