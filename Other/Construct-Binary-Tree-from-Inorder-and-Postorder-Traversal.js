@@ -14,17 +14,14 @@
 var buildTree = function (inorder, postorder) {
   if (!inorder.length || !postorder.length) return null;
 
-  const last = postorder.pop();
-  const root = new TreeNode(last);
-  const mid = inorder.indexOf(last);
+  const root = new TreeNode(postorder[postorder.length - 1]);
+  const mid = inorder.indexOf(postorder[postorder.length - 1]);
 
-  // postorder = [...leftNodes, ...rightNodes, root]
-  // while popping from postorder, must build right side of tree first
-  root.right = buildTree(inorder.slice(mid + 1), postorder);
-  root.left = buildTree(inorder.slice(0, mid), postorder);
+  root.left = buildTree(inorder.slice(0, mid), postorder.slice(0, mid));
+  root.right = buildTree(inorder.slice(mid + 1), postorder.slice(mid, -1));
 
   return root;
 };
 
 // Time: O(n)
-// Space: O(n)
+// Space: O(h)
