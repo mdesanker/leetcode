@@ -18,3 +18,21 @@ var canAttendMeetings = function (intervals) {
 
 // Time: O(nlogn)
 // Space: O(1)
+
+var canAttendMeetings2 = function (intervals) {
+  if (intervals.length < 2) return true;
+
+  intervals.sort((a, b) => a[0] - b[0]);
+
+  let prevEnd = intervals[0][1];
+
+  for (let i = 1; i < intervals.length; i++) {
+    let [start, end] = intervals[i];
+    if (start < prevEnd) {
+      return false;
+    } else {
+      prevEnd = end;
+    }
+  }
+  return true;
+};
