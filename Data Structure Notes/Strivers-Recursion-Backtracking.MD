@@ -204,3 +204,215 @@ function fib(n) {
 console.log(fib(4));
 console.log(fib(8));
 ```
+
+# 6. Recursion on Subsequences
+
+```js
+// print all subsequences
+// [3, 1, 2] -> [[3], [1], [2], [3, 1], [3, 2], [1, 2], [3, 1, 2]]
+
+const arr = [3, 1, 2];
+
+function subsequences(nums) {
+  const res = [];
+  const curr = [];
+
+  function backtrack(i) {
+    if (i >= nums.length) {
+      res.push(curr.slice());
+      return;
+    }
+
+    // case: take nums[i]
+    curr.push(nums[i]);
+    backtrack(i + 1);
+    // case: not take nums[i]
+    curr.pop();
+    backtrack(i + 1);
+  }
+  backtrack(0);
+  return res;
+}
+
+// Time: O(n * 2^n) 2 options for every index (n) and multiplied by n for length of subsequence
+// Space: O(h)
+
+console.log(subsequences(arr));
+```
+
+# 7. All Kinds of Patterns in Recursion
+
+```js
+// Subsequences whose sum is k
+
+const arr = [1, 2, 1];
+
+function subsequence(nums, k) {
+  function dfs(i, curr, total) {
+    // base case
+    // reached end of nums and total = k, then found valid susbequence
+    if (i >= nums.length) {
+      if (total === k) {
+        console.log(curr);
+      }
+      return;
+    }
+
+    // take
+    curr.push(nums[i]);
+    dfs(i + 1, curr, total + nums[i]);
+    // not take
+    curr.pop();
+    dfs(i + 1, curr, total);
+  }
+  return dfs(0, [], 0);
+}
+
+// subsequence(arr, 2);
+
+// Print any subsequence whose sum is k
+
+// If able to generate a subsequence that meets requirement, return true. Else return false.
+
+// base case
+// if valid return true;
+// else return false;
+
+// add(value)
+// if (f() === true) return true;
+// remove(value)
+// if (f() === true) return true;
+
+// return false;
+
+function printSubs(nums, k) {
+  function dfs(i, curr, total) {
+    // base case
+    if (i >= nums.length) {
+      if (total === k) {
+        console.log(curr);
+        return true;
+      }
+      return false;
+    }
+
+    curr.push(nums[i]);
+    if (dfs(i + 1, curr, total + nums[i])) {
+      return true;
+    }
+    curr.pop();
+    if (dfs(i + 1, curr, total)) {
+      return true;
+    }
+    return false;
+  }
+  return dfs(0, [], 0);
+}
+
+// printSubs(arr, 2);
+
+// count number of subsequences with sum k
+
+// If able to generate subsequence that satisfies requirement, return 1, else return 0;
+
+// base case
+// if valid return 1;
+// else return 0;
+
+// add(value);
+// let l = f();
+// remove(value);
+// let r = dfs();
+
+// return l + r;
+
+function printCount(nums, k) {
+  function dfs(i, curr, total) {
+    if (i >= nums.length) {
+      if (total === k) return 1;
+      else return 0;
+    }
+
+    curr.push(nums[i]);
+    let l = dfs(i + 1, curr, total + nums[i]);
+    curr.pop();
+    let r = dfs(i + 1, curr, total);
+
+    return l + r;
+  }
+  return dfs(0, [], 0);
+}
+
+printCount(arr, 2);
+```
+
+# 8. Combination Sum
+
+```js
+const combinationSum = function (candidates, target) {
+  const res = [];
+
+  function backtrack(i, curr, total) {
+    // successful base case
+    if (total === target) {
+      res.push(curr.slice());
+      return;
+    }
+
+    // unsuccessful base case
+    if (i >= candidates.length || total > target) return;
+
+    // pick
+    curr.push(candidates[i]);
+    backtrack(i, curr, total + candidates[i]);
+
+    // not pick
+    curr.pop();
+    backtrack(i + 1, curr, total);
+  }
+
+  backtrack(0, [], 0);
+  return res;
+};
+```
+
+# 9. Combination Sum II
+
+```js
+const arr = [1, 1, 1, 2, 2];
+
+function combinationSumII(nums, target) {
+  const res = [];
+
+  // sort in increasing order
+  nums.sort((a, b) => a - b);
+
+  function backtrack(ind, curr, total) {
+    // valid base case
+    if (total === target) {
+      res.push(curr.slice());
+      return;
+    }
+
+    // invalid base case
+    if (ind >= nums.length || total > target) return;
+
+    // can choose to add any of the nums between ind and end of nums
+    for (let i = ind; i < nums.length; i++) {
+      // if current number is a duplicate, skip
+      if (i > ind && nums[i] === nums[i - 1]) continue;
+
+      // push nums[i] onto curr and backtrack
+      curr.push(nums[i]);
+      backtrack(i + 1, curr, total + nums[i]);
+      // remove nums[i] so can try adding the next num in nums array
+      curr.pop();
+    }
+  }
+
+  backtrack(0, [], 0);
+  return res;
+}
+
+console.log(combinationSumII(arr, 4));
+```
