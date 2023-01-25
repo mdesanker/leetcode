@@ -29,10 +29,19 @@ const topKFrequent = function (nums, k) {
   }
 };
 
-/*
-Time: O(N)
-Space: O(N)
-*/
+// Time: O(N)
+// Space: O(N)
+
+/**
+Use a map to count the freq of each num in nums.
+Iterating through every key-value pair in count, add key to the index of the 
+bucket array corresponding to its freq. 
+Iterating through bucket array in reverse order will give the nums in decreasing freq.
+Build a result array by emptying buckets until res array is length k
+
+TC: O(n) All operations are O(n) operations
+SC: O(n) to store the nums in the map and then the bucket array
+ */
 
 // Heap Implementation
 var topKFrequentHeap = function (nums, k) {
