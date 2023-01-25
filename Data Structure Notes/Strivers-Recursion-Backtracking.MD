@@ -416,3 +416,150 @@ function combinationSumII(nums, target) {
 
 console.log(combinationSumII(arr, 4));
 ```
+
+# 10. Subset Sums I
+
+```js
+// Subset Sum I
+
+const arr = [3, 1, 2];
+
+function subsets(nums) {
+  const res = [];
+
+  // nums.sort((a, b) => a - b);
+
+  function backtrack(ind, curr, sum) {
+    res.push(sum);
+
+    for (let i = ind; i < nums.length; i++) {
+      curr.push(nums[i]);
+      backtrack(i + 1, curr, sum + nums[i]);
+      curr.pop();
+    }
+  }
+  backtrack(0, [], 0);
+  return res.sort((a, b) => a - b);
+}
+
+console.log(subsets(arr));
+
+function subsets2(nums) {
+  const res = [];
+
+  // nums.sort((a, b) => a - b);
+
+  function backtrack(i, curr, sum) {
+    if (i >= nums.length) {
+      res.push(sum);
+      return;
+    }
+
+    curr.push(nums[i]);
+    backtrack(i + 1, curr, sum + nums[i]);
+    curr.pop();
+    backtrack(i + 1, curr, sum);
+  }
+  backtrack(0, [], 0);
+  return res.sort((a, b) => a - b);
+}
+
+console.log(subsets2(arr));
+```
+
+# 11. Subsets II
+
+```js
+// Subsets II
+
+const arr = [1, 2, 2];
+
+function subsets(nums) {
+  const res = [];
+
+  nums.sort((a, b) => a - b);
+
+  function backtrack(ind, curr) {
+    // if (ind >= nums.length) {
+    //     res.push(curr.slice());
+    //     return;
+    // }
+    res.push(curr.slice());
+
+    for (let i = ind; i < nums.length; i++) {
+      if (i > ind && nums[i] === nums[i - 1]) continue;
+
+      curr.push(nums[i]);
+      backtrack(i + 1, curr);
+      curr.pop();
+    }
+  }
+  backtrack(0, []);
+  return res;
+}
+
+console.log(subsets(arr));
+```
+
+# 12. Print All Permutations of a String/Array (Linear Space)
+
+```js
+// Permutations
+
+// Extra space
+
+const arr = [1, 2, 3];
+
+function permutations(nums) {
+  const res = [];
+
+  function backtrack(used, curr) {
+    if (curr.length === nums.length) {
+      res.push(curr.slice());
+      return;
+    }
+
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) continue;
+
+      curr.push(nums[i]);
+      used[i] = true;
+
+      backtrack(used, curr);
+
+      curr.pop();
+      used[i] = false;
+    }
+  }
+  backtrack(new Array(nums.length).fill(false), []);
+  return res;
+}
+
+// Time: O(n * n!) n for for loop, n! for number of permutations
+// Space: O(n + n) for curr and used
+
+console.log(permutations(arr));
+```
+
+# 13. Print All Permutation of a String/Array (Constant Space)
+
+```js
+var permute = function (nums) {
+  const res = [];
+
+  function backtrack(ind, nums) {
+    if (ind >= nums.length) {
+      res.push(nums.slice());
+      return;
+    }
+
+    for (let i = ind; i < nums.length; i++) {
+      [nums[i], nums[ind]] = [nums[ind], nums[i]];
+      backtrack(ind + 1, nums);
+      [nums[i], nums[ind]] = [nums[ind], nums[i]];
+    }
+  }
+  backtrack(0, nums);
+  return res;
+};
+```
