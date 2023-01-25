@@ -8,6 +8,7 @@ Subarray Sum Equals K
 
 Path Sum III
 Pseudo-Palindromic Paths in a Binary Tree
+Binary Tree Vertical Order Traversal
 
 ## Backtracking
 
