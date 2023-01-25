@@ -71,3 +71,45 @@ var solveNQueens = function (n) {
 
 // Time: O(n!) only place queens in squares not under attack, so first queen has n options, next queen has max n - 2, then max n - 4 for following, etc
 // Space: O(n^2) for the n x n board
+
+// avoid having to do 3 O(n) operations to check for attacking queens
+var solveNQueens = function (n) {
+  const res = [];
+
+  const board = [];
+  for (let i = 0; i < n; i++) {
+    board.push(new Array(n).fill("."));
+  }
+
+  // use sets to store which rows and diagonals have queens in them
+  backtrack(0, new Set(), new Set(), new Set());
+  return res;
+
+  function backtrack(c, rows, diags, antiDiags) {
+    if (c >= n) {
+      res.push([...board].map((row) => row.join("")));
+      return;
+    }
+
+    for (let r = 0; r < n; r++) {
+      let diag = r + c;
+      let antiDiag = r - c;
+      // if this r, diag, or antiDiag is already occupied, then continue
+      if (rows.has(r) || diags.has(diag) || antiDiags.has(antiDiag)) continue;
+
+      // add position to the relevant sets
+      rows.add(r);
+      diags.add(diag);
+      antiDiags.add(antiDiag);
+      // add queen and backtrack
+      board[r][c] = "Q";
+
+      backtrack(c + 1, rows, diags, antiDiags);
+
+      rows.delete(r);
+      diags.delete(diag);
+      antiDiags.delete(antiDiag);
+      board[r][c] = ".";
+    }
+  }
+};
