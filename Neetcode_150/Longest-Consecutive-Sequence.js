@@ -27,6 +27,19 @@ Time: O(N)
 Space: O(N)
 */
 
+/** 
+Build a set from nums array to so that we have O(1) lookup time for numbers.
+Iterate through nums array
+Check that the current num doesn't have any previous values in the set, if it does, then you can't build a potentially longest sequence
+Once you find a num with no previous values, initialize length counter at 0;
+Using a while loop, check that the value of num + length exists in the set and increment the length counter
+Once you have reached the end of the current subsequence, check if it is longer than the current max length (initialized to 0);
+
+TC: O(n) building the set is linear operation, then interating through nums array is another linear operation. 
+Checking for values in set is constant time operation
+SC: O(n) size of set will be the length of nums array if every value is unique
+*/
+
 // Implementation with hashmap instead of set
 const longestConsecutiveHash = function (nums) {
   const numHash = {};
