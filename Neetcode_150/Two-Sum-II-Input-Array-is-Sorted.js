@@ -25,3 +25,16 @@ const twoSum = function (numbers, target) {
 Time: O(N)
 Space: O(1)
 */
+
+/**
+Initialize pointer to start and end of nums array.
+While left pointer is less than right pointer, calculate current sum of value of l and r pointers
+Since array is sorted, incrementing left pointer will increase sum, and decrementing right pointer will decrease sum.
+If sum < target, increment left to increase sum
+If sum > target, decrement right to decrease sum
+If sum = target then return indices of l and r pointer + 1
+If traverse entire array without finding target, then return [-1, -1]
+
+TC: O(n) traverse nums array once
+SC: O(1) only memory used is the two variables for l and r pointers
+ */
