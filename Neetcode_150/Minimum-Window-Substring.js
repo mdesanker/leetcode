@@ -35,7 +35,7 @@ var minWindow = function (s, t) {
 };
 
 // Time: O(N + M)
-// Space: O(N + M)
+// Space: O(N + M) ??
 
 /** 
 Edge case: if t is longer than s, then return empty string because will not be able to find substring of s that contains every char of t.
@@ -50,6 +50,9 @@ First update substring answer if it is either empty or current window is smaller
 Then increment left pointer and see if still valid
 
 Increment r pointer before loop ends
+
+TC: O(s + t) iterate through t once to build hashmap, then iterate through s once to find substring
+SC: O(t) memory to hold every char in t in hashmap (upper limit 26 keys so technically O(1) space)
 */
 
 var minWindow2 = function (s, t) {
