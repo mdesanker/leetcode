@@ -49,3 +49,30 @@ const checkInclusion = function (s1, s2) {
 Time: O(N + M) - N = s1.length, M = s2.length
 Space: O(1)
 */
+
+/** 
+Edge case: if s1 is longer than s2, then s2 cannot possibly contain a permutation of s1
+
+Map characters of s1 into a hashmap
+
+Initialize l and r pointers at beginning of s2, and neededLength counter which is initialized to the length of s1.
+
+While r is less than s2
+If value for rightChar in hashmap is greater than 0, then it is a needed char, so neededLength is decreased by 1
+Decrement value of rightChar in hashmap (if doesn't exist, nothing will happen)
+r pointer needs to be incremented here (if it is incremented at end of while loop, then it extends the window length by 1)
+
+If neededLength is 0, then immediately return true because have a valid permutation.
+
+If length of window is greater than s1, then window needs to be shrunk by moving l pointer
+If leftChar value in hashmap is greater than or equal to 0, it is a necessary char, so neededLength must be incremented 
+so we know this char will have to be replaced in the window before an answer can be found
+Increment count of leftChar in hashmap (if doesn't exist, nothing will happen)
+Increment l pointer
+
+If r makes to end of s2 (while loop terminates) then return false because no permutation was found in s2
+
+TC: O(n + m) iterate through s1 and s2 once each
+SC: O(n) if every char in s1 is unique, then the size of hashmap will equal length of s1. 
+This is capped at n = 26 due to size of alphabet, so technically O(1) memory is required
+*/
