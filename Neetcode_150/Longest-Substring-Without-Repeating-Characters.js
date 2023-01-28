@@ -27,6 +27,23 @@ const lengthOfLongestSubstring = function (s) {
 };
 
 /*
-Time: O(N)
-Space: O(N)
+Time: O(n)
+Space: O(n)
 */
+
+/**
+Use a hash map to track visited chars and their last index of occurence.
+Iterate through string with r pointer.
+
+Check if the current right char is already in charMap, this means this char is 
+part of the current substring. To remove it from the substring, we need to advance 
+the left pointer to the max of itself and index of duplicate + 1.
+
+Then update the index of the right char (or add to hashmap if not already there)
+
+At end of each loop, check the current length of the substring and compare against max
+
+TC: O(n) iterate through string once
+SC: O(min(n, m)) if every character in the string is unique, then the hashmap will have to hold
+every character in the string (n), but is capped at the size of the alphabet (m)
+ */
