@@ -45,7 +45,26 @@ MinStack.prototype.getMin = function () {
  * var param_4 = obj.getMin()
  */
 
-/*
-Time: O(1)
-Space: O(N)
+// Time: O(1) all operations are constant time - push, pop, top, getMin
+// Space: O(n) worst case scenario every operation is push
+
+/** 
+Initialize empty array for stack and minStack
+
+Push:
+stack - push val onto end of stack array
+minStack - if minStack is empty, the push onto minStack, otherwise push the min of last value in minStack and value parameter
+This keeps the minimum value in the stack on top and accessible in O(1) time
+
+Pop:
+Pop from both stack and minStack
+
+Top:
+return value at last index of stack
+
+getMin:
+return value at last index of minStack because this will be the smallest value
+
+TC: O(1) all operations are constant time - push, pop, top, getMin
+SC: O(n) worst case scenario every operation is push
 */
