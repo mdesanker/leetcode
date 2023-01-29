@@ -35,8 +35,34 @@ var maxSlidingWindow = function (nums, k) {
   return res;
 };
 
-// Time: O(N)
-// Space: O(N)
+// Time: O(n)
+// Space: O(k)
+
+/**
+Use a monotonic decreasing queue to keep track of index of largest number in window. 
+When we add a new number, we pop all smaller numbers from the queue. 
+When the largest number is out of range, we shift it from the queue.
+Once we have k elements in the window, we push the largest num (nums[q[0]] because q holds indices) onto result array
+
+Initialize l and r pointer at beginning of nums, a result array, and a queue array.
+
+While r pointer is in bounds
+
+In order to push a value onto the q, we need to remove any smaller values.
+So while q is not empty and the num at the index of the last value in q is less than the value at r pointer, pop from q
+The push current value onto q.
+
+Then we need to remove the first value in the q if it is out of range of the window. 
+Check if q[0] is equal to r - k and remove first element in q with shift.
+
+
+If the window has at least k values ( r + 1 >= k) then we can push the max onto the result array and increment l pointer
+
+Before loop ends, increment right pointer
+
+TC: O(n) nums array is interated through once
+SC: O(k) if nums array is in decreasing order, then could have a full window of nums in queue
+ */
 
 // https://leetcode.com/problems/sliding-window-maximum/solutions/871317/clear-thinking-process-with-picture-brute-force-to-mono-deque-python-java-javascript/?orderBy=most_votes&languageTags=javascript
 var maxSlidingWindow = function (nums, k) {
