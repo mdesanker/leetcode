@@ -39,6 +39,13 @@ var maxSlidingWindow = function (nums, k) {
 // Space: O(k)
 
 /**
+Brute force implementation:
+Start at every index, and check for the max of the next k numbers and push to the result array.
+
+TC: O(n * k) will need two nested loops, one to iterate through nums array, and then one to iterate over next k elements
+SC: O(1) will need a variable to store the max in every window
+
+Optimal solution:
 Use a monotonic decreasing queue to keep track of index of largest number in window. 
 When we add a new number, we pop all smaller numbers from the queue. 
 When the largest number is out of range, we shift it from the queue.
