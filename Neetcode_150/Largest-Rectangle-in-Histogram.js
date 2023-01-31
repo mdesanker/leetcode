@@ -69,3 +69,34 @@ Pushing 0 onto end of heights array would force all heights to be popped off sta
 TC: O(n) we iterate through heights array once
 SC: O(n) if all values in heights array are increasing, we will have to store every height in the stack
  */
+
+// Brute force solution
+var largestRectangleArea = function (heights) {
+  let res = 0;
+  for (let i = 0; i < heights.length; i++) {
+    // need to track the minimum height for every range of lengths
+    let minHeight = Infinity;
+    // start window from i
+    for (let j = i; j < heights.length; j++) {
+      // update minHeight with every step
+      minHeight = Math.min(minHeight, heights[j]);
+      // current area is minHeight * length
+      // j - i + 1 because we treat each index as having a width of 1
+      res = Math.max(res, minHeight * (j - i + 1));
+    }
+  }
+  return res;
+};
+
+// Time: O(n^2) for nested for loops
+// Space: O(1) constant space for res variable
+
+/**
+Brute force check every possible rectangle width and height
+i variable tracks left edge, j tracks right edge of rectangle
+We need to track the minHeight for every window as this will be the height of said rectangle
+We consider each index as having a length of 1, so length will be (j - i + 1)
+
+TC: O(n^2) for nested for loops
+SC: O(1) no extra space needed
+ */
