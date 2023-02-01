@@ -24,7 +24,28 @@ const findDuplicate = function (nums) {
   }
 };
 
-/*
-Time: O(N)
-Space: O(1)
-*/
+// Time: O(n)
+// Space: O(1)
+
+/**
+**This is a trick problem**
+Flloyd's algorithm can be used to solve in constant space by reducing this to finding the beginning of a linked list cycle
+
+Visualize it as each node of each index points to the node of that value at that index
+
+[2, 6, 4, 1, 3, 1, 5]
+
+Node 0 points to node 2
+Node 1 points to node 6
+
+There is a cycle because both node 3 and node 5 point to node 1
+
+Initiliaze slow and fast pointer to 0
+Increment slow and fast until they are equal
+Then initialize a slow2 pointer
+Increment slow and slow2 until they are equal
+Then return slow ro slow2
+
+TC: O(n) both phases run in O(n) time
+SC: O(1) no additional memory needed
+ */
