@@ -19,9 +19,8 @@ var removeNthFromEnd = function (head, n) {
     p2 = head;
 
   // move p2 ahead n spaces
-  while (n > 0 && p2) {
+  for (let i = 0; i < n; i++) {
     p2 = p2.next;
-    n--;
   }
 
   // move p1 and p2 until end of list
@@ -37,31 +36,24 @@ var removeNthFromEnd = function (head, n) {
   return dummy.next;
 };
 
-/*
-Time: O(N)
-Space: O(1)
-*/
+// Time: O(n)
+// Space: O(1)
 
-// const removeNthFromEndOld = function (head, n) {
-//   let p1 = head,
-//     p2 = head;
+/**
+Need to move a pointer to node previous of the node we'd like to remove
+Will initialize p1 to a dummy node pointing to the head node, so that it will lag 1 behind of the node we want to remove
+Initialize p2 to head
 
-//   // move p2 ahead n spaces
-//   while (n--) {
-//     p2 = p2.next;
-//   }
+Move p2 ahead n spaces using for loop
+Then move both nodes ahead until p2 is at the end
 
-//   // edge case: n = length of list, remove first element
-//   if (!p2) return head.next;
+p1 is now at the node previous of the node we want to remove
+Remove the next node by setting:
 
-//   // iterate to end of list
-//   while (p2 && p2.next) {
-//     p1 = p1.next;
-//     p2 = p2.next;
-//   }
+p1.next = p1.next.next;
 
-//   // remove nth node
-//   p1.next = p1.next ? p1.next.next : null;
+Return dummy.next to return the head
 
-//   return head;
-// };
+TC: O(n) interate through list once
+SC: O(1) no additional memory needed
+ */
