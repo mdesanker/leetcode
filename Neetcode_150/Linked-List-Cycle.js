@@ -27,6 +27,16 @@ const hasCycle = function (head) {
 };
 
 /*
-Time: O(N)
+Time: O(n)
 Space: O(1)
 */
+
+/**
+Use fast and slow pointers, if there is a loop then slow and fast pointer will eventually be equal
+If this happens then return true.
+If there is no loop, then we will eventually get to the end of the list and the loop will stop
+Then we can return false
+
+TC: O(n) iterate through the list once
+SC: O(1) no additional memory needed
+ */
