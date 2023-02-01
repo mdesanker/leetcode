@@ -36,3 +36,15 @@ var mergeTwoLists = function (list1, list2) {
 
 // Time: O(min(N, M)) where N and M are lengths of the two linked lists
 // Space: O(1)
+
+/**
+Build a new list from a dummy node, as opposed to trying to merge one list into another list.
+Create a new dummy node to act as the head of the next list.
+While both list1 and list2 have values remaining, use if else statement to add the smallest of the two front values in each list.
+Once one of the lists has been depleted, we need to add the remainder of the other list, if any, onto the end of the new list.
+Return dummy.next to return the head of the new list
+
+TC: O(min(n, m)) we traverse both lists for the length of the shortest list, then the remainder of the longer list 
+is tacked on to the end with a single 
+SC: O(1) no additional memory needed because new list created is returned as the result
+ */
