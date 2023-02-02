@@ -26,5 +26,15 @@ var invertTree = function (root) {
   return root;
 };
 
-// Time: O(H) where H is height of tree
-// Space: O(N)
+// Time: O(n)
+// Space: O(n)
+
+/**
+Preorder traversal of binary tree, swapping left and right nodes recursively
+Then call invertTree function on the left and right subtrees
+Return the root of the tree
+
+TC: O(n) each node in the tree is visited only once
+SC: O(n) because of recursion, O(h) function calls will be placed in the stack, where h is height of the tree 
+    In the worst case, h == n (linked list)
+ */
