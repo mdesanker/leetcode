@@ -158,3 +158,18 @@ var mergeKLists = function (lists) {
 //    push: O(1)
 // SC: O(n)
 //    O(n) for the merged list
+
+/**
+Merge two lists at a time until there is only one list left
+
+Build function to merge two lists (leetcode easy)
+
+Initialize a variable prev to null, all lists will be merged into this one
+For each list in lists, set prev equal to prev and lists[i] merged
+Return prev at the end
+
+If lists is empty, then initial value of prev (null) will be returned
+
+TC: O(n) iterate through every list in lists once at a time while it's merged into prev
+SC: O(n) for the merged list
+ */
