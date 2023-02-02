@@ -19,8 +19,22 @@ var maxDepth = function (root) {
   return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
 };
 
-// Time: O(N)
-// Space: O(N)
+// Time: O(n)
+// Space: O(n)
+
+/**
+Recursive function so will not start returning values until we reach the bottom of the tree
+Base case:
+If we reach a point where node is null, return a height of 0 (there is no node)
+
+At each node, we calculate the height of the left and right subtrees
+The height of this node is going to be equal to 1 + Math.max(left, right)
+
+We add 1 for the node itself, + the height of it's tallest subtree
+
+TC: O(n) iterate over every node in the tree once
+SC: O(n) recursive stack equal to height of tree in worst case, which can be n if tree is a linked list
+ */
 
 // Iterative BFS
 var maxDepthBFS = function (root) {
