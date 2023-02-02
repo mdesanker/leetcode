@@ -35,6 +35,5 @@ Then call invertTree function on the left and right subtrees
 Return the root of the tree
 
 TC: O(n) each node in the tree is visited only once
-SC: O(n) because of recursion, O(h) function calls will be placed in the stack, where h is height of the tree 
-    In the worst case, h == n (linked list)
+SC: O(n) recursive stack can be equal to height of tree. In a skewed tree, this will be equal to number of nodes, in a balanced tree will be O(logn)
  */

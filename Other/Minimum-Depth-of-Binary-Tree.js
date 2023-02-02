@@ -39,5 +39,5 @@ If there is only one child, we need to return 1 + the height of its subtree
 If there are two children, then we will need to return 1 + the minimum heights of the two subtrees
 
 TC: O(n) traverse each node once
-SC: O(n) recursive stack will be the height of the tree
+SC: recursive stack can be equal to height of tree. In a skewed tree, this will be equal to number of nodes, in a balanced tree will be O(logn)
  */

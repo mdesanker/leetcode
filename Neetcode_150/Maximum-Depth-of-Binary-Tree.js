@@ -33,7 +33,7 @@ The height of this node is going to be equal to 1 + Math.max(left, right)
 We add 1 for the node itself, + the height of it's tallest subtree
 
 TC: O(n) iterate over every node in the tree once
-SC: O(n) recursive stack equal to height of tree in worst case, which can be n if tree is a linked list
+SC: O(n) recursive stack can be equal to height of tree. In a skewed tree, this will be equal to number of nodes, in a balanced tree will be O(logn)
  */
 
 // Iterative BFS
