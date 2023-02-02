@@ -32,5 +32,18 @@ var diameterOfBinaryTree = function (root) {
   return max;
 };
 
-// Time: O(N)
-// Space: O(N)
+// Time: O(n)
+// Space: O(n)
+
+/**
+Easiest to implement with a global variable that can track max diameters as we traverse tree
+
+Create a helper function to traverse the tree
+We will be calculating the maxDepth of left and right subtrees for each node
+The diameter at each node is equal to the sum of the depths of its left and right subtrees
+At every node, we compare the current diameter against the max diameter stored in the global variable
+Return the height of the current subtree from the helper function
+
+TC: O(n) traverse every node once
+SC: O(n) recursive stack can be equal to height of tree. In a skewed tree, this will be equal to number of nodes, in a balanced tree will be O(logn)
+ */
