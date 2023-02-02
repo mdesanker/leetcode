@@ -25,3 +25,19 @@ var minDepth = function (root) {
 
 // Time: O(n)
 // Space: O(n)
+
+/**
+To find distance from root to nearest leaf node recursively
+
+Base cases:
+If current node is null return 0 (no height)
+If current node has no children (leaf node) return 1 because it's height is itself
+
+If we make it through the base cases, then we know we aren't at a leaf node
+If there is only one child, we need to return 1 + the height of its subtree
+
+If there are two children, then we will need to return 1 + the minimum heights of the two subtrees
+
+TC: O(n) traverse each node once
+SC: O(n) recursive stack will be the height of the tree
+ */
