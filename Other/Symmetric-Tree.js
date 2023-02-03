@@ -28,3 +28,15 @@ var isSymmetric = function (root) {
 
 // Time: O(n)
 // Space: O(n)
+
+/**
+We will need a helper function that takes two separate nodes in order to determine whether tree is symmetric
+This helper function will be very similar to the sameTree question (leetcode easy)
+However, instead of comparing p.left with q.left and p.right with q.right, we will compare p.left with q.right and p.right with q.left
+
+Edge case is if root is null, then return true (technically a symmetric tree)
+Return helper function called on root.left and root.right
+
+TC: O(n) we will traverse every node once
+SC: O(n) recursive stack equal to height of tree in worst case scenario
+ */
