@@ -34,3 +34,11 @@ var kthSmallest = function (root, k) {
 
 // Time: O(n) pass at most every node once
 // Space: O(n) result array contains every node
+
+/**
+Inorder traversal of BST and store result in an array will list the nodes in increasing order.
+Then we can return the value at index k - 1 (because tree is 1-indexed)
+
+TC: O(n) traverse every node once until we reach kth element, could traverse all nodes in tree if k is length of tree - 1
+SC: O(n) space to build array with inorder traversal of BST
+ */
