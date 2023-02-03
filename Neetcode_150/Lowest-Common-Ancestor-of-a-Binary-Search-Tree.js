@@ -30,7 +30,19 @@ const lowestCommonAncestor = function (root, p, q) {
   }
 };
 
-/*
-Time: O(logN)
-Space: O(1)
-*/
+// Time: O(n)
+// Space: O(1)
+
+/**
+LCA of two nodes is the last ancestor that is common to both of them
+Can use properties of a binary search tree to develop algorithm
+
+If p.val and q.val are both less than current.val, they will both be found in the left subtree of the current node, which means that current will not be their lowest common ancestor
+Return the recursive call on current.left
+Likewise for the right subtree if both values are greater
+
+If current falls between both node values, then we cannot move to the left or right subtree and still keep both nodes within the subtree. Current is therefore the LCA
+
+TC: O(n) worst case scenario we check every node in a skewed BST. In a balanced BST, the average TC is O(logn) as we remove half the tree from consideration with each step until we find the LCA
+SC: O(1) no additional memory needed
+ */

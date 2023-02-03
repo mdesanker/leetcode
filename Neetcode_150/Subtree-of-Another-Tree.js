@@ -32,3 +32,19 @@ var isSubtree = function (root, subRoot) {
 
 // Time: O(mn) where n and m are number of nodes in root and subroot
 // Space: O(n + m)
+
+/**
+If a tree is a subtree of another tree, then the subtree and tree are the same tree
+
+Build a sameTree helper function (leetcode easy)
+
+Base cases:
+If subroot is null, every tree has a null child, so we can return true automatically
+If root is null, then we can return false automatically. If we got to this check, then we know that subRoot is not null, and we cannot have a not-null subtree of a null tree
+If root and subRoot are the same tree (using helper function) return true
+
+Next we recursively check whether the left subtree OR the right subtrees are same trees as the subRoot
+
+TC: O(n * m) for every n node, we check if the tree rooted at this node is same as subRoot, where m is number of nodes in subRoot
+SC: O(n + m) there will be at most n recursive calls of isSubtree, and within each of those there will be at most m recursive calls of sameTree. So maximum number of items in the call stack will be n + m
+ */

@@ -22,3 +22,19 @@ var isSameTree = function (p, q) {
 
 // Time: O(n) where N is number of nodes in tree
 // Space: O(n)
+
+/**
+We will check if the current nodes are the same and then all the subtrees 
+are the same
+
+Base cases:
+If both nodes are null then return true, they are the same
+If only one node is null, then return false, they are not the same
+If the node values are not equal, then return false, they are not the same
+
+Then return result of checking both left and right subtrees
+
+TC: O(n) traverse each node only once
+SC: O(n) recursive stack is the length of the tree in worst case. 
+For a skewed tree this is the number of nodes
+ */
