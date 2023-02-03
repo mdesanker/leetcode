@@ -28,3 +28,26 @@ var buildTree = function (preorder, inorder) {
 
 // Time: O(n)
 // Space: O(n)
+
+/**
+We will break the preorder and inorder arrays apart repeatedly to help build the left and right subtrees of the tree
+
+Base case
+If there is nothing left in the preorder or inorder arrays, then we have finished building the tree and return null
+
+Preorder traversal goes to the parent node , then the left node, and then the right nodes
+Inorder traversal goes to the left node, then parent, then right node
+
+The first element in the preorder traversal is the value for the current/root node
+Build a new TreeNode with preorder[0] as the value
+
+Finding the index of the root node value in the inorder traversal will split the inorder traveral into left and right sides for the tree
+Store this index in a variable
+
+Build the left and right subtrees, recursively calling the buildTree function with the relevant portions of the preorder and inorder traverals sliced out
+
+Return the root/current node
+
+TC: O(n) we will traverse every node once as we build the tree
+SC: O(n) for the slices of the preorder and inorder traversals
+ */
