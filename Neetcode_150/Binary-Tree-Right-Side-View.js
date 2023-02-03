@@ -32,3 +32,13 @@ var rightSideView = function (root) {
 
 // Time: O(n)
 // Space: O(n)
+
+/**
+Same as level order traversal except we dont need to track every item in the level
+ and we only push to the result array if we are at the last element in the row
+
+if (i === length - 1) res.push(node.val);
+
+TC: O(n) every node is traversed once
+SC: O(n) to build the result. In a skewed tree, the number of elements in result array will equal number of nodes
+ */
