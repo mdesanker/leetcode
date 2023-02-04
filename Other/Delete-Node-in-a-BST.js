@@ -48,55 +48,46 @@ var deleteNode = function (root, key) {
   return root;
 };
 
-// Time: O(logn)
+// Time: O(n)
 // Space: O(n)
 
-// Official solution implementation
+/**
+We will traverse the tree to find a node that matches the key we want to remove
+If we don't find a valid node, we will return null
 
-// var deleteNode = function(root, key) {
-//   // next largest element - one step to right, then left as far as possible
-//     function successor(node) {
-//       node = node.right;
-//       while (node.left) {
-//         node = node.left;
-//       }
-//       return node.val;
-//     }
+Once we find a node
+1. Node is a leaf node - if node has no chilren, we can set it to null
+2. Node has one child - if node has only one child, we set it to the value of its only child
+Both of these conditions are handled by the same code:
 
-//     // previous largest element - one step to left, then right as far as possible
-//     function predecessor(node) {
-//       node = node.left;
-//       while (node.right) {
-//         node = node.right;
-//       }
-//       return node.val;
-//     }
+if (!root.left) return root.right;
+else if (!root.right) return root.left;
 
-//     // delete node functionality
-//     if (!root) return null
+If node has no children, root.left will be null, so it will set current node to root.right, which is also null
 
-//     // delete from right subtree
-//     if (key > root.val) {
-//       root.right = deleteNode(root.right, key);
-//     // delete from left subtree
-//     } else if (key < root.val) {
-//       root.left = deleteNode(root.left, key);
-//     // delete current node
-//     } else {
-//       // node is a leaf
-//       if (!root.left && !root.right) {
-//         root = null;
-//         // node is not a leaf and has a right child
-//       } else if (root.right) {
-//         // find smallest value in right subtree to replace node
-//         root.val = successor(root);
-//         // delete the duplicate value from right subtree
-//         root.right = deleteNode(root.right, root.val);
-//         // node is not a leaf, has no right child, and has a left child
-//       } else {
-//         root.val = predecessor(root);
-//         root.left = deleteNode(root.left, root.val);
-//       }
-//     }
-//     return root;
-// };
+3. Node has two children
+If the node has two children, we need to pick a node to replace it with
+It will require the least amount of work to pick the largest node that is smaller than it, or the smallest node that is larger than it.
+Then, if we replace the current node with one of these nodes, we will still have a valid BST
+A helper function can be used to find this node (example to find smallest larger node)
+
+function findMin(node) {
+    while (node.left) {
+        node = node.left;
+    }
+    return node;
+}
+
+We will call this function on the right subtree of the node to be deleted to get minNode, so we will find the smallest value in the subtree which will be the smallest node that is greater than the node to be deleted
+We will replace the current node with the value of the minNode
+Then we will delete the minNode from the right subtree (this will be simple deletion because this node will be a leaf node)
+
+const minNode = findMin(root.right);
+root.val = minNode.val;
+root.right = deleteNode(root.right, root.val); // root.val is same as minNode.val
+
+Return the root of the BST at the end
+
+TC: O(n) average TC is O(logn) because we cut down search area by half with every step until we find node to delete. But if we have a skewed tree and want to delete the leaf node, we will have to traverse every node once
+SC: O(n) recursive stack will be the height of the tree, O(n) for a skewed tree, O(logn) for a balanced tree
+ */
