@@ -28,6 +28,9 @@ WordDictionary.prototype.addWord = function (word) {
   current.end = true;
 };
 
+// Time: O(n) iterate through every char in word and either find node or create new node
+// Space: O(n) worst case scenario, must create a new node for every char in word
+
 /**
  * @param {string} word
  * @return {boolean}
@@ -59,12 +62,49 @@ WordDictionary.prototype.search = function (word) {
   return dfs(0, this.root);
 };
 
-// Time: O(M) where M is sum of lengths of all words in Trie
-// Space: O(M)
+// Time: O(n) iterate through every char in string to search for node
+// Space: O(n) space needed for recursive stack, worst case scenario, we a searching for a string that is entirely wildcards
 
 /**
- * Your WordDictionary object will be instantiated and called as such:
- * var obj = new WordDictionary()
- * obj.addWord(word)
- * var param_2 = obj.search(word)
+Creating the TrieNode class, initializing the trie, and inserting a word are all the same as in "Implement Trie/Prefix Tree" question
+
+Search:
+This search function is more complicated that the "Implement Trie/Prefix Tree" question because we allow wildcards
+Wildcard means that we can have any possible character in said position
+Because we need to test multiple possibilities, we will need to use recursion and dfs
+
+Helper function
+This helper function will need two parameters, the current node (node), and the index of the character in the word we are searching for (i)
+
+We will initialize current variable to the node passed in params
+
+Then we will use a for loop to iterate from the current index, i, through the remainder of the word
+Store the current character in a variable for simplicity
+
+The char will either be a letter or a wildcard
+
+If the char is a wildcard, we will have to check all possible children of the current node and see if we can successfully match the remainder of the word
+We can get the children of the current node using Object.values(current.child) and then loop through the children with a for-of loop
+We recursively call the helper function on each child, while incrementing the pointer, because we want to check the next char
+If any of these recursive calls returns true, then we can automatically return true - we have successfully matched the word to some combination in the trie
+If we finish iterating through all the children and don't get a match, then we can return false
+
+If the char is a letter
+We can follow the procedure we used basic trie search
+If the current node has a child that matches the char, then we move the pointer to that node
+Otherwise we return false, because there is no way that word can be in the trie
+
+If we made it out of the for-loop iterating through the rest of the characters of the word, then we have found every character we needed
+We return whether the last char is an end of word char or not
+
+We will return the result of calling the helper function on the root node of the trie, starting at the 0th index
+
+Insert:
+TC: O(n) iterate through every char in word and either find node or create new node
+SC: O(n) worst case scenario, must create a new node for every char in word
+
+Search:
+TC: O(n) iterate through every char in string to search for node
+SC: O(n) space needed for recursive stack, worst case scenario, we a searching for a string that is entirely wildcards, 
+but will be O(1) for well-defined words without any wildcards (no recursive stack)
  */
