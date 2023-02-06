@@ -27,6 +27,23 @@ var lastStoneWeight = function (stones) {
 // Time: O(nlogn) where n is number of stones to add to heap
 // Space: O(n)
 
+/**
+A max heap will easily help us keep the stones in order so we can choose the heaviest two stones to smash together
+Adding elements to the heap is O(logn) time complexity, and is repeated for every stone
+
+We want to smash stones until we either have one or no stones remaining (if the last two stones are the same size they will both be destroyed)
+While the heap is larger than one
+Pop the two largest stones
+If they are the same size, then both of their weights are removed from the heap
+If they are not the same size, then we add the difference back to the heap
+
+Once heap size has been reduced, we either return 0 if there are no remaining stones, or the weight of the last stone by returning the 
+element at front of heap
+
+TC: O(nlogn) to build the heap, then nlogn as we remove all elements from the heap
+SC: O(n) the heap initially holds every stone in the stones array
+ */
+
 // Recursion Implementation
 // https://leetcode.com/problems/last-stone-weight/solutions/1923171/javascript-faster-than-95-easy-to-understand-with-comments/?orderBy=most_votes&languageTags=javascript
 
