@@ -60,3 +60,31 @@ var subsetsWithDupNeet = function (nums) {
   dfs(0);
   return res;
 };
+
+/**
+To build unique subsets, we need to sort the nums array so we can easily skip duplicates
+
+Backtrack function
+Parameters:
+ind will be the index from which we can start choosing values
+curr will be the current path
+
+Base case:
+We will push the curr array onto res every time the function is called
+We do not wait for a certain requirement to be met
+
+Recursive step:
+Loop in the recursive step will control how many times the backtrack function is called
+We will make the decision to include an element as we go along. 
+If we encounter a repeat element, we will skip it
+
+Loop from ind to the end of nums.length
+Skip repeats by checking if current element === previous element once we have moved past first element
+
+Then we push the element onto curr, call backtrack, then pop to clean the stack
+
+Backtrack is called at index 0 because we want to consider all possible nums, and starting path is empty array
+
+TC: O(n * 2^n) if every element is unique, we generate 2^n subsets, each subset has to be copied into res array which is O(n) operation, so total is O(n * 2^n)
+SC: O(n) space needed to build the curr array
+ */
