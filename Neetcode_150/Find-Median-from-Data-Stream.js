@@ -65,3 +65,33 @@ If 'low' is larger than 'high', then we have an odd number of nums, so we return
 TC: O(1) returning top of each heap is constant time operation
 SC: O(1) no elements are stored
  */
+
+// Simple Sort
+var MedianFinder = function () {
+  this.store = [];
+};
+
+/**
+ * @param {number} num
+ * @return {void}
+ */
+MedianFinder.prototype.addNum = function (num) {
+  this.store.push(num);
+};
+
+// Time: O(1) push onto end of array is constant time operation
+// Space: O(n) space is the size of the array
+
+/**
+ * @return {number}
+ */
+MedianFinder.prototype.findMedian = function () {
+  this.store.sort((a, b) => a - b);
+  let mid = Math.floor((this.store.length - 1) / 2);
+  return this.store.length % 2 === 1
+    ? this.store[mid]
+    : (this.store[mid] + this.store[mid + 1]) / 2;
+};
+
+// Time: O(nlogn) built-in sort operation is nlogn time
+// Space: O(1) no additional memory needed because not adding elements
