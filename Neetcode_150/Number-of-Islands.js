@@ -42,4 +42,35 @@ var numIslands = function (grid) {
 };
 
 // Time: O(r * c) where r and c are number of rows and cols
-// Space: O(r * c)
+// Space: O(r * c) in worst case scenario, entire grid is land, so the recursive stack will be r * c
+
+/**
+We will iterate through every cell in the grid and check for land
+When we reach land, we will increment our island counter and then call a dfs function on that cell
+This function will traverse the entire island, and convert it into water, so that it cannot be re-counted
+This function will stop when it runs out of land to traverse, so it will only convert one island at a time
+Then we continue searching from the next cell from before the dfs was called
+Once we have made it through all the cells, we will have our island count
+
+DFS helper function:
+Parameters:
+The parameters for this function will be the coordinates (row and col) of the cell it is being called on.
+
+Base cases:
+If our coordinates are out of bounds (outside bounds of grid) return
+If the cell is filled with water, return. We only want to traverse land
+
+Recursive case:
+First we will convert the current cell to water, so that we do not need to spend time traversing it again
+Then we call the DFS function recursively on the four adjacent cells
+
+Main function: 
+We need to initialize a counter at 0 to count the number of islands
+
+We iterate through every cell in the grid, and search for land
+Once we reach land, we increment island counter and call dfs on the cell to convert the rest of the island to water so it isn't double counted
+Once we get to end of grid, we have counted all islands
+
+TC: O(r * c) because we have to search every cell in the grid
+SC: O(r * c) in worst case scenario, entire grid is land, so the recursive stack will be r * c
+ */
