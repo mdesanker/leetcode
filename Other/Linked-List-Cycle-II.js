@@ -10,7 +10,7 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
-
+// Flloyd's Algorithm
 const detectCycle = function (head) {
   let slow = head,
     fast = head;
@@ -33,7 +33,21 @@ const detectCycle = function (head) {
   return null;
 };
 
-/*
-Time: O(N)
-Space: O(1)
-*/
+// Time: O(n) iterate through every node
+// Space: O(1)
+
+// Hash map implementation
+var detectCycle2 = function (head) {
+  const visited = new Set();
+
+  let current = head;
+  while (current) {
+    if (visited.has(current)) return current;
+    visited.add(current);
+    current = current.next;
+  }
+  return null;
+};
+
+// Time: O(n)
+// Space: O(n) set will hold every node until we find a duplicate in worst case
