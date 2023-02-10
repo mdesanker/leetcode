@@ -54,6 +54,26 @@ var validTree = function (n, edges) {
 // Time: O(v + e)
 // Space: O(v) to store the por and rank arrays
 
+/**
+We have an array of edges and we need to connect nodes so this is a good candidate for union find
+
+Standard union find by rank procedure that is explained in more detail for question "Redundant Connection"
+
+A couple key differences
+In a tree, the number of edges is always 1 less than the number of nodes
+
+n - 1 === edges.length
+
+If this case does not hold for the graph, then we can immediately return false
+
+Then we connect all the nodes following the edges array. If we create a cycle because we try to build a connection between two nodes that are already connected, then we return false. A tree cannot have cycles.
+
+If we build out all the edges without creating any cycles, then we can return true, the graph is a valid tree
+
+TC: O(e) we traverse every edge as we are building the graph
+SC: O(v) parent and rank arrays contain every node in the graph
+ */
+
 // DFS Implementation
 
 var validTree = function (n, edges) {
