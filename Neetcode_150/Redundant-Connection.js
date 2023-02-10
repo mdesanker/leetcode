@@ -4,7 +4,6 @@
  */
 
 // Union find by rank
-
 var findRedundantConnection = function (edges) {
   // intially every node's parent is itself
   const par = [];
@@ -133,3 +132,37 @@ Since we cannot union these two nodes without creating a loop, we return them in
 TC: O(n) this algorithm runs in linear time
 SC: O(n) the parent and rank arrays contain a value for every node
  */
+
+// DFS Approach
+var findRedundantConnection = function (edges) {
+  const n = edges.length;
+
+  // initializer empty adjacency list
+  const adj = {};
+  // iterate to n + 1 because 1-indexed nodes
+  for (i = 0; i < n + 1; i++) adj[i] = [];
+
+  function dfs(node, target, prev) {
+    // if node is the target, we have a loop
+    if (node === target) return true;
+
+    for (let nei of adj[node]) {
+      // for every neighbor that isn't the prev node, check if we eventually reach the target
+      if (nei !== prev && dfs(nei, target, node)) return true;
+    }
+    // return false if no cycles are found
+    return false;
+  }
+
+  // build graph one edge at a time
+  for (let [n1, n2] of edges) {
+    adj[n1].push(n2);
+    adj[n2].push(n1);
+
+    // check if adding the edge creates a cycle in the graph
+    if (dfs(n2, n1, n1)) return [n1, n2];
+  }
+};
+
+// Time: O(v^2) where v is number of vertices (and edges) in the graph (v === e if we have a cycle). Worst case scenario, For ever edge we add, we have to search every previous edge
+// Space: O(v + 2e) adjacency list will hold every vertex in the graph and two values for every edge because undirected graph
