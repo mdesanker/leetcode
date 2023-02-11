@@ -103,3 +103,38 @@ Finally we return true from the dfs function
 TC: O(v + e) we call dfs on every node, and on every neighbor (edge)
 SC: O(v + e) for the adjacency list which holds every node and edge
  */
+
+// variation using two sets to track for cycles and for cleared crs
+var canFinish = function (n, prerequisites) {
+  const adj = {};
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let [crs, pre] of prerequisites) adj[crs].push(pre);
+
+  // tracks crs that have been verified as not having loops. Add them here so they do not need to be rechecked
+  const visited = new Set();
+  // track nodes in the current path so we can check for loops
+  const path = new Set();
+
+  function dfs(crs) {
+    if (path.has(crs)) return false;
+    if (visited.has(crs)) return true;
+
+    // add noode to current path
+    path.add(crs);
+
+    for (let nei of adj[crs]) {
+      if (!dfs(nei)) return false;
+    }
+
+    // backtrack, remove node from current path
+    path.delete(crs);
+    // node has been cleared
+    visited.add(crs);
+    return true;
+  }
+
+  for (let i = 0; i < n; i++) {
+    if (!dfs(i)) return false;
+  }
+  return true;
+};
