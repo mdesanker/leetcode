@@ -10,22 +10,22 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
-// Flloyd's Algorithm
+// Floyd's Algorithm
 const detectCycle = function (head) {
   let slow = head,
     fast = head;
-  while (fast && fast.next && fast.next.next) {
+  while (fast && fast.next) {
     slow = slow.next;
     fast = fast.next.next;
 
     // find if there is a loop
     if (slow === fast) {
-      slow = head;
+      let slow2 = head;
 
       // use floyd's alg to find start of loop
-      while (slow !== fast) {
+      while (slow !== slow2) {
         slow = slow.next;
-        fast = fast.next;
+        slow2 = fast.next;
       }
       return slow;
     }
