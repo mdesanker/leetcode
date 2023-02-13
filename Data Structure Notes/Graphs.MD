@@ -140,7 +140,7 @@ function buildAdjList() {
     adj[src].push(nei);
   }
 
-  // track visited nodes
+  // track visited nodes on current path
   const visited = new Set();
 
   function dfs(node) {
@@ -161,6 +161,13 @@ function buildAdjList() {
 }
 ```
 
+Space complexity: O(v + e)
+
+There is a key for every vertex
+In every array, there is an entry for the neighboring vertices (edges)
+Space needed is equal to number of vertices + number of edges
+Worst case scenario, every vertex is connected to every other vertex, in which case space complexity will be O(v^2)
+
 ```js
 // Count paths (backtracking)
 function dfs(node, target, adjList, visit) {
@@ -180,6 +187,11 @@ function dfs(node, target, adjList, visit) {
   return count;
 }
 ```
+
+Time: O(v + 2e) bidirectional - call recursion (dfs) on every node once, then it gets called on every neighbor of the node
+O(v + e) for directed graph
+Space: O(v + 2e) for the adjacency list of undirected graph (duplicate edge for both directions)
+O(v + e) for adjacency list of directed graph
 
 ```js
 // Shortest path from node to target.
@@ -210,3 +222,12 @@ function bfs(node, target, adjList) {
   return length;
 }
 ```
+
+Time: O(v + 2e) for an undirected graph. Every node (v) is iterated on with the while loop. Then for every v, we loop over all neighbors (degrees/edges).
+Because we have edges duplicated for a bi-directional graph, that is a total of 2e edges
+O(v + e) for directed graph
+
+Space: O(v + 2e) every vertex will be a key in the adj list, and then an edge to every neighbor will be included. Edges are duplicated for bidirectional
+O(v + e) for directed graph
+O(v) for visited set
+O(v) for queue
