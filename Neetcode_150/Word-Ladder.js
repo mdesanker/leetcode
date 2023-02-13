@@ -36,6 +36,11 @@ var ladderLength = function (beginWord, endWord, wordList) {
     let length = q.length;
     for (let i = 0; i < length; i++) {
       const word = q.shift();
+      // if word already visited, skip
+      if (visited.has(word)) continue;
+
+      // mark word as visited
+      visited.add(word);
 
       // if at target, return number of steps
       if (word === endWord) return res;
@@ -48,7 +53,6 @@ var ladderLength = function (beginWord, endWord, wordList) {
           // skip all visited words
           if (!visited.has(nei)) {
             q.push(nei);
-            visited.add(nei);
           }
         }
       }
