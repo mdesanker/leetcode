@@ -2,11 +2,102 @@
  * @param {number[][]} points
  * @return {number}
  */
+var minCostConnectPoints = function (points) {
+  let n = points.length;
 
-// problem says minimum cost to connect all points --> minimum spanning tree (MST)
+  const adj = {};
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let i = 0; i < n; i++) {
+    let [x1, y1] = points[i];
+    for (let j = i + 1; j < n; j++) {
+      let [x2, y2] = points[j];
+      const cost = Math.abs(x2 - x1) + Math.abs(y2 - y1);
+      adj[i].push([cost, j]);
+      adj[j].push([cost, i]);
+    }
+  }
 
-// 1. Build edges (adjacency list) from manhattan distance of each pair of points
-// 2. Use Prim's Algorithm to connect edges
+  let res = 0;
+  const visited = new Set();
+  const minHeap = new MinPriorityQueue();
+  minHeap.enqueue([0, 0], 0);
+
+  while (visited.size < n) {
+    const [cost, node] = minHeap.dequeue().element;
+    if (visited.has(node)) continue;
+
+    visited.add(node);
+    res += cost;
+
+    for (let [cost, nei] of adj[node]) {
+      if (!visited.has(nei)) {
+        minHeap.enqueue([cost, nei], cost);
+      }
+    }
+  }
+  return res;
+};
+
+// Time: O(n^2 * logn) where n^2 is number of edges and log n is for every heap operation (every node is added to queue)
+// Space: O(n^2 + n) -> O(n^2) worst case push n^2 edges into heap, and mark n nodes as visited
+
+/**
+Question asks for the minimum cost to make all points connected - classic Minimum Spanning Tree (MST) question. For this, the two most common algs are Prim's and Kruskal's. Prim's is simpler and usually more efficient than Kruskal's
+
+First we will need to build the edges (adj list) and then we can use Prim's to calculate the min cost
+
+TC: O(n^2 * logn) n^2 for the number of edges and logn for the heap operations
+
+This alg uses a minHeap to determine the next point to connect based on distance/cost
+
+Solution:
+Adj list:
+First we need to build the adjacency list. Every point can potentially connect to every other point. We will also calculate the distance between all possible pairs. 
+
+We will use nested for-loops to do this so we consider every possible pair of nodes
+We will map every node in the adj list to an array, and the arrays will hold pairs of values for every point
+Every point will be associated with a weight, or cost, it requires to move from the key, starting node, to the destination node.
+
+adj = {node1: [[cost, node2], [cost, node3]]};
+
+Then we will use BFS starting from any node (it does not matter which, but will be easy to start from the origin) to determine which next node has the lowest cost
+
+We will need a visited set and a minimum heap
+Visited set will keep track of which nodes we have already connected
+Min heap will tell us which neighbor has the lowest cost to connect to
+We will also need to initialize a result counter variable to add costs to as we make connections
+
+We will push the origin node on to the heap so we have a starting point (but we could start with any point, as mentioned before)
+
+We will be done when we have connected all points in the graph, and the visited set counts the number of nodes that have been connected
+There, we loop while visited.size < points.length
+
+In each loop iteration, we will dequeue the cheapest node from the queue
+We can destructure the new node to separate the cost and node into variables
+
+const [cost, node] = minHeap.dequeue().element;
+
+If this node is already connected (in the visited set), continue. We do not want to double count it
+
+If this node is new, we will add its cost to the res counter
+We also add this node to the visited set because it has been ""connected"
+
+Then we will push it's neighbors (which is really all nodes, but will include their costs from this particular node) onto the heap, if the node is not already connected
+
+for (let [cost, nei] of adj[node]) {
+    if (!visited.has(nei)) {
+        minHeap.enqueue([cost, nei], cost);
+    }
+}
+
+Once all nodes have been connected, we return the res counter which accumulated the cost of connecting every node
+
+TC: O(n^2 * logn)
+    Worst case scenario, we push/pop all edges from the heap. We have n^2 edges, and every heap operation is logn
+SC: O(n^2)
+    Worst case we push n * (n - 1) edges into heap (~ n^2)
+    n^2 edges are stored in the adj list, because every edge is stored twice (bidirectional)
+ */
 
 var minCostConnectPoints = function (points) {
   const N = points.length;
@@ -60,6 +151,3 @@ var minCostConnectPoints = function (points) {
   }
   return res;
 };
-
-// Time: O(n^2 * logn) where n^2 is number of edges and log n is for every heap operation (every node is added to queue)
-// Space: O(n^2 + n) -> O(n^2) worst case push n^2 edges into heap, and mark n nodes as visited
