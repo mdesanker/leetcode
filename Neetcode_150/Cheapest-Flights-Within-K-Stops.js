@@ -6,6 +6,78 @@
  * @param {number} k
  * @return {number}
  */
+// Bellman-Ford Algorithm
+var findCheapestPrice = function (n, flights, src, dst, k) {
+  // Bellman - Ford
+  // create array for every node and set cost to get to each node to inifinity for each except source node
+  let prices = new Array(n).fill(Infinity);
+  prices[src] = 0;
+
+  // loop will run k + 1 times where k is number of stops
+  for (let i = 0; i < k + 1; i++) {
+    // copy price array so can compare against original prices
+    const tmpPrices = prices.slice();
+
+    // s = source, d = destination, p = price
+    for (let [s, d, p] of flights) {
+      // price of s = Infinity for nodes we cannot reach yet
+      if (prices[s] === Infinity) continue;
+      // if cost to get to src + cost to get to next node (p) is less than current cost to get tp d, update
+      if (prices[s] + p < tmpPrices[d]) {
+        tmpPrices[d] = prices[s] + p;
+      }
+    }
+    // set prices to new prices
+    prices = tmpPrices;
+  }
+  // if can't make it to dst in k stops return -1 otherwise return price
+  return prices[dst] === Infinity ? -1 : prices[dst];
+};
+
+// Time: O((e + v) * k) iterate of every edge k times (e * k) and we copy price to tmpPrices k times (v * k)
+// Space: O(v) for prices and tmpPrices arrays
+
+/**
+Djikstra's alg a little more complicated to implement with limited steps, and not as efficient because have to iterate more often than k times to find suitable answer
+
+TC: of Bellman-Ford alg is O(e * v), O(e * k) in this case because number of steps is limited
+
+Bellman-Ford is similar to a BFS approach. Bellman-Ford can handle negative weights (Djikstra's cannot)
+
+Start at src node, and then do a BFS and track min price to get to every node that we have visited or can visit while moving to dst.
+Allowed k stops/layovers, so we will do k + 1 layers of BFS
+
+We initially set cost of every node to Infinity, because they have not been reached yet
+
+prices = new Array(n).fill(Infinity);
+
+If we start at src node, then the cost to get to src node is 0, so set price[src] = 0;
+
+We do NOT only traverse neighbors, we check EVERY edge in the graph
+
+Checking edge:
+[src, dst, cost]
+We check if we have found a new minimum cost to reach the dst node
+The cost to reach dst node is price[src] + price of current edge
+This is compared against the most up-to-date price of the dst node, which is in tmpPrices, not prices
+This is incase we have another edge that was traversed previously that points to the same node
+
+When we update this value, we will update it in a clone of the prices array, tmpPrices
+This is because we do not want to modify price values before this level of BFS is done
+
+If the cost to get to src node is Infinity, then we cannot update the price of dst
+price[src] + price[dst] = Infinity + 100
+This will not be less than Infinity in prices[dst]
+This is not technically a BFS because we check all edges, not just neighbors, but because of this logic, we will only be able to update prices for nodes that are neighbors
+
+After we check all edges, in this iteration, we overwrite prices with tmpPrices
+
+We run this loop k + 1 times
+
+TC: O(e * k + v * k) or O((e + v) * k) we loop k times, and every loop, we iterate over every edge (e * k). Every loop we also duplicate the prices array, which contains every node (v * k)
+SC: O(v) we use a prices and tmpPrices array which contain every node (vertex)
+ */
+
 // Djikstra's Algorithm
 var findCheapestPrice = function (n, flights, src, dst, k) {
   const adj = {};
@@ -86,37 +158,5 @@ SC: O(v + e) for the adjacency list
   O(v) for the heap
  */
 
-// Bellman-Ford Algorithm
-var findCheapestPrice = function (n, flights, src, dst, k) {
-  // Bellman - Ford
-  // create array for every node and set cost to get to each node to inifinity for each except source node
-  let prices = new Array(n).fill(Infinity);
-  prices[src] = 0;
-
-  // loop will run k + 1 times where k is number of stops
-  for (let i = 0; i < k + 1; i++) {
-    // copy price array so can compare against original prices
-    const tmpPrices = prices.slice();
-
-    // s = source, d = destination, p = price
-    for (let [s, d, p] of flights) {
-      // price of s = Infinity for nodes we cannot reach yet
-      if (prices[s] === Infinity) continue;
-      // if cost to get to src + cost to get to next node (p) is less than current cost to get tp d, update
-      if (prices[s] + p < tmpPrices[d]) {
-        tmpPrices[d] = prices[s] + p;
-      }
-    }
-    // set prices to new prices
-    prices = tmpPrices;
-  }
-  // if can't make it to dst in k stops return -1 otherwise return price
-  return prices[dst] === Infinity ? -1 : prices[dst];
-};
-
 // Time: O(e * k) where e is number of edges and k is number of stops
 // Space: O(n) for price and tempPrice arrays
-
-/**
-Lots of ways to solve this problem
- */
