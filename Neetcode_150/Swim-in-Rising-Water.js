@@ -5,49 +5,33 @@
 var swimInWater = function (grid) {
   const n = grid.length;
 
-  // build visited grid
   const visited = [];
   for (let i = 0; i < n; i++) {
     visited.push(new Array(n).fill(false));
   }
 
-  // initialize min heap and push top left cell into it
-  // initial height is the value at starting cell
   const minHeap = new MinPriorityQueue();
-  minHeap.enqueue([grid[0][0], 0, 0], 0); // [height, r, c], height
+  minHeap.enqueue([grid[0][0], 0, 0], 0);
 
-  const directions = [
-    [1, 0],
-    [-1, 0],
-    [0, 1],
-    [0, -1],
-  ];
+  function addCell(r, c, h) {
+    if (r < 0 || r >= n || c < 0 || c >= n) return;
+    if (visited[r][c]) return;
+
+    const newH = Math.max(h, grid[r][c]);
+    minHeap.enqueue([newH, r, c], newH);
+  }
 
   while (minHeap.size()) {
-    // dequeue next element from heap and destructure height and coordinates
-    const [height, r, c] = minHeap.dequeue().element;
-    // skip if already visited
+    const [h, r, c] = minHeap.dequeue().element;
     if (visited[r][c]) continue;
 
-    // add to visited
     visited[r][c] = true;
-    // if we are at the bottom right cell, return the height
-    if (r === n - 1 && c === n - 1) return height;
+    if (r === n - 1 && c === n - 1) return h;
 
-    // add neighbors to heap
-    for (let [dr, dc] of directions) {
-      const row = r + dr;
-      const col = c + dc;
-
-      // skip if out of bounds
-      if (row < 0 || row >= n || col < 0 || col >= n) continue;
-      // skip if already visited
-      if (visited[row][col]) continue;
-
-      // we want to track the maximum height along the path, so compare current height against prev max height
-      const weight = Math.max(height, grid[row][col]);
-      minHeap.enqueue([weight, row, col], weight);
-    }
+    addCell(r + 1, c, h);
+    addCell(r - 1, c, h);
+    addCell(r, c + 1, h);
+    addCell(r, c - 1, h);
   }
 };
 
@@ -102,3 +86,52 @@ Now we can push the neighbor cell onto the heap using the template ([maxHeight, 
 TC: O(v^2 * log(v^2)) every node is traversed once (pushed and popped from heap), and every heap operation if log(size of heap) which is log(v^2)
 SC: O(v^2) for the visited array which has same dimensions as grid
  */
+
+var swimInWater = function (grid) {
+  const n = grid.length;
+
+  // build visited grid
+  const visited = [];
+  for (let i = 0; i < n; i++) {
+    visited.push(new Array(n).fill(false));
+  }
+
+  // initialize min heap and push top left cell into it
+  // initial height is the value at starting cell
+  const minHeap = new MinPriorityQueue();
+  minHeap.enqueue([grid[0][0], 0, 0], 0); // [height, r, c], height
+
+  const directions = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ];
+
+  while (minHeap.size()) {
+    // dequeue next element from heap and destructure height and coordinates
+    const [height, r, c] = minHeap.dequeue().element;
+    // skip if already visited
+    if (visited[r][c]) continue;
+
+    // add to visited
+    visited[r][c] = true;
+    // if we are at the bottom right cell, return the height
+    if (r === n - 1 && c === n - 1) return height;
+
+    // add neighbors to heap
+    for (let [dr, dc] of directions) {
+      const row = r + dr;
+      const col = c + dc;
+
+      // skip if out of bounds
+      if (row < 0 || row >= n || col < 0 || col >= n) continue;
+      // skip if already visited
+      if (visited[row][col]) continue;
+
+      // we want to track the maximum height along the path, so compare current height against prev max height
+      const weight = Math.max(height, grid[row][col]);
+      minHeap.enqueue([weight, row, col], weight);
+    }
+  }
+};
