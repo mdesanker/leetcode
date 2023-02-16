@@ -5,6 +5,7 @@
  * @return {number[]}
  */
 var numIslands2 = function (m, n, positions) {
+  // initialize par and rank arrays, and find and union functions for union find by rank
   const par = new Array(m * n).fill(-1);
   const rank = new Array(m * n).fill(1);
 
@@ -32,6 +33,7 @@ var numIslands2 = function (m, n, positions) {
   }
 
   const res = [];
+  // track the count of islands after every coordinate
   let count = 0;
 
   const dir = [
@@ -41,102 +43,115 @@ var numIslands2 = function (m, n, positions) {
     [0, -1],
   ];
 
+  // iterate through every pair of coords in positions
   for (let [r, c] of positions) {
-    // convert 2D into linear coordinate
+    // map 2D coordinates into linear index for par array
     const i = r * n + c;
 
+    // if point already has a valid parent, then it is land
+    // we will not modify it and count will not change
     if (par[i] !== -1) {
       res.push(count);
       continue;
     }
 
+    // if we make it here, point is water, so we can turn it into land by setting it's parent to itself
+    // this is effectively adding new node to graph so we increment land count
     par[i] = i;
     count++;
 
+    // iterate over all neighbors of position
     for (let [dr, dc] of dir) {
       let row = r + dr,
         col = c + dc;
       const i2 = row * n + col;
 
+      // if out of bounds continue
       if (row < 0 || row >= m || col < 0 || col >= n) continue;
+      // if neighbor is water continue
       if (par[i2] === -1) continue;
 
+      // if we can union the two neighbors, then we decrease island count because we have connected two nodes
       if (union(i, i2)) count--;
     }
+    // push count for this position onto res array
     res.push(count);
   }
   return res;
 };
 
-// Time: O(row * col + l) where l is size of positions array
-// Space: O(row * col) par and rank arrays require m * n space
+// Time: O(m * n + l) where m and n are dimensions of grid, and l is size of positions array
+//  Initializing union find takes O(m * n) time because we are initializing parent and rank arrays, which are size m * n
+//  For each position we add land O(1) and check neights O(1) = O(1). For l positions it takes O(l) time
+//  Obtaining count fo each position and pushing to answer takes O(1) per position, and O(l) for l positions
+// Space: O(m * n) par and rank arrays require m * n space
 
-// Implement DSU class with find and union functions
-class DSU {
-  constructor(n) {
-    this.par = new Array(n).fill(-1);
-    this.rank = new Array(n).fill(1);
-  }
+// // Implement DSU class with find and union functions
+// class DSU {
+//   constructor(n) {
+//     this.par = new Array(n).fill(-1);
+//     this.rank = new Array(n).fill(1);
+//   }
 
-  find(n) {
-    let p = this.par[n];
-    while (p !== this.par[p]) {
-      p = this.par[p];
-    }
-    return p;
-  }
+//   find(n) {
+//     let p = this.par[n];
+//     while (p !== this.par[p]) {
+//       p = this.par[p];
+//     }
+//     return p;
+//   }
 
-  union(n1, n2) {
-    let p1 = this.find(n1),
-      p2 = this.find(n2);
-    if (p1 === p2) return false;
+//   union(n1, n2) {
+//     let p1 = this.find(n1),
+//       p2 = this.find(n2);
+//     if (p1 === p2) return false;
 
-    if (this.rank[p1] < this.rank[p2]) {
-      this.par[p1] = p2;
-      this.rank[p2] += this.rank[p1];
-    } else {
-      this.par[p2] = p1;
-      this.rank[p1] += this.rank[p2];
-    }
-    return true;
-  }
-}
+//     if (this.rank[p1] < this.rank[p2]) {
+//       this.par[p1] = p2;
+//       this.rank[p2] += this.rank[p1];
+//     } else {
+//       this.par[p2] = p1;
+//       this.rank[p1] += this.rank[p2];
+//     }
+//     return true;
+//   }
+// }
 
-var numIslands2 = function (m, n, positions) {
-  const res = [];
-  const dsu = new DSU(m * n);
-  let count = 0;
+// var numIslands2 = function (m, n, positions) {
+//   const res = [];
+//   const dsu = new DSU(m * n);
+//   let count = 0;
 
-  const dir = [
-    [1, 0],
-    [-1, 0],
-    [0, 1],
-    [0, -1],
-  ];
+//   const dir = [
+//     [1, 0],
+//     [-1, 0],
+//     [0, 1],
+//     [0, -1],
+//   ];
 
-  for (let [r, c] of positions) {
-    // convert 2D into linear coordinate
-    const i = r * n + c;
+//   for (let [r, c] of positions) {
+//     // convert 2D into linear coordinate
+//     const i = r * n + c;
 
-    if (dsu.par[i] !== -1) {
-      res.push(count);
-      continue;
-    }
+//     if (dsu.par[i] !== -1) {
+//       res.push(count);
+//       continue;
+//     }
 
-    dsu.par[i] = i;
-    count++;
+//     dsu.par[i] = i;
+//     count++;
 
-    for (let [dr, dc] of dir) {
-      let row = r + dr,
-        col = c + dc;
-      const i2 = row * n + col;
+//     for (let [dr, dc] of dir) {
+//       let row = r + dr,
+//         col = c + dc;
+//       const i2 = row * n + col;
 
-      if (row < 0 || row >= m || col < 0 || col >= n) continue;
-      if (dsu.par[i2] === -1) continue;
+//       if (row < 0 || row >= m || col < 0 || col >= n) continue;
+//       if (dsu.par[i2] === -1) continue;
 
-      if (dsu.union(i, i2)) count--;
-    }
-    res.push(count);
-  }
-  return res;
-};
+//       if (dsu.union(i, i2)) count--;
+//     }
+//     res.push(count);
+//   }
+//   return res;
+// };
