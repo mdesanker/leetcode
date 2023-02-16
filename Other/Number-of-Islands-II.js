@@ -5,7 +5,6 @@
  * @return {number[]}
  */
 var numIslands2 = function (m, n, positions) {
-  // initialize par and rank arrays, and find and union functions for union find by rank
   const par = new Array(m * n).fill(-1);
   const rank = new Array(m * n).fill(1);
 
@@ -56,7 +55,7 @@ var numIslands2 = function (m, n, positions) {
     }
 
     // if we make it here, point is water, so we can turn it into land by setting it's parent to itself
-    // this is effectively adding new node to graph so we increment land count
+    // add new coordinate to graph and increment land count
     par[i] = i;
     count++;
 
@@ -71,7 +70,7 @@ var numIslands2 = function (m, n, positions) {
       // if neighbor is water continue
       if (par[i2] === -1) continue;
 
-      // if we can union the two neighbors, then we decrease island count because we have connected two nodes
+      // we union the two neighbors and decrease count because we have connected two nodes
       if (union(i, i2)) count--;
     }
     // push count for this position onto res array
@@ -80,11 +79,8 @@ var numIslands2 = function (m, n, positions) {
   return res;
 };
 
-// Time: O(m * n + l) where m and n are dimensions of grid, and l is size of positions array
-//  Initializing union find takes O(m * n) time because we are initializing parent and rank arrays, which are size m * n
-//  For each position we add land O(1) and check neights O(1) = O(1). For l positions it takes O(l) time
-//  Obtaining count fo each position and pushing to answer takes O(1) per position, and O(l) for l positions
-// Space: O(m * n) par and rank arrays require m * n space
+// Time: O(row * col + l) where l is size of positions array
+// Space: O(row * col) par and rank arrays require m * n space
 
 // // Implement DSU class with find and union functions
 // class DSU {
