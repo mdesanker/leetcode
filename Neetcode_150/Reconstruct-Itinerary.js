@@ -3,17 +3,16 @@
  * @return {string[]}
  */
 var findItinerary = function (tickets) {
-  const adj = {};
-
   // want airports sorted in lexicographical order, so that our answer is in lexicographical order if there are multiple solutions
   // sort tickets by dst if src is equal, otherwise by src
-  // same as: tickets.sort();
-  tickets.sort((a, b) => {
-    if (a[0] === b[0]) return a[1] < b[1] ? -1 : 1;
-    return a[0] < b[0] ? -1 : 1;
-  });
+  // tickets.sort((a, b) => {
+  //   if (a[0] === b[0]) return a[1] < b[1] ? -1 : 1;
+  //   return a[0] < b[0] ? -1 : 1;
+  // });
+  tickets.sort();
 
   // build adj list using tickets
+  const adj = {};
   for (let [src, dst] of tickets) {
     if (!adj[src]) adj[src] = [];
     adj[src].push(dst);
@@ -31,9 +30,9 @@ var findItinerary = function (tickets) {
     if (!adj[src]) return false;
 
     // iterate through all neighbors and see if we can find a successful path
-    // because we temporarily remove nei from the adj list, save a copy of the neighbors that will not change so that we can iterate over it
-    let temp = [...adj[src]];
-    for (let i = 0; i < temp.length; i++) {
+    // because we temporarily remove nei from the adj list, save length so that it will not change so that we can iterate over it
+    let length = adj[src].length;
+    for (let i = 0; i < length; i++) {
       const nei = adj[src][i];
       // remove nei from adj[src] so it is not traversed again (similar effect to a visited array)
       adj[src].splice(i, 1);
