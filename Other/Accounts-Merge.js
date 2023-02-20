@@ -80,6 +80,9 @@ var accountsMerge = function (accounts) {
 //    n is number of accounts, k is maximum length of an account
 //    We find have to iterate over every email when we map emails to their parent accounts: O(nk)
 //    We sort the emails for every account, and the worst case will be when all emails end up belonging to the same account O(nk * lognk)
+// Space: O(nk)
+//    parent and rank array are O(n) size
+//    map is O(nk) size because every single email is mapped to its parent
 
 /**
 While merging we consider the size of each connected component and we always choose the representative of the larger component 
