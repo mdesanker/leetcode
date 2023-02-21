@@ -103,3 +103,27 @@ SC: O(e)
   Building adj list takes e space
   Heap takes e space
  */
+
+// Bellman-Ford
+var networkDelayTime = function (times, n, k) {
+  let cost = new Array(n + 1).fill(Infinity);
+  cost[k] = 0;
+
+  for (let i = 0; i < n; i++) {
+    let tmpCost = cost.slice();
+    for (let [u, v, w] of times) {
+      if (cost[u] === Infinity) continue;
+      if (cost[u] + w < tmpCost[v]) {
+        tmpCost[v] = cost[u] + w;
+      }
+    }
+    cost = tmpCost;
+  }
+
+  cost.shift();
+  let res = Math.max(...cost);
+  return res === Infinity ? -1 : res;
+};
+
+// Time: O((v + e) * n) iterate through all edges and vertices n times due to nested loops
+// Space: O(v) for cost and tmpCost arrays
