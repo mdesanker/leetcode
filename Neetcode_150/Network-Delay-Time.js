@@ -120,6 +120,7 @@ var networkDelayTime = function (times, n, k) {
     cost = tmpCost;
   }
 
+  // remove first value from cost array because it is not used and will always be Infinity
   cost.shift();
   let res = Math.max(...cost);
   return res === Infinity ? -1 : res;
