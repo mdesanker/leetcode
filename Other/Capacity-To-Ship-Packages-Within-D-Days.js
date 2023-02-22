@@ -16,16 +16,16 @@ var shipWithinDays = function (weights, days) {
   // helper function calculates how long it will take to transport if ship has capacity and
   // returns whether this is feasible given the day constraint in the parameters of main function
   function isFeasible(capacity) {
-    let time = 1,
-      sum = 0;
+    let daysNeeded = 1,
+      currentLoad = 0;
     for (let weight of weights) {
-      sum += weight;
-      if (sum > capacity) {
-        time++;
-        sum = weight;
+      currentLoad += weight;
+      if (currentLoad > capacity) {
+        daysNeeded++;
+        currentLoad = weight;
       }
     }
-    return time <= days;
+    return daysNeeded <= days;
   }
 
   while (l <= r) {
