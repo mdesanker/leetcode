@@ -231,3 +231,37 @@ Space: O(v + 2e) every vertex will be a key in the adj list, and then an edge to
 O(v + e) for directed graph
 O(v) for visited set
 O(v) for queue
+
+# Cycle Detection
+
+DFS
+
+```js
+function detectCycle() {
+  function dfs(node, par) {
+    if (visited.has(node)) return true;
+
+    visited.add(node);
+
+    for (let nei of adj[node]) {
+      if (nei !== par) {
+        if (dfs(nei, node)) return true;
+      }
+    }
+
+    return false;
+  }
+
+  for (let i = 0; i < n; i++) {
+    if (dfs(i, -1)) return true;
+  }
+
+  return false;
+}
+```
+
+# Bipartite Graphs
+
+```js
+
+```
