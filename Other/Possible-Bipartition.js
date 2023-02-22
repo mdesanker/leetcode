@@ -58,30 +58,27 @@ var possibleBipartition = function (n, dislikes) {
   // set color of every node to -1 (uncolored)
   const color = new Array(n + 1).fill(-1);
 
-  // this bfs function will color an entire component
-  function bfsCheck(start) {
-    color[start] = 0;
-    const q = [start];
+  // check will color all nodes in a component
+  function check(node) {
+    const q = [node];
 
     while (q.length) {
       let len = q.length;
       for (let i = 0; i < len; i++) {
-        const p1 = q.shift();
+        const node = q.shift();
 
-        for (let nei of adj[p1]) {
-          // if nei is not colored, color it and add to queue
-          if (color[nei] === -1) {
-            // this will set nei to opposite color (1 or 0)
-            color[nei] = 1 - color[p1];
+        for (let nei of adj[node]) {
+          // if nei already colored and matches current node return false
+          if (color[nei] === color[node]) return false;
+          // if nei not colored, set to opposite of current node and push onto queue
+          else if (color[nei] === -1) {
+            color[nei] = 1 - color[node];
             q.push(nei);
-            // if nei is already colored, make sure it doesn't conflict with parent
-          } else if (color[nei] === color[p1]) {
-            return false;
           }
         }
       }
     }
-    // checked all nodes in this component and no conflicts
+    // checked all nodes in component and no conflicts, return true
     return true;
   }
 
@@ -90,7 +87,8 @@ var possibleBipartition = function (n, dislikes) {
   for (let i = 1; i < n + 1; i++) {
     // only need to run check when we find a new component (an uncolored node)
     if (color[i] === -1) {
-      if (!bfsCheck(i)) return false;
+      color[i] = 0;
+      if (!check(i)) return false;
     }
   }
   return true;
