@@ -48,5 +48,5 @@ var earliestAcq = function (logs, n) {
   return -1;
 };
 
-// Time: o(aN) ~ O(1)
+// Time: o(n * aN) ~ O(n)
 // Space: O(n)
