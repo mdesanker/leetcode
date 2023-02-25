@@ -1,5 +1,3 @@
-// https://leetcode.com/problems/find-if-path-exists-in-graph/solutions/2463606/simple-javascript-solution-faster-than-92-26-bfs/?orderBy=most_votes&languageTags=javascript
-
 /**
  * @param {number} n
  * @param {number[][]} edges
@@ -7,33 +5,66 @@
  * @param {number} destination
  * @return {boolean}
  */
+// BFS
 var validPath = function (n, edges, source, destination) {
-  let length = edges.length;
-  if (length == 0) return true;
+  const adj = {};
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let [a, b] of edges) {
+    adj[a].push(b);
+    adj[b].push(a);
+  }
 
-  let visited = [];
-  let queue = [source];
-  while (queue.length > 0) {
-    let element = queue.shift();
-    visited[element] = true;
-    let i = 0;
-    while (i < edges.length) {
-      let index = edges[i].indexOf(element);
-      if (index != -1) {
-        let secondElement = edges[i][1 - index];
-        if (secondElement == destination) {
-          return true;
-        } else {
-          if (!visited[secondElement]) {
-            queue.push(secondElement);
-          }
+  const q = [source];
+  const visited = new Set();
+
+  while (q.length) {
+    let len = q.length;
+    for (let i = 0; i < len; i++) {
+      const n1 = q.shift();
+
+      if (visited.has(n1)) continue;
+      if (n1 === destination) return true;
+
+      visited.add(n1);
+      for (let nei of adj[n1]) {
+        if (!visited.has(nei)) {
+          q.push(nei);
         }
       }
-      i++;
     }
+    console.log(q);
   }
   return false;
 };
 
-// Time: O()
-// Space: O()
+// Time: O(v + e)
+// Space: O(v + e)
+
+// DFS
+var validPath = function (n, edges, source, destination) {
+  const adj = {};
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let [n1, n2] of edges) {
+    adj[n1].push(n2);
+    adj[n2].push(n1);
+  }
+
+  const visited = new Set();
+
+  function dfs(node) {
+    if (visited.has(node)) return false;
+    visited.add(node);
+    if (node === destination) return true;
+    for (let nei of adj[node]) {
+      if (!visited.has(nei)) {
+        if (dfs(nei)) return true;
+      }
+    }
+    return false;
+  }
+
+  return dfs(source);
+};
+
+// Time: O(v + e)
+// Space: O(v + e)
