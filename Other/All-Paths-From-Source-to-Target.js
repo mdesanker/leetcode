@@ -2,6 +2,36 @@
  * @param {number[][]} graph
  * @return {number[][]}
  */
+// BFS
+var allPathsSourceTarget = function (graph) {
+  const target = graph.length - 1;
+
+  const adj = {};
+  for (let i = 0; i < graph.length; i++) adj[i] = graph[i];
+
+  const q = [[0, [0]]];
+  const res = [];
+  // do not need visited set for directed graph
+
+  while (q.length) {
+    let len = q.length;
+    for (let i = 0; i < len; i++) {
+      const [n1, path] = q.shift();
+
+      if (n1 === target) res.push(path);
+
+      for (let nei of adj[n1]) {
+        q.push([nei, [...path, nei]]);
+      }
+    }
+  }
+  return res;
+};
+
+// Time: O(v + e)
+// Space: O(v + e)
+
+// DFS
 var allPathsSourceTarget = function (graph) {
   const target = graph.length - 1;
   const res = [];
