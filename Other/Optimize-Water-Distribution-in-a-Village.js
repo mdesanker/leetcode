@@ -63,3 +63,63 @@ Space: O(v + e)
     Visited set is O(v)
     Heap is O(v + e) in worst case it holds every edge
  */
+
+// Kruskal's Algorithm with Union Find
+var minCostToSupplyWater = function (n, wells, pipes) {
+  function find(n) {
+    if (n === par[n]) return n;
+    return (par[n] = find(par[n]));
+  }
+
+  function union(n1, n2) {
+    let p1 = find(n1),
+      p2 = find(n2);
+    if (p1 === p2) return false;
+    if (rank[p1] < rank[p2]) {
+      par[p1] = p2;
+      rank[p2] += rank[p1];
+    } else {
+      par[p2] = p1;
+      rank[p1] += rank[p2];
+    }
+    return true;
+  }
+
+  const par = [];
+  for (let i = 0; i < n + 1; i++) par.push(i);
+  const rank = new Array(n + 1).fill(1);
+
+  const minHeap = new MinPriorityQueue();
+
+  // add edges for virtual vertex to minHeap
+  for (let i = 0; i < wells.length; i++) {
+    minHeap.enqueue([0, i + 1, wells[i]], wells[i]);
+    minHeap.enqueue([i + 1, 0, wells[i]], wells[i]);
+  }
+  // add edges for pipes array to minHeap
+  for (let [src, dst, weight] of pipes) {
+    minHeap.enqueue([src, dst, weight], weight);
+    minHeap.enqueue([dst, src, weight], weight);
+  }
+
+  let res = 0;
+  let edges = 0;
+
+  while (minHeap.size() && edges < n) {
+    const [n1, n2, weight] = minHeap.dequeue().element;
+    if (union(n1, n2)) {
+      res += weight;
+      edges++;
+    }
+  }
+  return res;
+};
+
+/**
+Time: O((v + e)log(v + e)) 
+    Every edge is added to minHeap, and every heap push operation is log(v + e)
+    Iterate through every edge in heap and invoke union operation, which is O((v + e)log*(v))
+Space: O(v + e) 
+    Parent and rank arrays for union find are O(v)
+    Heap contains every edge O(v + e) 
+ */
