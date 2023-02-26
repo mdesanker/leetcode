@@ -2,36 +2,53 @@
  * @param {number[][]} points
  * @return {number}
  */
+// Prim's Algorithm
 var minCostConnectPoints = function (points) {
-  let n = points.length;
+  const N = points.length;
 
-  const adj = {};
-  for (let i = 0; i < n; i++) adj[i] = [];
-  for (let i = 0; i < n; i++) {
+  // build adjacency list
+  const adj = {}; // i: list of [cost, node]
+  // map each node ot empty list
+  for (let i = 0; i < N; i++) {
+    adj[i] = [];
+  }
+
+  // compare each point to every other point in graph
+  for (let i = 0; i < N; i++) {
     let [x1, y1] = points[i];
-    for (let j = i + 1; j < n; j++) {
+    for (let j = i + 1; j < N; j++) {
       let [x2, y2] = points[j];
-      const cost = Math.abs(x2 - x1) + Math.abs(y2 - y1);
+      // calculate manhattan distance
+      let cost = Math.abs(x1 - x2) + Math.abs(y1 - y2);
+      // add both ways because undirected
       adj[i].push([cost, j]);
       adj[j].push([cost, i]);
     }
   }
 
   let res = 0;
-  const visited = new Set();
+  const visit = new Set();
+  // use minHeap to find node with next lowest cost
   const minHeap = new MinPriorityQueue();
+  // first node is the origin
   minHeap.enqueue([0, 0], 0);
 
-  while (visited.size < n) {
+  // loop until every node has been connected
+  while (visit.size < N) {
+    // pop next node from heap
     const [cost, node] = minHeap.dequeue().element;
-    if (visited.has(node)) continue;
+    // skip if point already visited
+    if (visit.has(node)) continue;
 
-    visited.add(node);
+    // add cost to result and add to visited
     res += cost;
+    visit.add(node);
 
-    for (let [cost, nei] of adj[node]) {
-      if (!visited.has(nei)) {
-        minHeap.enqueue([cost, nei], cost);
+    // check every neighbor in adjacency list
+    for (const [neiCost, nei] of adj[node]) {
+      if (!visit.has(nei)) {
+        // for every new nei, push to heap, ordering by cost
+        minHeap.enqueue([neiCost, nei], neiCost);
       }
     }
   }
@@ -99,55 +116,65 @@ SC: O(n^2)
     n^2 edges are stored in the adj list, because every edge is stored twice (bidirectional)
  */
 
+// Kruskal's Algorithm with Union Find
 var minCostConnectPoints = function (points) {
-  const N = points.length;
+  const n = points.length;
 
-  // build adjacency list
-  const adj = {}; // i: list of [cost, node]
-  // map each node ot empty list
-  for (let i = 0; i < N; i++) {
-    adj[i] = [];
+  const minHeap = new MinPriorityQueue();
+  let res = 0;
+  let edges = 0;
+
+  const par = [];
+  for (let i = 0; i < n; i++) par.push(i);
+  const rank = new Array(n).fill(1);
+
+  function find(n) {
+    let p = par[n];
+    while (p !== par[p]) {
+      par[p] = par[par[p]];
+      p = par[p];
+    }
+    return p;
   }
 
-  // compare each point to every other point in graph
-  for (let i = 0; i < N; i++) {
+  function union(n1, n2) {
+    let p1 = find(n1),
+      p2 = find(n2);
+    if (p1 === p2) return false;
+    if (rank[p1] < rank[p2]) {
+      par[p1] = p2;
+      rank[p2] += rank[p1];
+    } else {
+      par[p2] = p1;
+      rank[p1] += rank[p2];
+    }
+    return true;
+  }
+
+  // add every edge into minHeap, ordering by increasing weight
+  const adj = {};
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let i = 0; i < n; i++) {
     let [x1, y1] = points[i];
-    for (let j = i + 1; j < N; j++) {
+    for (let j = i + 1; j < n; j++) {
       let [x2, y2] = points[j];
-      // calculate manhattan distance
-      let cost = Math.abs(x1 - x2) + Math.abs(y1 - y2);
-      // add both ways because undirected
-      adj[i].push([cost, j]);
-      adj[j].push([cost, i]);
+      const weight = Math.abs(x1 - x2) + Math.abs(y1 - y2);
+
+      minHeap.enqueue([i, j, weight], weight);
     }
   }
 
-  // Prim's
-  let res = 0;
-  const visit = new Set();
-  // use minHeap to find node with next lowest cost
-  const minHeap = new MinPriorityQueue();
-  // first node is the origin
-  minHeap.enqueue([0, 0], 0);
-
-  // loop until every node has been connected
-  while (visit.size < N) {
-    // pop next node from heap
-    const [cost, node] = minHeap.dequeue().element;
-    // skip if point already visited
-    if (visit.has(node)) continue;
-
-    // add cost to result and add to visited
-    res += cost;
-    visit.add(node);
-
-    // check every neighbor in adjacency list
-    for (const [neiCost, nei] of adj[node]) {
-      if (!visit.has(nei)) {
-        // for every new nei, push to heap, ordering by cost
-        minHeap.enqueue([neiCost, nei], neiCost);
-      }
+  // until we have create n - 1 edges (MST) greedily choose the lowest weight edge to union next
+  while (minHeap.size() && edges < n - 1) {
+    const [n1, n2, w] = minHeap.dequeue().element;
+    // if we can union (connect it without creating a cycle) add weight to res and increment edge counter
+    if (union(n1, n2)) {
+      res += w;
+      edges++;
     }
   }
   return res;
 };
+
+// Time: O(n^2 * logn^2) ~ O(eloge) where e is the number of edges, because every edge is added/removed from heap, which is loge operation
+// Space: O(n^2) ~ O(e) heap holds every edge
