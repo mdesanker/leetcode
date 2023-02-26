@@ -7,22 +7,18 @@ var minCostConnectPoints = function (points) {
   const N = points.length;
 
   // build adjacency list
-  const adj = {}; // i: list of [cost, node]
-  // map each node ot empty list
-  for (let i = 0; i < N; i++) {
-    adj[i] = [];
-  }
-
-  // compare each point to every other point in graph
+  const adj = {};
+  for (let i = 0; i < N; i++) adj[i] = [];
   for (let i = 0; i < N; i++) {
     let [x1, y1] = points[i];
     for (let j = i + 1; j < N; j++) {
       let [x2, y2] = points[j];
       // calculate manhattan distance
       let cost = Math.abs(x1 - x2) + Math.abs(y1 - y2);
-      // add both ways because undirected
-      adj[i].push([cost, j]);
-      adj[j].push([cost, i]);
+
+      // add both directions because undirected
+      adj[i].push([j, cost]);
+      adj[j].push([i, cost]);
     }
   }
 
@@ -36,7 +32,7 @@ var minCostConnectPoints = function (points) {
   // loop until every node has been connected
   while (visit.size < N) {
     // pop next node from heap
-    const [cost, node] = minHeap.dequeue().element;
+    const [node, cost] = minHeap.dequeue().element;
     // skip if point already visited
     if (visit.has(node)) continue;
 
@@ -45,10 +41,10 @@ var minCostConnectPoints = function (points) {
     visit.add(node);
 
     // check every neighbor in adjacency list
-    for (const [neiCost, nei] of adj[node]) {
+    for (const [nei, neiCost] of adj[node]) {
       if (!visit.has(nei)) {
         // for every new nei, push to heap, ordering by cost
-        minHeap.enqueue([neiCost, nei], neiCost);
+        minHeap.enqueue([nei, neiCost], neiCost);
       }
     }
   }
