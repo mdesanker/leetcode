@@ -109,7 +109,13 @@ var networkDelayTime = function (times, n, k) {
   let cost = new Array(n + 1).fill(Infinity);
   cost[k] = 0;
 
-  for (let i = 0; i < n; i++) {
+  /**
+   * n - 1 edges is VERY IMPORTANT here because we don't want to go around any cycles
+   * For a graph with no cycles, there can be at most n - 1 edges between any two vertices
+   * (think a linear graph)
+   * If we get different results with n, n + 1, or n + 2 iterations, then we know there is a cycle
+   */
+  for (let i = 0; i < n - 1; i++) {
     let tmpCost = cost.slice();
     for (let [u, v, w] of times) {
       if (cost[u] === Infinity) continue;
