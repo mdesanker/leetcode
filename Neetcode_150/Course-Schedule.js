@@ -3,40 +3,36 @@
  * @param {number[][]} prerequisites
  * @return {boolean}
  */
-var canFinish = function (numCourses, prerequisites) {
-  // build adjacency list of courses and their prereqs
+// variation using two sets to track for cycles and for cleared crs
+var canFinish = function (n, prerequisites) {
   const adj = {};
-  for (let i = 0; i < numCourses; i++) adj[i] = [];
-  for (const [crs, pre] of prerequisites) adj[crs].push(pre);
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let [crs, pre] of prerequisites) adj[crs].push(pre);
 
-  // use a set to store all courses along the current DFS path
+  // tracks crs that have been verified as not having loops. Add them here so they do not need to be rechecked
   const visited = new Set();
+  // track nodes in the current path so we can check for loops
+  const path = new Set();
 
   function dfs(crs) {
-    // base cases
-    // course already visited, we have a loop
-    // cannot topSort a cycle because of cyclic dependencies
-    if (visited.has(crs)) return false;
-    // course has no prereqs, we can take it
-    if (adj[crs].length === 0) return true;
+    if (path.has(crs)) return false;
+    if (visited.has(crs)) return true;
 
-    // add new crs to visited
-    visited.add(crs);
+    // add noode to current path
+    path.add(crs);
 
-    // check each prereq of crs
-    for (const pre of adj[crs]) {
-      // if can't take the prereq, immediately return false
-      if (!dfs(pre)) return false;
+    for (let nei of adj[crs]) {
+      if (!dfs(nei)) return false;
     }
 
-    // remove crs from visited
-    visited.delete(crs);
-    // if made it this for, then all prereqs are satisfied - remove prereqs to expedite future searches
-    adj[crs] = [];
+    // backtrack, remove node from current path
+    path.delete(crs);
+    // node has been cleared
+    visited.add(crs);
     return true;
   }
-  // check each course is completable
-  for (let i = 0; i < numCourses; i++) {
+
+  for (let i = 0; i < n; i++) {
     if (!dfs(i)) return false;
   }
   return true;
@@ -104,50 +100,14 @@ TC: O(v + e) we call dfs on every node, and on every neighbor (edge)
 SC: O(v + e) for the adjacency list which holds every node and edge
  */
 
-// variation using two sets to track for cycles and for cleared crs
-var canFinish = function (n, prerequisites) {
-  const adj = {};
-  for (let i = 0; i < n; i++) adj[i] = [];
-  for (let [crs, pre] of prerequisites) adj[crs].push(pre);
-
-  // tracks crs that have been verified as not having loops. Add them here so they do not need to be rechecked
-  const visited = new Set();
-  // track nodes in the current path so we can check for loops
-  const path = new Set();
-
-  function dfs(crs) {
-    if (path.has(crs)) return false;
-    if (visited.has(crs)) return true;
-
-    // add noode to current path
-    path.add(crs);
-
-    for (let nei of adj[crs]) {
-      if (!dfs(nei)) return false;
-    }
-
-    // backtrack, remove node from current path
-    path.delete(crs);
-    // node has been cleared
-    visited.add(crs);
-    return true;
-  }
-
-  for (let i = 0; i < n; i++) {
-    if (!dfs(i)) return false;
-  }
-  return true;
-};
-
+// Topological sort with indegrees array
 var canFinish = function (n, prereq) {
   const indegrees = new Array(n).fill(0);
   const adj = {};
-  let totalDeps = 0;
   for (let i = 0; i < n; i++) adj[i] = [];
   for (let [crs, pre] of prereq) {
     adj[pre].push(crs);
     indegrees[crs]++;
-    totalDeps++;
   }
 
   const q = [];
@@ -157,24 +117,25 @@ var canFinish = function (n, prereq) {
     }
   }
 
+  let visited = 0;
+
   while (q.length) {
     let len = q.length;
 
     while (len > 0) {
       const node = q.shift();
       len--;
+      visited++;
 
       for (let nei of adj[node]) {
         indegrees[nei]--;
-        totalDeps--;
-
         if (indegrees[nei] === 0) {
           q.push(nei);
         }
       }
     }
   }
-  return totalDeps === 0;
+  return visited === n;
 };
 
 /**
@@ -185,3 +146,43 @@ Algorithm terminates when we can no longer remove edges from graph. There are tw
 1. There are still some edges left in graph. These edges must have formed a cycle, therefore they cannot be removed
 2. If we have removed all edges, then we have a topological order of the graph
 */
+
+// Neetcode translation
+// var canFinish = function (numCourses, prerequisites) {
+//   // build adjacency list of courses and their prereqs
+//   const adj = {};
+//   for (let i = 0; i < numCourses; i++) adj[i] = [];
+//   for (const [crs, pre] of prerequisites) adj[crs].push(pre);
+
+//   // use a set to store all courses along the current DFS path
+//   const visited = new Set();
+
+//   function dfs(crs) {
+//     // base cases
+//     // course already visited, we have a loop
+//     // cannot topSort a cycle because of cyclic dependencies
+//     if (visited.has(crs)) return false;
+//     // course has no prereqs, we can take it
+//     if (adj[crs].length === 0) return true;
+
+//     // add new crs to visited
+//     visited.add(crs);
+
+//     // check each prereq of crs
+//     for (const pre of adj[crs]) {
+//       // if can't take the prereq, immediately return false
+//       if (!dfs(pre)) return false;
+//     }
+
+//     // remove crs from visited
+//     visited.delete(crs);
+//     // if made it this for, then all prereqs are satisfied - remove prereqs to expedite future searches
+//     adj[crs] = [];
+//     return true;
+//   }
+//   // check each course is completable
+//   for (let i = 0; i < numCourses; i++) {
+//     if (!dfs(i)) return false;
+//   }
+//   return true;
+// };
