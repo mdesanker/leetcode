@@ -138,3 +138,50 @@ var canFinish = function (n, prerequisites) {
   }
   return true;
 };
+
+var canFinish = function (n, prereq) {
+  const indegrees = new Array(n).fill(0);
+  const adj = {};
+  let totalDeps = 0;
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let [crs, pre] of prereq) {
+    adj[pre].push(crs);
+    indegrees[crs]++;
+    totalDeps++;
+  }
+
+  const q = [];
+  for (let i = 0; i < n; i++) {
+    if (indegrees[i] === 0) {
+      q.push(i);
+    }
+  }
+
+  while (q.length) {
+    let len = q.length;
+
+    while (len > 0) {
+      const node = q.shift();
+      len--;
+
+      for (let nei of adj[node]) {
+        indegrees[nei]--;
+        totalDeps--;
+
+        if (indegrees[nei] === 0) {
+          q.push(nei);
+        }
+      }
+    }
+  }
+  return totalDeps === 0;
+};
+
+/**
+Start with nodes which do not have an prereqs (indegree === 0)
+Once we follow an edge, we remove it from teh graph
+Algorithm terminates when we can no longer remove edges from graph. There are two possible outcomes:
+
+1. There are still some edges left in graph. These edges must have formed a cycle, therefore they cannot be removed
+2. If we have removed all edges, then we have a topological order of the graph
+*/
