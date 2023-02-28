@@ -96,3 +96,33 @@ Return true
 TC: O(v + e) we call dfs on every node, and on every neighbor (edge)
 SC: O(v + e) for the adjacency list which holds every node and edge
  */
+
+var findOrder = function (n, prereqs) {
+  const adj = {};
+  const indegrees = new Array(n).fill(0);
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let [crs, pre] of prereqs) {
+    adj[pre].push(crs);
+    indegrees[crs]++;
+  }
+
+  const res = [];
+
+  const q = [];
+  for (let i = 0; i < n; i++) {
+    if (indegrees[i] === 0) q.push(i);
+  }
+
+  while (q.length) {
+    const node = q.shift();
+    res.push(node);
+
+    for (let nei of adj[node]) {
+      indegrees[nei]--;
+      if (indegrees[nei] === 0) {
+        q.push(nei);
+      }
+    }
+  }
+  return res.length === n ? res : [];
+};
