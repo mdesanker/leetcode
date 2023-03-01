@@ -3,6 +3,24 @@
  * @return {number}
  */
 var findMin = function (nums) {
+  let l = 0,
+    r = nums.length - 1;
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    if (nums[mid] < nums[r]) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  return nums[l];
+};
+
+// Time: O(logn)
+// Space: O(1)
+
+var findMin = function (nums) {
   let left = 0,
     right = nums.length - 1,
     res = nums[0];
