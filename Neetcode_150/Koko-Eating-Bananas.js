@@ -3,6 +3,34 @@
  * @param {number} h
  * @return {number}
  */
+// Binary search template
+var minEatingSpeed = function (piles, h) {
+  function isValid(threshold) {
+    let time = 0,
+      total = 0;
+    for (let pile of piles) {
+      time += Math.ceil(pile / threshold);
+    }
+    return time <= h;
+  }
+
+  let l = 1,
+    r = Math.max(...piles);
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    if (isValid(mid)) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  return l;
+};
+
+// Time: O(nlogn)
+// Space: O(1)
+
 var minEatingSpeed = function (piles, h) {
   // worst possible answer is the largest pile in piles
   let left = 1,
