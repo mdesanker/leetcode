@@ -4,6 +4,56 @@
  * @return {number}
  */
 var search = function (nums, target) {
+  let l = 0,
+    r = nums.length - 1;
+  while (l <= r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    if (nums[mid] === target) return mid;
+
+    if (nums[l] <= nums[mid]) {
+      if (target < nums[l] || target > nums[mid]) {
+        l = mid + 1;
+      } else {
+        r = mid;
+      }
+    } else {
+      if (target < nums[mid] || target > nums[r]) {
+        r = mid - 1;
+      } else {
+        l = mid;
+      }
+    }
+  }
+  return -1;
+};
+
+var search = function (nums, target) {
+  let l = 0,
+    r = nums.length - 1;
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    if (nums[mid] === target) return mid;
+
+    if (nums[l] <= nums[mid]) {
+      if (target < nums[l] || target > nums[mid]) {
+        l = mid + 1;
+      } else {
+        r = mid;
+      }
+    } else {
+      if (target < nums[mid] || target > nums[r]) {
+        r = mid - 1;
+      } else {
+        l = mid;
+      }
+    }
+  }
+  return nums[l] === target ? l : -1;
+};
+
+var search = function (nums, target) {
   let left = 0,
     right = nums.length - 1;
 
