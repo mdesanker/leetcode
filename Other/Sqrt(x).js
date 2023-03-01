@@ -31,3 +31,25 @@ Maximal k satisfying `condition(k) is false` is equal to the minimal k satisfyin
 
 // Time: O(logn)
 // Space: O(1)
+
+// With res variable
+var mySqrt = function (x) {
+  function isValid(num) {
+    return num * num <= x;
+  }
+
+  let l = 0,
+    r = x;
+  let res = l;
+  while (l <= r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    if (isValid(mid)) {
+      res = Math.max(res, mid);
+      l = mid + 1;
+    } else {
+      r = mid - 1;
+    }
+  }
+  return res;
+};
