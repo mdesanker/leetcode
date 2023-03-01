@@ -3,6 +3,39 @@
  * @param {number} days
  * @return {number}
  */
+// Binary Search Template
+var shipWithinDays = function (weights, days) {
+  function isValid(capacity) {
+    let time = 1,
+      currWeight = 0;
+    for (let weight of weights) {
+      currWeight += weight;
+      if (currWeight > capacity) {
+        currWeight = weight;
+        time++;
+      }
+    }
+    return time <= days;
+  }
+
+  let l = Math.max(...weights),
+    r = weights.reduce((a, b) => a + b);
+
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    if (isValid(mid)) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  return l;
+};
+
+// Time: O(nlogn) every iteration of binary search, we traverse entire weights array to check if valid capacity
+// Space: O(1)
+
 var shipWithinDays = function (weights, days) {
   const totalLoad = weights.reduce((a, b) => a + b);
   const maxLoad = Math.max(...weights);
