@@ -4,6 +4,24 @@
  * @return {number}
  */
 // Binary Search
+// Template where we find smallest k that satisfies nums[k] >= target
+var searchInsert = function (nums, target) {
+  // input target might be larger than all values in nums array, so we initialize r to nums.length, not nums.length - 1
+  let l = 0,
+    r = nums.length;
+
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+
+    if (nums[mid] >= target) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  return l;
+};
+
 var searchInsert = function (nums, target) {
   if (target < nums[0]) return 0;
   if (target > nums[nums.length - 1]) return nums.length;
