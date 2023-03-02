@@ -14,5 +14,5 @@ var validWordSquare = function (words) {
   return true;
 };
 
-// Time: O(n^2)
+// Time: O(n * m) n is length of words array and m is maximum length of string
 // Space: O(1)
