@@ -4,6 +4,22 @@
  * @return {number[][]}
  */
 var kClosest = function (points, k) {
+  const maxHeap = new MaxPriorityQueue();
+  for (let [x, y] of points) {
+    const dist = Math.sqrt(x * x + y * y);
+    maxHeap.enqueue([x, y], dist);
+    if (maxHeap.size() > k) maxHeap.dequeue().element;
+  }
+  return maxHeap
+    .toArray()
+    .reverse()
+    .map((x) => x.element);
+};
+
+// Time: O(nlogk)
+// Space: O(k)
+
+var kClosest = function (points, k) {
   const res = [];
   const minHeap = new MinPriorityQueue();
 
