@@ -2,6 +2,7 @@
  * @param {number[][]} intervals
  * @return {number}
  */
+// Chronological Ordering
 var minMeetingRooms = function (intervals) {
   // split intervals into sorted arrays of start and end points
   const start = [];
@@ -36,3 +37,29 @@ var minMeetingRooms = function (intervals) {
 
 // Time: O(nlogn)
 // Space: O(n)
+
+// Min heap
+var minMeetingRooms = function (intervals) {
+  if (!intervals.length) return 0;
+
+  // heap will store end times of meetings
+  const minHeap = new MinPriorityQueue();
+
+  // sort by starting time
+  intervals.sort((a, b) => a[0] - b[0]);
+
+  // add first meeting's end time
+  minHeap.enqueue(intervals[0][1]);
+
+  for (let i = 1; i < intervals.length; i++) {
+    if (minHeap.front().element <= intervals[i][0]) {
+      minHeap.dequeue().element;
+    }
+
+    minHeap.enqueue(intervals[i][1]);
+  }
+  return minHeap.size();
+};
+
+// Time: O(nlogn) for sorting intervals array and potentially n heap operations which are logn time
+// Space: O(n) heap might hold end time for every meeting
