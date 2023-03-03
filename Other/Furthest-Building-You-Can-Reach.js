@@ -8,6 +8,7 @@
 var furthestBuilding = function (heights, bricks, ladders) {
   function isReachable(index) {
     const minHeap = new MinPriorityQueue();
+    // REMEMBER to include index by using <= index
     for (let i = 0; i <= index; i++) {
       let climb = heights[i + 1] - heights[i];
       if (climb > 0) minHeap.enqueue(climb);
@@ -72,3 +73,17 @@ var furthestBuilding = function (heights, bricks, ladders) {
 
 // Time: O(nlogn) heap is size l, so pushing to heap is nlogl. Worst case scenario l = n
 // Space: O(n) heap is size l, worst case scenario l = n
+
+// Compact Min Heap
+var furthestBuilding = function (heights, bricks, ladders) {
+  const minHeap = new MinPriorityQueue();
+  for (let i = 0; i < heights.length - 1; i++) {
+    let climb = heights[i + 1] - heights[i];
+    if (climb > 0) minHeap.enqueue(climb);
+    if (minHeap.size() > ladders) {
+      bricks -= minHeap.dequeue().element;
+    }
+    if (bricks < 0) return i;
+  }
+  return heights.length - 1;
+};
