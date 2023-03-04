@@ -2,6 +2,49 @@
  * @param {number[]} cost
  * @return {number}
  */
+// Bottom-Up: Tabulation
+var minCostClimbingStairs = function (cost, i = 0) {
+  // dp array tracks the min cost to get to a certain step
+  const dp = new Array(cost.length + 1).fill(0);
+
+  // base cases
+  // can start at either first or second step
+  // dp[0] = 0;
+  // dp[1] = 0;
+
+  // recurrence relation
+  for (let i = 2; i < cost.length + 1; i++) {
+    dp[i] = Math.min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2]);
+  }
+  return dp[dp.length - 1];
+};
+
+// Time: O(n)
+// Space: O(n)
+
+// Top-Down: Recursion + Memoization
+var minCostClimbingStairs = function (cost) {
+  const memo = {};
+  function dp(i) {
+    // check cache
+    if (i in memo) return memo[i];
+
+    // base cases
+    // can start at either first or second step
+    if (i <= 1) return 0;
+
+    // recurrence relation
+    return (memo[i] = Math.min(
+      cost[i - 1] + dp(i - 1),
+      cost[i - 2] + dp(i - 2)
+    ));
+  }
+  return dp(cost.length);
+};
+
+// Time: O(n)
+// Space: O(n)
+
 var minCostClimbingStairs = function (cost) {
   cost.push(0);
   // cost = [10, 15, 20, 0]
