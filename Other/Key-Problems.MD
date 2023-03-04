@@ -22,3 +22,9 @@ Magnetic force between two balls
 Split array largest sum
 Divide chocolate (for premium users only)
 Cutting ribbons (for premium users only)
+
+## String Matching Algorithms
+
+Naiive
+KMP
+Rabin-Karp
