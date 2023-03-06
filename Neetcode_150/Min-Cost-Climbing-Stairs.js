@@ -2,41 +2,50 @@
  * @param {number[]} cost
  * @return {number}
  */
-// Bottom-Up: Tabulation
-var minCostClimbingStairs = function (cost, i = 0) {
-  // dp array tracks the min cost to get to a certain step
-  const dp = new Array(cost.length + 1).fill(0);
 
-  // base cases
-  // can start at either first or second step
-  // dp[0] = 0;
-  // dp[1] = 0;
+/**
+Recurrence relation
 
-  // recurrence relation
-  for (let i = 2; i < cost.length + 1; i++) {
-    dp[i] = Math.min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2]);
+Add a 0 to end of cost array because we need to get to position just after last index of cost array
+[10, 15, 20, 0]
+
+We can start at first or second step, so cost to get to index 0 or 1 is 0
+Start by considering the cost to get to third step (index 2)
+
+[10, 15, 20, 0]
+[0,  0,  _,  _]
+
+To get to third step, we can either come from first or second step
+Therefore cost to get third step is the minimum of coming from first or the second step
+To come from first step, we sum cost to get the first step (dp[0] = 0) with the cost to use that step (cost[0] = 10)
+To come from second step, we sum cost to get to the second step (dp[1] = 0) with the cost to use that step (cost[1] = 15)
+
+Third step = Math.min(0 + 10, 0 + 15)
+
+This recurrence relation can be generalized as Math.min(cost[i - 1] + dp(i - 1), cost[i - 2] + dp(i - 2));
+ */
+
+// Recursion
+var minCostClimbingStairs = function (cost) {
+  function dp(i) {
+    if (i <= 1) return 0;
+    return Math.min(dp(i - 1) + cost[i - 1], dp(i - 2) + cost[i - 2]);
   }
-  return dp[dp.length - 1];
+  return dp(cost.length);
 };
 
-// Time: O(n)
+// Time: O(2^n)
 // Space: O(n)
 
-// Top-Down: Recursion + Memoization
+// Recursion + memoization
 var minCostClimbingStairs = function (cost) {
   const memo = {};
   function dp(i) {
-    // check cache
     if (i in memo) return memo[i];
-
-    // base cases
-    // can start at either first or second step
     if (i <= 1) return 0;
-
-    // recurrence relation
     return (memo[i] = Math.min(
-      cost[i - 1] + dp(i - 1),
-      cost[i - 2] + dp(i - 2)
+      dp(i - 1) + cost[i - 1],
+      dp(i - 2) + cost[i - 2]
     ));
   }
   return dp(cost.length);
@@ -45,21 +54,41 @@ var minCostClimbingStairs = function (cost) {
 // Time: O(n)
 // Space: O(n)
 
+// Tabulation
 var minCostClimbingStairs = function (cost) {
-  cost.push(0);
-  // cost = [10, 15, 20, 0]
-  //             ^ start here because will not update last two indices
-  for (let i = cost.length - 3; i >= 0; i--) {
-    // add minimum of single jump vs double jump
-    // cost[i] = Math.min(cost[i] + cost[i + 1], cost[i] + cost[i + 2]);
-    cost[i] += Math.min(cost[i + 1], cost[i + 2]);
+  const n = cost.length;
+
+  const dp = new Array(n + 1);
+
+  dp[0] = dp[1] = 0;
+
+  for (let i = 2; i < n + 1; i++) {
+    dp[i] = Math.min(cost[i - 1] + dp[i - 1], cost[i - 2] + dp[i - 2]);
   }
-  // return min of index 0 or 1 (two possible starting positions)
-  return Math.min(cost[0], cost[1]);
+  return dp[n];
+};
+
+// Tabulation - optimized
+var minCostClimbingStairs = function (cost) {
+  const n = cost.length;
+
+  function dp(i) {
+    if (i <= 1) return 0;
+
+    let one = 0,
+      two = 0;
+    for (let i = 2; i < n + 1; i++) {
+      let curr = Math.min(cost[i - 1] + two, cost[i - 2] + one);
+      one = two;
+      two = curr;
+    }
+    return two;
+  }
+  return dp(cost.length);
 };
 
 // Time: O(n)
-// Space: O(1) using input array
+// Space: O(1)
 
 /**
 Two initial observations that indicate this is a DP problem:
