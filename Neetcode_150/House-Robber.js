@@ -2,45 +2,88 @@
  * @param {number[]} nums
  * @return {number}
  */
-
-// Dynamic programming
+// Recursion
 var rob = function (nums) {
-  let rob1 = 0,
-    rob2 = 0;
+  const n = nums.length;
 
-  // [rob1, rob2, n, n + 1, ...]
-  for (let num of nums) {
-    let temp = Math.max(num + rob1, rob2);
-    rob1 = rob2;
-    rob2 = temp;
+  function dp(i) {
+    // base cases
+    if (i === 0) return nums[0];
+    if (i === 1) return Math.max(nums[0], nums[1]);
+
+    // recurrence relation
+    return Math.max(dp(i - 1), nums[i] + dp(i - 2));
   }
-  return rob2;
+  return dp(n - 1);
+};
+
+// Time: O(2^n)
+// Space: O(n)
+
+// Recursion + memoization
+var rob = function (nums) {
+  const n = nums.length;
+
+  const memo = {};
+
+  function dp(i) {
+    // check cache
+    if (i in memo) return memo[i];
+
+    // base cases
+    if (i === 0) return nums[0];
+    if (i === 1) return Math.max(nums[0], nums[1]);
+
+    // recurrence relation
+    return (memo[i] = Math.max(dp(i - 1), nums[i] + dp(i - 2)));
+  }
+  return dp(n - 1);
+};
+
+// Time: O(n)
+// Space: O(n)
+
+// Tabulation
+var rob = function (nums) {
+  const n = nums.length;
+
+  const dp = new Array(n).fill(0);
+
+  dp[0] = nums[0];
+  dp[1] = Math.max(nums[0], nums[1]);
+
+  for (let i = 2; i < n; i++) {
+    dp[i] = Math.max(dp[i - 1], nums[i] + dp[i - 2]);
+  }
+  return dp[n - 1];
+};
+
+// Time: O(n)
+// Space: O(n)
+
+// Tabulation - optimized
+var rob = function (nums) {
+  const n = nums.length;
+
+  function dp(i) {
+    if (i === 0) return nums[0];
+    if (i === 1) return Math.max(nums[0], nums[1]);
+
+    let two = nums[0],
+      one = Math.max(nums[0], nums[1]);
+
+    for (let i = 2; i < n; i++) {
+      let curr = Math.max(one, nums[i] + two);
+      two = one;
+      one = curr;
+    }
+    return one;
+  }
+  return dp(n - 1);
 };
 
 // Time: O(n)
 // Space: O(1)
-
-// DP (Tabulation)
-var rob = function (nums) {
-  const N = nums.length;
-
-  // create dp array with one size larger than nums
-  const dp = new Array(N + 1).fill(0);
-
-  // set last index to 0
-  dp[N] = 0;
-  // second second last index to last index of nums
-  dp[N - 1] = nums[N - 1];
-
-  // iterate backwards through dp from second last index calculating max rob
-  for (let i = N - 2; i >= 0; i--) {
-    dp[i] = Math.max(nums[i] + dp[i + 2], dp[i + 1]);
-  }
-  return dp[0];
-};
-
-// Time: O(n)
-// Space: O(n) for dp array
 
 /**
 We will iterate through the array calculating the max that can be robbed as we go
