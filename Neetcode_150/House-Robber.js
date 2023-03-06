@@ -114,3 +114,72 @@ SC: O(n) extra space required for DP array
 
 We can optimize this using two variables instead of an entire array to make SC: O(1)
  */
+
+// Can simplify this question by understanding that any index < 0 is going to return a 0;
+
+// Recursion
+var rob = function (nums) {
+  const n = nums.length;
+  function dp(i) {
+    // base case
+    if (i < 0) return 0;
+
+    // recurrence relation
+    return Math.max(dp(i - 1), nums[i] + dp(i - 2));
+  }
+  return dp(n - 1);
+};
+
+// Time: O(2^n)
+// Space: O(n)
+
+// Recursion + memo
+var rob = function (nums) {
+  const n = nums.length;
+  const memo = {};
+
+  function dp(i) {
+    if (i in memo) return memo[i];
+    if (i < 0) return 0;
+    return (memo[i] = Math.max(dp(i - 1), nums[i] + dp(i - 2)));
+  }
+  return dp(n - 1);
+};
+
+// Time: O(n)
+// Space: O(n)
+
+// Tabulation
+var rob = function (nums) {
+  const n = nums.length;
+
+  const dp = new Array(n + 1).fill(0);
+  dp[0] = 0;
+  dp[1] = nums[0];
+
+  for (let i = 2; i < n + 1; i++) {
+    // careful with offset between dp and nums array
+    dp[i] = Math.max(dp[i - 1], nums[i - 1] + dp[i - 2]);
+  }
+  return dp[n];
+};
+
+// Time: O(n)
+// Space: O(n)
+
+var rob = function (nums) {
+  const n = nums.length;
+
+  let one = 0,
+    two = 0;
+
+  for (let i = 0; i < n; i++) {
+    let curr = Math.max(two, nums[i] + one);
+    one = two;
+    two = curr;
+  }
+  return two;
+};
+
+// Time: O(n)
+// Space: O(1)
