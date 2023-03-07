@@ -86,27 +86,28 @@ var training = (task) => {
 // Space: O(r * c) - O(r) for recursion stack, O(r * c) for the cache
 
 // Tabulation
-var training = (task) => {
-  const ROWS = task.length,
-    COLS = task[0].length;
+var training = (tasks) => {
+  const ROWS = tasks.length,
+    COLS = tasks[0].length;
 
   // we will use the task array (constant space)
   // starting from second row, we will set each index to the max of the previous rows allowed tasks
-  for (let day = 1; day < task.length; day++) {
-    for (let c = 0; c < COLS; c++) {
+  for (let day = 1; day < tasks.length; day++) {
+    for (let prev = 0; prev < COLS; prev++) {
       // calculate max from the previous day omitting the current task
       let max = 0;
-      for (let i = 0; i < COLS; i++) {
-        if (i !== c) {
-          let points = task[day - 1][i];
+      for (let task = 0; task < COLS; task++) {
+        // skip repeat task from prev day
+        if (task !== prev) {
+          let points = tasks[day - 1][task];
           max = Math.max(max, points);
         }
       }
-      task[day][c] += max;
+      tasks[day][prev] += max;
     }
   }
   // return the max of the first row to get the max points
-  return Math.max(...task[ROWS - 1]);
+  return Math.max(...tasks[ROWS - 1]);
 };
 
 // Time: O(r * c * c)
