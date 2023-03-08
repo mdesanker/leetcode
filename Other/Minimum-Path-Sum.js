@@ -131,3 +131,46 @@ var minPathSum = function (grid) {
 
 // Time: O(n * m)
 // Space: O(1)
+
+// Alternate solution using Djikstra's Shortest Path Algorithm
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var minPathSum = function (grid) {
+  const ROWS = grid.length,
+    COLS = grid[0].length;
+
+  const visited = [];
+  for (let r = 0; r < ROWS; r++) {
+    visited.push(new Array(COLS).fill(false));
+  }
+
+  const minHeap = new MinPriorityQueue();
+  minHeap.enqueue([0, 0, grid[0][0]], 0);
+
+  // can only move in two directions - down or right
+  const dir = [
+    [1, 0],
+    [0, 1],
+  ];
+
+  while (minHeap.size()) {
+    const [r, c, sum] = minHeap.dequeue().element;
+    visited[r][c] = true;
+
+    if (r === ROWS - 1 && c === COLS - 1) return sum;
+
+    for (let [dr, dc] of dir) {
+      let row = r + dr,
+        col = c + dc;
+      if (row < 0 || row >= ROWS || col < 0 || col >= COLS) continue;
+      if (visited[row][col]) continue;
+
+      minHeap.enqueue([row, col, sum + grid[row][col]], sum + grid[row][col]);
+    }
+  }
+};
+
+// Time: O(rc * log(rc))
+// Space: O(r * c)
