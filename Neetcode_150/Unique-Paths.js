@@ -16,8 +16,8 @@ var uniquePaths = function (m, n) {
   return dp(m - 1, n - 1);
 };
 
-// Time: O(2^(n * m))
-// Space: O(n * m)
+// Time: O(2^(n * m)) there are 2 paths from each cell (up, left)
+// Space: O(n + m) path length is the space complexity (n + m)
 
 // Recursion + memoization
 var uniquePaths = function (m, n) {
@@ -39,7 +39,7 @@ var uniquePaths = function (m, n) {
 };
 
 // Time: O(n * m)
-// Space: O(n * m)
+// Space: O(n + m)
 
 // Tabulation
 var uniquePaths = function (m, n) {
@@ -57,7 +57,7 @@ var uniquePaths = function (m, n) {
 };
 
 // Time: O(n * m)
-// Space: O(n * m)
+// Space: O(n + m)
 
 // Tabulation - Optimization
 var uniquePaths = function (m, n) {
@@ -75,4 +75,4 @@ var uniquePaths = function (m, n) {
 };
 
 // Time: O(n * m)
-// Space: O(m)
+// Space: O(m) only store previous row

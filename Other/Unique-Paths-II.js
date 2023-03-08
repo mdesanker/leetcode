@@ -18,8 +18,8 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
   return dp(ROWS - 1, COLS - 1);
 };
 
-// Time: O(2^(r * c))
-// Space: O(r * c)
+// Time: O(2^(r * c)) there are 2 paths from each cell (up, left)
+// Space: O(r * c) path length is the space complexity (r + c)
 
 // Recursion + memoization
 var uniquePathsWithObstacles = function (obstacleGrid) {
@@ -43,7 +43,7 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
 };
 
 // Time: O(r * c)
-// Space: O(r * c)
+// Space: O(r + c)
 
 // Tabulation
 var uniquePathsWithObstacles = function (obstacleGrid) {
@@ -74,7 +74,7 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
 };
 
 // Time: O(r * c)
-// Space: O(r * c)
+// Space: O(r + c)
 
 // Tabulation - Optimized
 var uniquePathsWithObstacles = function (obstacleGrid) {
@@ -104,4 +104,4 @@ var uniquePathsWithObstacles = function (obstacleGrid) {
 };
 
 // Time: O(r * c)
-// Space: O(c)
+// Space: O(c) only store previous row
