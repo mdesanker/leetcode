@@ -7,8 +7,8 @@
 var uniquePaths = function (m, n) {
   function dp(r, c) {
     // base cases
-    if (r === 0) return 1;
-    if (c === 0) return 1;
+    if (r === 0 && c === 0) return 1;
+    if (r < 0 || c < 0) return 0;
 
     // recurrence relation
     return dp(r - 1, c) + dp(r, c - 1);
@@ -29,8 +29,8 @@ var uniquePaths = function (m, n) {
     if (key in memo) return memo[key];
 
     // base cases
-    if (r === 0) return 1;
-    if (c === 0) return 1;
+    if (r === 0 && c === 0) return 1;
+    if (r < 0 || c < 0) return 0;
 
     // recurrence relation
     return (memo[key] = dp(r - 1, c) + dp(r, c - 1));
