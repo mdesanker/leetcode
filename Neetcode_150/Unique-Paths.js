@@ -56,6 +56,29 @@ var uniquePaths = function (m, n) {
   return dp[m - 1][n - 1];
 };
 
+var uniquePaths = function (m, n) {
+  const dp = [];
+  for (let i = 0; i < m; i++) {
+    dp.push(new Array(n).fill(0));
+  }
+
+  dp[0][0] = 1;
+
+  for (let i = 0; i < m; i++) {
+    for (let j = 0; j < n; j++) {
+      if (i === 0 && j === 0) dp[i][j] = 1;
+      else {
+        let left = 0,
+          up = 0;
+        if (j > 0) left = dp[i][j - 1];
+        if (i > 0) up = dp[i - 1][j];
+        dp[i][j] = left + up;
+      }
+    }
+  }
+  return dp[m - 1][n - 1];
+};
+
 // Time: O(n * m)
 // Space: O(n + m)
 
@@ -68,6 +91,28 @@ var uniquePaths = function (m, n) {
     let temp = new Array(n).fill(1);
     for (let j = 1; j < n; j++) {
       temp[j] = dp[j] + temp[j - 1];
+    }
+    dp = temp;
+  }
+  return dp[n - 1];
+};
+
+var uniquePaths = function (m, n) {
+  let dp = new Array(n).fill(0);
+
+  dp[0] = 1;
+
+  for (let i = 0; i < m; i++) {
+    let temp = new Array(n).fill(0);
+    for (let j = 0; j < n; j++) {
+      if (i === 0 && j === 0) temp[j] = 1;
+      else {
+        let left = 0,
+          up = 0;
+        if (j > 0) left = temp[j - 1];
+        if (i > 0) up = dp[j];
+        temp[j] = left + up;
+      }
     }
     dp = temp;
   }
