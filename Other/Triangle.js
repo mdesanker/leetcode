@@ -2,6 +2,18 @@
  * @param {number[][]} triangle
  * @return {number}
  */
+
+/**
+Normally with recursion we start from the last row and col, and move towards origin
+But for this problem we would have multiple starting points (every index in last row)
+So better to start from origin and move to last row
+We choose the last row as the base case
+This will automatically handle the variable end points because every path is possible from origin
+
+Tabulation is the opposite of recursion (thumb rule), so we also do tabulation in opposite direction
+Tabulation will be last to origin, otherwise we have to take min of last row since multiple end points
+ */
+
 // Recursion
 var minimumTotal = function (triangle) {
   const ROWS = triangle.length;
@@ -45,24 +57,23 @@ var minimumTotal = function (triangle) {
 // Tabulation
 var minimumTotal = function (triangle) {
   const ROWS = triangle.length;
-  const dp = [];
-  for (let i = 0; i < ROWS; i++) {
-    dp.push(new Array(i + 1).fill(0));
-  }
-  dp[0][0] = triangle[0][0];
 
+  const dp = [];
   for (let r = 0; r < ROWS; r++) {
+    dp.push(new Array(r + 1).fill(0));
+  }
+
+  for (let r = ROWS - 1; r >= 0; r--) {
     for (let c = 0; c < r + 1; c++) {
-      if (r === 0 && c === 0) dp[r][c] = triangle[0][0];
+      if (r === ROWS - 1) dp[r][c] = triangle[r][c];
       else {
-        let left = (right = Infinity);
-        if (c > 0) left = dp[r - 1][c - 1];
-        if (c < r) right = dp[r - 1][c];
+        let left = dp[r + 1][c];
+        let right = dp[r + 1][c + 1];
         dp[r][c] = triangle[r][c] + Math.min(left, right);
       }
     }
   }
-  return Math.min(...dp[ROWS - 1]);
+  return dp[0][0];
 };
 
 // Time: O(r + c)
@@ -74,38 +85,39 @@ var minimumTotal = function (triangle) {
 
   let dp = [];
 
-  for (let r = 0; r < ROWS; r++) {
+  for (let r = ROWS - 1; r >= 0; r--) {
     let temp = new Array(r + 1).fill(0);
     for (let c = 0; c < r + 1; c++) {
-      if (r === 0 && c === 0) temp[c] = triangle[0][0];
+      if (r === ROWS - 1) temp[c] = triangle[r][c];
       else {
-        let left = (right = Infinity);
-        if (c > 0) left = dp[c - 1];
-        if (c < r) right = dp[c];
+        let left = dp[c];
+        let right = dp[c + 1];
         temp[c] = triangle[r][c] + Math.min(left, right);
       }
     }
     dp = temp;
   }
-  return Math.min(...dp);
+  return dp[0];
 };
+
+// Time: O(r + c)
+// Space: O(c) - only store previous row
 
 // Tabulation - Optimized 2
 var minimumTotal = function (triangle) {
   const ROWS = triangle.length;
 
-  for (let r = 0; r < ROWS; r++) {
+  for (let r = ROWS - 1; r >= 0; r--) {
     for (let c = 0; c < r + 1; c++) {
-      if (r === 0 && c === 0) continue;
+      if (r === ROWS - 1) continue;
       else {
-        let left = (right = Infinity);
-        if (c > 0) left = triangle[r - 1][c - 1];
-        if (c < r) right = triangle[r - 1][c];
+        let left = triangle[r + 1][c];
+        let right = triangle[r + 1][c + 1];
         triangle[r][c] += Math.min(left, right);
       }
     }
   }
-  return Math.min(...triangle[ROWS - 1]);
+  return triangle[0][0];
 };
 // Time: O(r + c)
-// Space: O(1)
+// Space: O(1) - modify input array so no additional memory needed
