@@ -2,6 +2,54 @@
  * @param {number[][]} triangle
  * @return {number}
  */
+// Recursion
+var minimumTotal = function (triangle) {
+  const ROWS = triangle.length;
+
+  function dp(r, c) {
+    if (r === 0 && c === 0) return triangle[0][0];
+    if (c < 0 || c > r) return Infinity;
+
+    let left = dp(r - 1, c - 1);
+    let right = dp(r - 1, c);
+    return triangle[r][c] + Math.min(left, right);
+  }
+  let min = Infinity;
+  for (let i = 0; i < ROWS; i++) {
+    min = Math.min(min, dp(ROWS - 1, i));
+  }
+  return min;
+};
+
+// Time: O(2^(r + c) * c)
+// Space: O(r * c)
+
+// Recursion + Memoization
+var minimumTotal = function (triangle) {
+  const ROWS = triangle.length;
+  const memo = {};
+
+  function dp(r, c) {
+    const key = `${r}#${c}`;
+    if (key in memo) return memo[key];
+
+    if (r === 0 && c === 0) return triangle[0][0];
+    if (c < 0 || c > r) return Infinity;
+
+    let left = dp(r - 1, c - 1);
+    let right = dp(r - 1, c);
+    return (memo[key] = triangle[r][c] + Math.min(left, right));
+  }
+  let min = Infinity;
+  for (let i = 0; i < ROWS; i++) {
+    min = Math.min(min, dp(ROWS - 1, i));
+  }
+  return min;
+};
+
+// Time: O(r + c)
+// Space: O(r * c)
+
 // Tabulation
 var minimumTotal = function (triangle) {
   const ROWS = triangle.length;
