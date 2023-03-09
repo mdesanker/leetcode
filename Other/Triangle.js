@@ -7,22 +7,18 @@ var minimumTotal = function (triangle) {
   const ROWS = triangle.length;
 
   function dp(r, c) {
-    if (r === 0 && c === 0) return triangle[0][0];
-    if (c < 0 || c > r) return Infinity;
+    if (r === ROWS - 1) return triangle[r][c];
 
-    let left = dp(r - 1, c - 1);
-    let right = dp(r - 1, c);
+    // right can never be out of bounds because following row always increases by 1
+    let left = dp(r + 1, c);
+    let right = dp(r + 1, c + 1);
     return triangle[r][c] + Math.min(left, right);
   }
-  let min = Infinity;
-  for (let i = 0; i < ROWS; i++) {
-    min = Math.min(min, dp(ROWS - 1, i));
-  }
-  return min;
+  return dp(0, 0);
 };
 
-// Time: O(2^(r + c) * c)
-// Space: O(r * c)
+// Time: O(2^(r * c)) -> r = c - 1 -> O(r^2)
+// Space: O(r) recursive stack is the height of the triangle
 
 // Recursion + Memoization
 var minimumTotal = function (triangle) {
@@ -33,22 +29,18 @@ var minimumTotal = function (triangle) {
     const key = `${r}#${c}`;
     if (key in memo) return memo[key];
 
-    if (r === 0 && c === 0) return triangle[0][0];
-    if (c < 0 || c > r) return Infinity;
+    if (r === ROWS - 1) return triangle[r][c];
 
-    let left = dp(r - 1, c - 1);
-    let right = dp(r - 1, c);
+    // right can never be out of bounds because following row always increases by 1
+    let left = dp(r + 1, c);
+    let right = dp(r + 1, c + 1);
     return (memo[key] = triangle[r][c] + Math.min(left, right));
   }
-  let min = Infinity;
-  for (let i = 0; i < ROWS; i++) {
-    min = Math.min(min, dp(ROWS - 1, i));
-  }
-  return min;
+  return dp(0, 0);
 };
 
-// Time: O(r + c)
-// Space: O(r * c)
+// Time: O(r * c) -> r = c - 1 -> O(r^2)
+// Space: O(r^2) for the cache
 
 // Tabulation
 var minimumTotal = function (triangle) {
