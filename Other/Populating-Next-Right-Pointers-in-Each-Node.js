@@ -22,16 +22,15 @@ var connect = function (root) {
     for (let i = 0; i < len; i++) {
       const node = q.shift();
 
-      if (i === len - 1 || !q.length) node.next = null;
+      if (i === len - 1) node.next = null;
       else node.next = q[0];
 
       if (node.left) q.push(node.left);
       if (node.right) q.push(node.right);
     }
   }
-
   return root;
 };
 
-// Time: O(n)
-// Space: O(n)
+// Time: O(n) traverse every node
+// Space: O(n) perfect BT means last row has n/2 nodes: O(n/2) simplifies to O(n)
