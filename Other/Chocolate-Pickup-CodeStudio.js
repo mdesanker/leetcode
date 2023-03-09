@@ -98,17 +98,10 @@ var maxChocolates = function (grid) {
   const ROWS = grid.length,
     COLS = grid[0].length;
 
-  dp = [];
-  // building 3D dp array
-  for (let r = 0; r < ROWS; r++) {
-    for (let c1 = 0; c1 < COLS; c1++) {
-      let row = [];
-      for (let c2 = 0; c2 < COLS; c2++) {
-        row.push(new Array(COLS).fill(0));
-      }
-      dp.push(row);
-    }
-  }
+  // build 3D dp array
+  const dp = [...new Array(ROWS)].map((x) =>
+    [...new Array(COLS)].map((y) => new Array(COLS).fill(0))
+  );
 
   // base cases
   for (let c1 = 0; c1 < COLS; c1++) {
