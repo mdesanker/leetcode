@@ -22,7 +22,7 @@ var minPathSum = function (grid) {
   return dp(n - 1, m - 1);
 };
 
-// Time: O(2^(m * n)) for every cell, there are two options - up or left
+// Time: O(2^(m + n)) path length is m + n, and for every step we have two options - right or down
 // Space: O(n + m) the path length is the recursion depth
 
 // Recursion + Memoization
@@ -50,7 +50,7 @@ var minPathSum = function (grid) {
   return dp(n - 1, m - 1);
 };
 
-// Time: O(n * m)
+// Time: O(n + m)
 // Space: O(n + m)
 
 // Tabulation
@@ -80,7 +80,7 @@ var minPathSum = function (grid) {
 };
 
 // Time: O(n * m)
-// Space: O(n + m)
+// Space: O(n * m) for the dp array
 
 // Tabulation - Optimized
 var minPathSum = function (grid) {
@@ -108,7 +108,7 @@ var minPathSum = function (grid) {
 };
 
 // Time: O(n * m)
-// Space: O(m)
+// Space: O(m) only save previous row
 
 // Tabulation - Optimized 2
 var minPathSum = function (grid) {
@@ -130,7 +130,7 @@ var minPathSum = function (grid) {
 };
 
 // Time: O(n * m)
-// Space: O(1)
+// Space: O(1) modify input grid so no additional memory needed
 
 // Alternate solution using Djikstra's Shortest Path Algorithm
 /**
