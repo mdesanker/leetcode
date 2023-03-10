@@ -4,23 +4,21 @@ https://www.codingninjas.com/codestudio/problems/subset-sum-equal-to-k_1550954
 Similar to Subarray Sum Equals K on LeetCode (https://leetcode.com/problems/subarray-sum-equals-k), but return true or false
  */
 // Recrusion
-var subsetSum = function (nums, k) {
+var subsetSumToK = function (nums, k) {
   const N = nums.length;
 
-  function dp(ind, target) {
-    // base cases
-    if (target === 0) return true;
-    if (ind === 0) return nums[0] === target;
+  function dp(i, j) {
+    // j = target
+    if (j === 0) return true;
+    if (i === 0) return nums[i] === j;
 
     // either take or not take current element
-    let notTake = dp(ind - 1, target);
+    let notTake = dp(i - 1, j);
     // can only take element if target >= element
     let take = false;
-    if (target >= nums[ind]) take = dp(ind - 1, target - nums[ind]);
-
+    if (j >= nums[i]) take = dp(i - 1, j - nums[i]);
     return take || notTake;
   }
-
   return dp(N - 1, k);
 };
 
@@ -28,28 +26,25 @@ var subsetSum = function (nums, k) {
 // Space: O(n)
 
 // Recrusion + Memoization
-var subsetSum = function (nums, k) {
+var subsetSumToK = function (nums, k) {
   const N = nums.length;
   const memo = {};
 
-  function dp(ind, target) {
-    // check cache
-    const key = `${ind}#${target}`;
+  function dp(i, j) {
+    // j = target
+    const key = `${i}#${j}`;
     if (key in memo) return memo[key];
 
-    // base cases
-    if (target === 0) return true;
-    if (ind === 0) return nums[0] === target;
+    if (j === 0) return true;
+    if (i === 0) return nums[i] === j;
 
     // either take or not take current element
-    let notTake = dp(ind - 1, target);
+    let notTake = dp(i - 1, j);
     // can only take element if target >= element
     let take = false;
-    if (target >= nums[ind]) take = dp(ind - 1, target - nums[ind]);
-
+    if (j >= nums[i]) take = dp(i - 1, j - nums[i]);
     return (memo[key] = take || notTake);
   }
-
   return dp(N - 1, k);
 };
 
@@ -69,10 +64,10 @@ var subsetSum = function (nums, k) {
   for (let i = 1; i < N; i++) {
     for (let j = 1; j < k + 1; j++) {
       // either take or not take current element
-      let notTake = dp[i - 1][k];
+      let notTake = dp[i - 1][j];
       // can only take element if target >= element
       let take = false;
-      if (k >= nums[i]) take = dp[i - 1][k - nums[i]];
+      if (j >= nums[i]) take = dp[i - 1][j - nums[i]];
       dp[i][j] = take || notTake;
     }
   }
@@ -99,10 +94,10 @@ var subsetSum = function (nums, k) {
     temp[0] = true;
     for (let j = 1; j < k + 1; j++) {
       // either take or not take current element
-      let notTake = dp[k];
+      let notTake = dp[j];
       // can only take element if target >= element
       let take = false;
-      if (k >= nums[i]) take = dp[k - nums[i]];
+      if (k >= nums[i]) take = dp[j - nums[i]];
       temp[j] = take || notTake;
     }
     dp = temp;
@@ -114,4 +109,4 @@ var subsetSum = function (nums, k) {
 // Space: O(k) - only track prev row
 
 console.log(subsetSum([1, 2, 3, 4], 4)); // true
-console.log(subsetSum([1, 2, 3, 4], 11)); // false
+// console.log(subsetSum([1, 2, 3, 4], 11)); // false
