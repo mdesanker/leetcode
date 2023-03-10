@@ -70,7 +70,13 @@ var canPartition = function (nums) {
   const dp = [...new Array(N)].map(() => new Array(target + 1).fill(false));
 
   for (let i = 0; i < N; i++) dp[i][0] = true;
-  dp[0][nums[0]] = true;
+  // if i === 0, we are at the last element in the nums array
+  // if this element = target, then we can return true
+
+  // example: n = 1, k = 5, nums = [10]
+  // here nums[0] === 10, which is greater than k,
+  // so this would overshoot our target and should return false at this position
+  dp[0][nums[0]] = nums[0] === target;
 
   for (let i = 1; i < N; i++) {
     for (let j = 1; j < target + 1; j++) {
@@ -97,7 +103,7 @@ var canPartition = function (nums) {
 
   let dp = new Array(target + 1).fill(false);
   dp[0] = true;
-  dp[nums[0]] = true;
+  dp[nums[0]] = nums[0] === target;
 
   for (let i = 1; i < N; i++) {
     let temp = new Array(target + 1).fill(false);
