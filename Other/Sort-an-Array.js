@@ -20,7 +20,7 @@ var sortArray = function (nums) {
 
 // Quick sort [TLE]
 var sortArray = function (nums) {
-  function quickSelect(nums, l, r) {
+  function quickSort(nums, l, r) {
     // base case
     if (l >= r) return nums;
 
@@ -34,11 +34,11 @@ var sortArray = function (nums) {
     }
     [nums[i], nums[r]] = [nums[r], nums[i]];
 
-    quickSelect(nums, l, i - 1);
-    quickSelect(nums, i + 1, r);
+    quickSort(nums, l, i - 1);
+    quickSort(nums, i + 1, r);
     return nums;
   }
-  return quickSelect(nums, 0, nums.length - 1);
+  return quickSort(nums, 0, nums.length - 1);
 };
 
 // Time: O(n) average, O(n^2) worst case
