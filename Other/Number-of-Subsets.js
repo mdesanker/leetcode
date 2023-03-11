@@ -106,7 +106,7 @@ var findWays = function (nums, k) {
 
   // base case
   dp[0][0] = 1;
-  dp[0][nums[0]] = 1;
+  if (nums[0] <= k) dp[0][nums[0]] = 1; // IMPORTANT
 
   for (let i = 1; i < N; i++) {
     for (let j = 0; j < k + 1; j++) {
@@ -130,7 +130,7 @@ var findWays = function (nums, k) {
 
   // base case
   dp[0] = 1;
-  dp[nums[0]] = 1;
+  if (nums[0] <= k) dp[nums[0]] = 1; // IMPORTANT
 
   for (let i = 1; i < N; i++) {
     let temp = new Array(k + 1).fill(0);
