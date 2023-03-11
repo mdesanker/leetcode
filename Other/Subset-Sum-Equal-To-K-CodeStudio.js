@@ -59,7 +59,7 @@ var subsetSum = function (nums, k) {
 
   // base cases
   for (let i = 0; i < N; i++) dp[i][0] = true;
-  dp[0][nums[0]] = true;
+  dp[0][nums[0]] = nums[0] <= k;
 
   for (let i = 1; i < N; i++) {
     for (let j = 1; j < k + 1; j++) {
@@ -83,7 +83,7 @@ var subsetSum = function (nums, k) {
 
   let dp = new Array(k + 1).fill(false);
   dp[0] = true;
-  dp[nums[0]] = true;
+  dp[nums[0]] = nums[0] <= k;
 
   // base cases
   // for (let i = 0; i < N; i++) dp[i][0] = true;
