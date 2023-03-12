@@ -93,3 +93,34 @@ f(ind, target) {
 
 Time: O(n \* target) two options for every element - take or not take
 Space: O(n \* target) auxillary stack space of n
+
+# 0/1 Knapsack
+
+n items with a weight and a value (n = 3)
+
+wt = [3, 4, 5];
+val = [30, 50, 60];
+
+Bag has a capacity (cap = 8)
+
+```js
+var knapsack = function (wt, val, cap) {
+  const N = wt.length;
+
+  function dp(i, W) {
+    if (i === 0) {
+      if (wt[0] <= W) return val[0];
+      else return 0;
+    }
+
+    let notTake = dp(i - 1, W);
+    let take = -Infinity;
+    if (wt[i] <= cap - W) take = val[i] + dp(i - 1, W - wt[i]);
+    return Math.max(take, notTake);
+  }
+  return dp(N - 1, cap);
+};
+```
+
+Time: O(2^n)
+Space: O(n)
