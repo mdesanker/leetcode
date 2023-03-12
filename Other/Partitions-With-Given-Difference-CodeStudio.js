@@ -13,12 +13,18 @@ totalSum - 2 * S2 = D
 S2 = (totalSum - D) / 2
 
 Find number of subsets with this target sum
+
+This problem becomes Number-of-Subsets with a couple new edge cases:
+
+totalSum - D must be even and greater than 0 otherwise cannot get a whole number target when we divide by 2
  */
 
 // Recursion
 var countPartitions = function (nums, d) {
   const N = nums.length;
   const sum = nums.reduce((a, b) => a + b);
+
+  if (sum - d < 0 || (sum - d) % 2 === 1) return 0;
 
   // check key insight explanation above
   const target = (sum - d) / 2;
@@ -45,6 +51,8 @@ var countPartitions = function (nums, d) {
 var countPartitions = function (nums, d) {
   const N = nums.length;
   const sum = nums.reduce((a, b) => a + b);
+
+  if (sum - d < 0 || (sum - d) % 2 === 1) return 0;
 
   // check key insight explanation above
   const target = (sum - d) / 2;
@@ -77,6 +85,8 @@ var countPartitions = function (nums, d) {
   const N = nums.length;
   const sum = nums.reduce((a, b) => a + b);
 
+  if (sum - d < 0 || (sum - d) % 2 === 1) return 0;
+
   // check key insight explanation above
   const target = (sum - d) / 2;
 
@@ -103,6 +113,8 @@ var countPartitions = function (nums, d) {
 var countPartitions = function (nums, d) {
   const N = nums.length;
   const sum = nums.reduce((a, b) => a + b);
+
+  if (sum - d < 0 || (sum - d) % 2 === 1) return 0;
 
   // check key insight explanation above
   const target = (sum - d) / 2;
