@@ -30,9 +30,9 @@ var countPartitions = function (nums, d) {
   const target = (sum - d) / 2;
 
   function dp(i, j) {
-    if (j === 0) return 1;
     if (i === 0) {
-      if (nums[i] === j) return 1;
+      if (j === 0 && nums[0] === 0) return 2;
+      if (nums[i] === j || j === 0) return 1;
       else return 0;
     }
 
@@ -46,6 +46,9 @@ var countPartitions = function (nums, d) {
 
 // Time: O(2^n)
 // Space: O(n)
+
+// console.log(countPartitions([5, 2, 5, 1], 3)); // 2
+// console.log(countPartitions([5, 2, 6, 4], 3)); // [5, 2], [6, 4] = 1
 
 // Recursion + Memoization
 var countPartitions = function (nums, d) {
@@ -63,9 +66,9 @@ var countPartitions = function (nums, d) {
     const key = `${i}#${j}`;
     if (key in memo) return memo[key];
 
-    if (j === 0) return 1;
     if (i === 0) {
-      if (nums[i] === j) return 1;
+      if (j === 0 && nums[0] === 0) return 2;
+      if (nums[i] === j || j === 0) return 1;
       else return 0;
     }
 
@@ -92,8 +95,9 @@ var countPartitions = function (nums, d) {
 
   const dp = [...new Array(N)].map(() => new Array(target + 1).fill(0));
 
-  dp[0][0] = 1;
   if (nums[0] <= target) dp[0][nums[0]] = 1;
+  if (nums[0] === 0) dp[0][0] = 2;
+  else dp[0][0] = 1;
 
   for (let i = 1; i < N; i++) {
     for (let j = 0; j < target + 1; j++) {
@@ -109,6 +113,9 @@ var countPartitions = function (nums, d) {
 // Time: O(n * t)
 // Space: O(n * t)
 
+console.log(countPartitions([5, 2, 5, 1], 3)); // 2
+console.log(countPartitions([5, 2, 6, 4], 3)); // [5, 2], [6, 4] = 1
+
 // Tabulation - Optimized
 var countPartitions = function (nums, d) {
   const N = nums.length;
@@ -121,8 +128,9 @@ var countPartitions = function (nums, d) {
 
   let dp = new Array(target + 1).fill(0);
 
-  dp[0] = 1;
   if (nums[0] <= target) dp[nums[0]] = 1;
+  if (nums[0] === 0) dp[0] = 2;
+  else dp[0] = 1;
 
   for (let i = 1; i < N; i++) {
     let temp = new Array(target + 1).fill(0);
