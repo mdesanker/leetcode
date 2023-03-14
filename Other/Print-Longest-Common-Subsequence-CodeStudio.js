@@ -1,6 +1,45 @@
 /**
 Print longest common subsequence
  */
+// Striver - Tabulation
+var longestCommonSubsequence = function (text1, text2) {
+  const n = text1.length,
+    m = text2.length;
+
+  // build dp array
+  const dp = [...new Array(n + 1)].map(() => new Array(m + 1).fill(0));
+
+  for (let i = 1; i < n + 1; i++) {
+    for (let j = 1; j < m + 1; j++) {
+      if (text1[i - 1] === text2[j - 1]) {
+        dp[i][j] = 1 + dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+  }
+
+  // build res string working backwards through dp array
+  // add chars as we encounter matching chars
+  let i = n,
+    j = m;
+  let res = "";
+  while (i > 0 && j > 0) {
+    if (text1[i - 1] === text2[j - 1]) {
+      res = text1[i - 1] + res;
+      i--;
+      j--;
+    } else if (dp[i - 1][j] > dp[i][j - 1]) {
+      i--;
+    } else {
+      j--;
+    }
+  }
+  return res;
+};
+
+// Time: O(n * m)
+// Space: O(n * m)
 
 // Recursion
 var longestCommonSubsequence = function (text1, text2) {
