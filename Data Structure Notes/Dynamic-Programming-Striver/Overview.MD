@@ -28,3 +28,13 @@
 
    - Count: return 1 or 0
    - Possible: return true or false
+
+## Approach
+
+1. Develop brute force solution using recursion - key points are the recurrence relation and the base cases
+
+2. Memoize to build top down solution
+
+3. Convert to bottom up solution using dp array - copy over recurrence relation
+
+4. Optimize space if only need previous row or value
