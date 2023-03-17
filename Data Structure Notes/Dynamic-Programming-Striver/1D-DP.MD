@@ -144,3 +144,109 @@ var frogJump = function (heights, k) {
 };
 // TC: O(n), SC: O(n)
 ```
+
+## House Robber
+
+```js
+// Recursion + Memoization
+var rob = function (nums) {
+  const n = nums.length;
+  const memo = {};
+  function dp(i) {
+    if (i in memo) return memo[i];
+    if (i < 0) return 0;
+    if (i === 0) return nums[0];
+    return (memo[i] = Math.max(dp(i - 1), nums[i] + dp(i - 2)));
+  }
+  return dp(n - 1);
+};
+// TC: O(n), SC: O(n)
+
+// Tabulation
+var rob = function (nums) {
+  const n = nums.length;
+  const dp = new Array(n + 1).fill(0);
+  (dp[0] = 0), (dp[1] = nums[0]);
+  for (let i = 2; i < n + 1; i++) {
+    dp[i] = Math.max(dp[i - 1], nums[i - 1] + dp[i - 2]);
+  }
+  return dp[n];
+};
+// TC: O(n), SC: O(n)
+
+// Tabulation - Space optimized
+var rob = function (nums) {
+  const n = nums.length;
+  let two = 0,
+    one = nums[0];
+  for (let i = 1; i < n; i++) {
+    let temp = Math.max(one, nums[i] + two);
+    two = one;
+    one = temp;
+  }
+  return one;
+};
+// TC: O(n), SC: O(1)
+```
+
+## House Robber II
+
+```js
+// Recursion + Memoization
+var rob = function (nums) {
+  var rob = function (nums) {
+    const n = nums.length;
+    function dp(i, nums, memo = {}) {
+      if (i in memo) return memo[i];
+      if (i < 0) return 0;
+      if (i === 0) return nums[0];
+      return (memo[i] = Math.max(
+        dp(i - 1, nums, memo),
+        nums[i] + dp(i - 2, nums, memo)
+      ));
+    }
+    if (n === 0) return 0;
+    if (n === 1) return nums[0];
+    return Math.max(dp(n - 2, nums.slice(0, -1)), dp(n - 2, nums.slice(1)));
+  };
+};
+// TC: O(n), SC: O(n)
+
+// Tabulation
+var rob = function (nums) {
+  const n = nums.length;
+  function dp(nums) {
+    const n = nums.length;
+    const dp = new Array(n + 1).fill(0);
+    (dp[0] = 0), (dp[1] = nums[0]);
+    for (let i = 2; i < n + 1; i++) {
+      dp[i] = Math.max(dp[i - 1], nums[i - 1] + dp[i - 2]);
+    }
+    return dp[n];
+  }
+  if (n === 0) return 0;
+  if (n === 1) return nums[0];
+  return Math.max(dp(nums.slice(0, -1)), dp(nums.slice(1)));
+};
+// TC: O(n), SC: O(n)
+
+// Tabulation - Space optimized
+var rob = function (nums) {
+  const n = nums.length;
+  function dp(nums) {
+    const n = nums.length;
+    let two = 0,
+      one = nums[0];
+    for (let i = 1; i < n; i++) {
+      let temp = Math.max(one, nums[i] + two);
+      two = one;
+      one = temp;
+    }
+    return one;
+  }
+  if (n === 0) return 0;
+  if (n === 1) return nums[0];
+  return Math.max(dp(nums.slice(0, -1)), dp(nums.slice(1)));
+};
+// TC: O(n), SC: O(1)
+```
