@@ -56,7 +56,7 @@ var canPartition = function (nums) {
 };
 
 // Time: O(n * m) where n is length of nums and m is target sum we try to get to
-// Space: O(n) auxillary recursion stack is length of nums array
+// Space: O(n * m + n) space for cache and auxillary recursion stack is length of nums array
 
 // Tabulation
 var canPartition = function (nums) {
