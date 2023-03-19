@@ -658,3 +658,63 @@ var unboundedKnapsack = function (n, W, profit, weight) {
 };
 // TC: O(n * W), SC: O(W)
 ```
+
+## Rod Cutting
+
+Cut rod into lengths to maximize profit (unbounded knapsack where capacity is length of the rod)
+Note that index 0 of profits array corresponds to a length of 1 (1-indexed)
+
+```js
+// Recursion + Memoization
+var cutRod = function (n, profit) {
+  function dp(i, j) {
+    if (i === 0) return j * profit[0];
+
+    let notTake = dp(i - 1, j);
+    let take = -Infinity;
+    // length is i + 1 because 1-indexed length
+    if (i + 1 <= j) take = profit[i] + dp(i, j - (i + 1));
+    return Math.max(take, notTake);
+  }
+  return dp(n - 1, n);
+};
+// TC: O(n^2), SC: O(n^2 + n)
+
+// Tabulation
+var cutRod = function (n, profit) {
+  const dp = [...new Array(n)].map(() => new Array(n + 1).fill(-Infinity));
+  for (let j = 0; j < n + 1; j++) dp[0][j] = j * profit[0];
+
+  for (let i = 1; i < n; i++) {
+    for (let j = 0; j < n + 1; j++) {
+      let notTake = dp[i - 1][j];
+      let take = -Infinity;
+      // length is i + 1 because 1-indexed length
+      if (i + 1 <= j) take = profit[i] + dp[i][j - (i + 1)];
+      dp[i][j] = Math.max(take, notTake);
+    }
+  }
+  return dp[n - 1][n];
+};
+// TC: O(n^2), SC: O(n^2)
+
+// Tabulation - Space optimized
+var cutRod = function (n, profit) {
+  let dp = new Array(n + 1).fill(-Infinity);
+  for (let j = 0; j < n + 1; j++) dp[j] = j * profit[0];
+
+  for (let i = 1; i < n; i++) {
+    let temp = new Array(n + 1).fill(-Infinity);
+    for (let j = 0; j < n + 1; j++) {
+      let notTake = dp[j];
+      let take = -Infinity;
+      // length is i + 1 because 1-indexed length
+      if (i + 1 <= j) take = profit[i] + temp[j - (i + 1)];
+      temp[j] = Math.max(take, notTake);
+    }
+    dp = temp;
+  }
+  return dp[n];
+};
+// TC: O(n^2), SC: O(n)
+```
