@@ -2,7 +2,22 @@
  * @param {number[]} prices
  * @return {number}
  */
+// Dynamic Programming
+// considered DP because we solve subproblems until we reach end of the array
+var maxProfit = function (prices) {
+  let min = prices[0],
+    profit = 0;
+  for (let i = 1; i < prices.length; i++) {
+    let cost = prices[i] - min;
+    profit = Math.max(profit, cost);
+    min = Math.min(min, prices[i]);
+  }
+  return profit;
+};
+// Time: O(n)
+// Space: O(1)
 
+// Neetcode
 const maxProfit = function (prices) {
   let l = 0,
     max = 0;
