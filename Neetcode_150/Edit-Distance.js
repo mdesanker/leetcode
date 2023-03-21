@@ -8,10 +8,10 @@ var minDistance = function (word1, word2) {
   const n = word1.length,
     m = word2.length;
 
-  // edge cases
-  if (n === 0 && m === 0) return 0;
-  if (n === 0) return m;
-  if (m === 0) return n;
+  // edge cases (optional)
+  // if (n === 0 && m === 0) return 0;
+  // if (n === 0) return m;
+  // if (m === 0) return n;
 
   function dp(i, j) {
     // when one string is empty, return length of remaining string (index + 1)
@@ -39,9 +39,9 @@ var minDistance = function (word1, word2) {
     m = word2.length;
 
   // edge cases
-  if (n === 0 && m === 0) return 0;
-  if (n === 0) return m;
-  if (m === 0) return n;
+  // if (n === 0 && m === 0) return 0;
+  // if (n === 0) return m;
+  // if (m === 0) return n;
 
   const memo = {};
 
@@ -73,9 +73,10 @@ var minDistance = function (word1, word2) {
   const n = word1.length,
     m = word2.length;
 
-  if (n === 0 && m === 0) return 0;
-  if (n === 0) return m;
-  if (m === 0) return n;
+  // edge cases (optional)
+  // if (n === 0 && m === 0) return 0;
+  // if (n === 0) return m;
+  // if (m === 0) return n;
 
   const dp = [...new Array(n + 1)].map(() => new Array(m + 1).fill(0));
 
