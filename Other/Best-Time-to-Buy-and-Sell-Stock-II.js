@@ -91,6 +91,22 @@ var maxProfit = function (prices) {
   }
   return dp[1];
 };
+
+var maxProfit = function (prices) {
+  const n = prices.length;
+
+  let dp = new Array(2).fill(0);
+  // if (i === n) return 0;
+  dp[0] = dp[1] = 0;
+
+  for (let i = n - 1; i >= 0; i--) {
+    let temp = new Array(2).fill(0);
+    temp[1] = Math.max(-prices[i] + dp[0], dp[1]);
+    temp[0] = Math.max(prices[i] + dp[1], dp[0]);
+    dp = temp;
+  }
+  return dp[1];
+};
 // Time: O(2n)
 // Space: O(4)
 
