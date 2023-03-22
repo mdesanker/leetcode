@@ -3,6 +3,7 @@
  * @param {number[][]} roads
  * @return {number}
  */
+// BFS
 var minScore = function (n, roads) {
   const adj = {};
   for (let i = 1; i < n + 1; i++) adj[i] = [];
@@ -32,3 +33,50 @@ var minScore = function (n, roads) {
 
 // Time: O(v + e)
 // Space: O(v + e)
+
+// Union Find
+var minScore = function (n, roads) {
+  const par = [];
+  for (let i = 0; i < n + 1; i++) par.push(i);
+  const rank = new Array(n + 1).fill(1);
+
+  function find(n) {
+    let p = par[n];
+    while (p !== par[p]) {
+      par[p] = par[par[p]];
+      p = par[p];
+    }
+    return p;
+  }
+
+  function union(n1, n2) {
+    let p1 = find(n1),
+      p2 = find(n2);
+    if (p1 === p2) return false;
+    if (rank[p1] < rank[p2]) {
+      par[p1] = p2;
+      rank[p2] += rank[p1];
+    } else {
+      par[p2] = p1;
+      rank[p1] += rank[p2];
+    }
+    return true;
+  }
+
+  // build connections
+  for (let [s, d, p] of roads) {
+    union(s, d);
+  }
+
+  // get min path length for every node connected to 1
+  let res = Infinity;
+  for (let [s, d, p] of roads) {
+    if (find(1) === find(s)) {
+      res = Math.min(res, p);
+    }
+  }
+  return res;
+};
+
+// Time: O(v + e) Amortized Union find operations are O(1), O(v) to initialize par and rank arrays, iterate through every edge twice to build connections then find min path
+// Space: O(v) for par and rank arrays
