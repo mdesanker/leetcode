@@ -67,6 +67,18 @@ var maxProfit = function (prices) {
   }
   return dp[0][1];
 };
+
+var maxProfit = function (prices) {
+  const n = prices.length;
+  const dp = [...new Array(n + 1)].map(() => new Array(2).fill(0));
+  dp[n][0] = dp[n][1] = 0;
+
+  for (let i = n - 1; i >= 0; i--) {
+    dp[i][1] = Math.max(-prices[i] + dp[i + 1][0], dp[i + 1][1]);
+    dp[i][0] = Math.max(prices[i] + dp[i + 1][1], dp[i + 1][0]);
+  }
+  return dp[0][1];
+};
 // Time: O(2n)
 // Space: O(2n)
 
@@ -124,6 +136,17 @@ var maxProfit = function (prices) {
 
     dpBuy = tempBuy;
     dpSell = tempSell;
+  }
+  return dpBuy;
+};
+
+var maxProfit = function (prices) {
+  const n = prices.length;
+  let dpBuy = (dpSell = 0);
+
+  for (let i = n - 1; i >= 0; i--) {
+    dpBuy = Math.max(-prices[i] + dpSell, dpBuy);
+    dpSell = Math.max(prices[i] + dpBuy, dpSell);
   }
   return dpBuy;
 };
