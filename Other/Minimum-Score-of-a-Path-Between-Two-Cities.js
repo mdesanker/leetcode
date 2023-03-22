@@ -80,3 +80,32 @@ var minScore = function (n, roads) {
 
 // Time: O(v + e) Amortized Union find operations are O(1), O(v) to initialize par and rank arrays, iterate through every edge twice to build connections then find min path
 // Space: O(v) for par and rank arrays
+
+// DFS
+var minScore = function (n, roads) {
+  const adj = {};
+  for (let i = 1; i < n + 1; i++) adj[i] = [];
+  for (let [s, d, p] of roads) {
+    adj[s].push([d, p]);
+    adj[d].push([s, p]);
+  }
+
+  const visited = new Set();
+  let res = Infinity;
+
+  function dfs(node) {
+    if (visited.has(node)) return;
+    visited.add(node);
+
+    for (let [n2, p2] of adj[node]) {
+      res = Math.min(res, p2);
+      dfs(n2);
+    }
+  }
+
+  dfs(1);
+  return res;
+};
+
+// Time: O(v + e)
+// Space: O(v + e)
