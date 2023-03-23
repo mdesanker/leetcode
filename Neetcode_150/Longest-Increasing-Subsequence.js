@@ -59,8 +59,49 @@ var lengthOfLIS = function (nums) {
   return dp(0, -1);
 };
 // Time: O(n^2)
+// Space: O(n^2 + n)
+
+// Tabulation
+var lengthOfLIS = function (nums) {
+  const n = nums.length;
+
+  const dp = [...new Array(n + 1)].map(() => new Array(n + 1).fill(0));
+
+  for (let i = n - 1; i >= 0; i--) {
+    for (let j = i - 1; j >= -1; j--) {
+      let notTake = dp[i + 1][j + 1];
+      let take = 0;
+      if (j === -1 || nums[i] > nums[j]) take = 1 + dp[i + 1][i + 1];
+      dp[i][j + 1] = Math.max(take, notTake);
+    }
+  }
+  return dp[0][0];
+};
+// Time: O(n^2)
 // Space: O(n^2)
 
+// Tabulation - Optimized
+var lengthOfLIS = function (nums) {
+  const n = nums.length;
+
+  let dp = new Array(n + 1).fill(0);
+
+  for (let i = n - 1; i >= 0; i--) {
+    let temp = new Array(n + 1).fill(0);
+    for (let j = i - 1; j >= -1; j--) {
+      let notTake = dp[j + 1];
+      let take = 0;
+      if (j === -1 || nums[i] > nums[j]) take = 1 + dp[i + 1];
+      temp[j + 1] = Math.max(take, notTake);
+    }
+    dp = temp;
+  }
+  return dp[0];
+};
+// Time: O(n^2)
+// Space: O(n)
+
+// Neetcode
 var lengthOfLIS = function (nums) {
   // create array same length as nums filled with 1 (each cell is length 1)
   const dp = new Array(nums.length).fill(1);
