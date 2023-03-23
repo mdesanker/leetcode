@@ -101,6 +101,24 @@ var lengthOfLIS = function (nums) {
 // Time: O(n^2)
 // Space: O(n)
 
+// Optimal Tabulation
+var lengthOfLIS = function (nums) {
+  const n = nums.length;
+
+  let dp = new Array(n).fill(1);
+
+  for (let i = 1; i < n; i++) {
+    for (let j = 0; j < i; j++) {
+      if (nums[j] < nums[i]) {
+        dp[i] = Math.max(dp[i], 1 + dp[j]);
+      }
+    }
+  }
+  return Math.max(...dp);
+};
+// Time: O(n^2)
+// Space: O(n)
+
 // Neetcode
 var lengthOfLIS = function (nums) {
   // create array same length as nums filled with 1 (each cell is length 1)
