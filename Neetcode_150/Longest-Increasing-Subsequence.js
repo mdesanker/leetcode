@@ -119,35 +119,42 @@ var lengthOfLIS = function (nums) {
 // Time: O(n^2)
 // Space: O(n)
 
-// Neetcode
+// Binary Search
 var lengthOfLIS = function (nums) {
-  // create array same length as nums filled with 1 (each cell is length 1)
-  const dp = new Array(nums.length).fill(1);
-
-  // iterate backwards through nums
-  for (let i = nums.length - 1; i >= 0; i--) {
-    // from i, scan the remainder of nums
-    for (let j = i + 1; j < nums.length; j++) {
-      // if nums[i] < nums[j], can potentially be part of increasing array
-      if (nums[i] < nums[j]) {
-        // calculate new max length from this index
-        dp[i] = Math.max(dp[i], 1 + dp[j]);
-      }
+  const temp = [nums[0]];
+  // optiona: store length in variable so don't have to spend time doing length calc at end
+  let len = 1;
+  for (let i = 1; i < nums.length; i++) {
+    // nums[i] greater than last element
+    if (nums[i] > temp[temp.length - 1]) {
+      temp.push(nums[i]);
+      len++;
+      // nums[i] smaller than last element
+    } else {
+      // must pass temp array otherwise the reference gets messed up
+      const ind = binarySearch(temp, nums[i]);
+      temp[ind] = nums[i];
     }
   }
-  // return max of dp array
-  return Math.max(...dp);
+  return len;
+
+  // binary search to return index of equal or next largest element
+  function binarySearch(nums, num) {
+    let l = 0,
+      r = len - 1;
+    while (l < r) {
+      let mid = l + Math.floor((r - l) / 2);
+      // if element is equal or greater, move r pointer
+      if (nums[mid] >= num) {
+        r = mid;
+        // if number is smaller, need to move l pointer to mid + 1
+      } else {
+        l = mid + 1;
+      }
+    }
+    return l;
+  }
 };
 
-// Time: O(n^2) iterate backwards and forwards through nums each pass
-// Space: O(n) dp array of length nums
-
-/**
- * Brute force - DFS
- * For each num in nums, have2 choices (include or exclude) --> O(2^n)
- */
-
-/**
- * DFS with Cache
- * For each index, check every index afterwards until end of array
- */
+// Time: O(nlogn) iterate through nums array O(n) and potentially do binary search at every index O(logn)
+// Space: O(n) for temp array
