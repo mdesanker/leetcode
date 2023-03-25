@@ -131,21 +131,20 @@ var lengthOfLIS = function (nums) {
       len++;
       // nums[i] smaller than last element
     } else {
-      // must pass temp array otherwise the reference gets messed up
-      const ind = binarySearch(temp, nums[i]);
+      const ind = binarySearch(nums[i]);
       temp[ind] = nums[i];
     }
   }
   return len;
 
   // binary search to return index of equal or next largest element
-  function binarySearch(nums, num) {
+  function binarySearch(num) {
     let l = 0,
       r = len - 1;
     while (l < r) {
       let mid = l + Math.floor((r - l) / 2);
       // if element is equal or greater, move r pointer
-      if (nums[mid] >= num) {
+      if (temp[mid] >= num) {
         r = mid;
         // if number is smaller, need to move l pointer to mid + 1
       } else {
