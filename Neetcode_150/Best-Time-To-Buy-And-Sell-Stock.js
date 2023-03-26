@@ -17,58 +17,86 @@ var maxProfit = function (prices) {
 // Time: O(n)
 // Space: O(1)
 
-// Neetcode
-const maxProfit = function (prices) {
-  let l = 0,
-    max = 0;
-
-  for (let r = 1; r < prices.length; r++) {
-    // if sell value is lower, set that to buy value
-    if (prices[r] < prices[l]) {
-      l = r;
+// Recursion
+var maxProfit = function (prices) {
+  const n = prices.length;
+  function dp(i, buy, cap) {
+    if (i === n || cap === 0) return 0;
+    if (buy === 1) {
+      return Math.max(-prices[i] + dp(i + 1, 0, cap), dp(i + 1, 1, cap));
+    } else {
+      return Math.max(prices[i] + dp(i + 1, 1, cap - 1), dp(i + 1, 0, cap));
     }
-    const profit = prices[r] - prices[l];
-    max = Math.max(max, profit);
   }
-  return max;
+  return dp(0, 1, 1);
 };
+// Time: O(2^n)
+// Space: O(n)
 
-/*
-Time: O(n)
-Space: O(1)
-*/
-
-/**
-Use sliding window approach, moving r pointer from beginning to end of prices.
-If r reaches a value that is less than l, update l to r, because we want this new
-minimum to be the new buy price.
-While iterating and making this check, check whether the current profit is larger than
-current max.
-
-TC: O(n) iterate through prices array once
-SC: O(1) constant memory to store l and r pointers
- */
-
-// While loop implementation
-/**
- * @param {number[]} prices
- * @return {number}
- */
-var maxProfit2 = function (prices) {
-  let left = 0,
-    right = 1,
-    max = 0;
-
-  while (right < prices.length) {
-    // if sell value is lower, set that to buy value
-    if (prices[right] < prices[left]) {
-      left = right;
+// Recursion + Memoization
+var maxProfit = function (prices) {
+  const n = prices.length;
+  const memo = [...new Array(n)].map(() =>
+    [...new Array(2)].map(() => new Array(2).fill(-1))
+  );
+  function dp(i, buy, cap) {
+    if (i === n || cap === 0) return 0;
+    if (memo[i][buy][cap] !== -1) return memo[i][buy][cap];
+    if (buy === 1) {
+      return (memo[i][buy][cap] = Math.max(
+        -prices[i] + dp(i + 1, 0, cap),
+        dp(i + 1, 1, cap)
+      ));
+    } else {
+      return (memo[i][buy][cap] = Math.max(
+        prices[i] + dp(i + 1, 1, cap - 1),
+        dp(i + 1, 0, cap)
+      ));
     }
-
-    const profit = prices[right] - prices[left];
-    max = Math.max(max, profit);
-
-    right++;
   }
-  return max;
+  return dp(0, 1, 1);
 };
+// Time: O(n * 2 * 1)
+// Space: O(n * 2 * 1 + n)
+
+// Tabulation
+var maxProfit = function (prices) {
+  const n = prices.length;
+  const dp = [...new Array(n + 1)].map(() =>
+    [...new Array(2)].map(() => new Array(2).fill(0))
+  );
+
+  for (let i = n - 1; i >= 0; i--) {
+    for (let cap = 1; cap <= 1; cap++) {
+      dp[i][1][cap] = Math.max(
+        -prices[i] + dp[i + 1][0][cap],
+        dp[i + 1][1][cap]
+      );
+      dp[i][0][cap] = Math.max(
+        prices[i] + dp[i + 1][1][cap - 1],
+        dp[i + 1][0][cap]
+      );
+    }
+  }
+  return dp[0][1][1];
+};
+// Time: O(n * 2 * 1)
+// Space: O(n * 2 * 1)
+
+// Tabulation - Optimized
+var maxProfit = function (prices) {
+  const n = prices.length;
+  let dp = [...new Array(2)].map(() => new Array(2).fill(0));
+
+  for (let i = n - 1; i >= 0; i--) {
+    let temp = [...new Array(2)].map(() => new Array(2).fill(0));
+    for (let cap = 1; cap <= 1; cap++) {
+      temp[1][cap] = Math.max(-prices[i] + dp[0][cap], dp[1][cap]);
+      temp[0][cap] = Math.max(prices[i] + dp[1][cap - 1], dp[0][cap]);
+    }
+    dp = temp;
+  }
+  return dp[1][1];
+};
+// Time: O(n * 2 * 1)
+// Space: O(2 * 1)
