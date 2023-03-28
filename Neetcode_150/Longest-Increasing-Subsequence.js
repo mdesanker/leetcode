@@ -173,3 +173,32 @@ var lengthOfLIS = function (nums) {
 
 // Time: O(nlogn) iterate through nums array O(n) and potentially do binary search at every index O(logn)
 // Space: O(n) for temp array
+
+// Compact Binary Search
+var lengthOfLIS = function (nums) {
+  const n = nums.length;
+  const temp = [nums[0]];
+  let len = 1;
+  for (let i = 1; i < n; i++) {
+    if (nums[i] > temp[temp.length - 1]) {
+      temp.push(nums[i]);
+      len++;
+    } else {
+      let l = 0,
+        r = len - 1;
+      while (l < r) {
+        let mid = l + Math.floor((r - l) / 2);
+        if (temp[mid] >= nums[i]) {
+          r = mid;
+        } else {
+          l = mid + 1;
+        }
+      }
+      temp[l] = nums[i];
+    }
+  }
+  return len;
+};
+
+// Time: O(nlogn) iterate through nums array O(n) and potentially do binary search at every index O(logn)
+// Space: O(n) for temp array
