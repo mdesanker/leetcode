@@ -2,56 +2,6 @@
  * @param {number[][]} isConnected
  * @return {number}
  */
-// DFS Approach
-var findCircleNum = function (isConnected) {
-  const n = isConnected.length;
-
-  // convert the adjacency matrix into adjacency list
-  const adj = {};
-  for (let i = 0; i < n; i++) adj[i] = [];
-
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      if (isConnected[i][j] === 1 && i !== j) {
-        // undirected graph so push both directions
-        adj[i].push(j);
-        adj[j].push(i);
-      }
-    }
-  }
-
-  // we will iterate through all nodes, calling dfs to mark provinces as visited
-  let count = 0;
-  const visited = new Array(n).fill(false);
-
-  // dfs function will traverse the neighbors (children) of a node
-  function dfs(node) {
-    visited[node] = true;
-
-    for (let child of adj[node]) {
-      if (!visited[child]) {
-        dfs(child);
-      }
-    }
-  }
-
-  for (let i = 0; i < n; i++) {
-    // when ever we encounter a node that hasn't been visited, we have a new island
-    // increase count and call dfs on neighbors to mark rest of the province as visited
-    if (!visited[i]) {
-      count++;
-      for (let child of adj[i]) {
-        dfs(child);
-      }
-    }
-  }
-  return count;
-};
-
-// Time: O(v) ~ O(v) + O(v + 2e): O(v) for dfs call on every node, O(v + 2e) for dfs on all the neighbors of every node
-// Space: O(v + e)
-//  O(v) for recursive stack in skewed graph, O(v + 2e) for adjacency list
-
 // Union-Find by Rank Approach
 var findCircleNum = function (isConnected) {
   const n = isConnected.length;
@@ -94,3 +44,68 @@ var findCircleNum = function (isConnected) {
   }
   return count;
 };
+// Time: O(n^3) traverse entire matrix once, union find operations are O(n)
+// Space: O(n) parent and rank array contain n nodes
+
+// DFS
+var findCircleNum = function (isConnected) {
+  const n = isConnected.length;
+  const visited = new Set();
+  let count = 0;
+
+  function dfs(node) {
+    visited.add(node);
+    for (let j = 0; j < n; j++) {
+      if (isConnected[node][j] === 1) {
+        if (!visited.has(j)) {
+          dfs(j);
+        }
+      }
+    }
+  }
+
+  for (let i = 0; i < n; i++) {
+    if (!visited.has(i)) {
+      dfs(i);
+      count++;
+    }
+  }
+  return count;
+};
+// Time: O(n^2) traverse entire matrix
+// Space: O(n) visited array contains n nodes
+
+// BFS
+var findCircleNum = function (isConnected) {
+  const n = isConnected.length;
+  const visited = new Set();
+  let count = 0;
+
+  function bfs(node) {
+    const q = [node];
+    while (q.length) {
+      len = q.length;
+      for (let i = 0; i < len; i++) {
+        const node = q.shift();
+        visited.add(node);
+        for (let j = 0; j < n; j++) {
+          if (isConnected[node][j]) {
+            if (!visited.has(j)) {
+              q.push(j);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  for (let i = 0; i < n; i++) {
+    if (!visited.has(i)) {
+      bfs(i);
+      count++;
+    }
+  }
+  return count;
+};
+// Time: O(n^2) traverse entire matrix
+// Space: O(n) visited array contains n nodes
