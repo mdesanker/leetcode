@@ -76,3 +76,19 @@ var maxSatisfaction = function (satisfaction) {
 };
 // Time: O(n^2)
 // Space: O(n)
+
+// Greedy
+var maxSatisfaction = function (satisfaction) {
+  const n = satisfaction.length;
+  satisfaction.sort((a, b) => a - b);
+
+  let max = 0,
+    suffixSum = 0;
+  for (let i = n - 1; i >= 0 && suffixSum + satisfaction[i] > 0; i--) {
+    suffixSum += satisfaction[i];
+    max += suffixSum;
+  }
+  return max;
+};
+// Time: O(nlogn) built in sort
+// Space: O(logn) built in sort
