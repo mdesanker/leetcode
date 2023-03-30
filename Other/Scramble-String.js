@@ -7,7 +7,6 @@
 var isScramble = function (s1, s2) {
   function dp(s1, s2) {
     if (s1 === s2) return true;
-    else if (s1.length !== s2.length) return false;
     else if (s1.length <= 1) return s1 === s2;
 
     for (let i = 1; i < s1.length; i++) {
@@ -30,7 +29,6 @@ var isScramble = function (s1, s2) {
   const memo = {};
   function dp(s1, s2) {
     if (s1 === s2) return true;
-    else if (s1.length !== s2.length) return false;
     else if (s1.length <= 1) return s1 === s2;
 
     const key = s1 + s2;
