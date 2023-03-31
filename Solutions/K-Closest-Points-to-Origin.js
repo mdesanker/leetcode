@@ -1,24 +1,29 @@
 /**
- * @param {number[][]} points
- * @param {number} k
- * @return {number[][]}
+Solution: Min Heap
+
+The min heap solution is perhaps a little more straightforward. 
+Iterate through points, calculating their euclidean distance from the origin sqrt(x^2 + y^2)
+Then push each coordinate into the heap usinig distance as the priority.
+
+Next, pop the top k elements off the heap into an array to get k closest points
+
+n = points.length
+TC: O(nlogn)
+SC: O(n)
+
+Solution: Max Heap
+
+Same approach as max heap, except after addition of every point we remove top element if we have more than k elements in heap
+This way we reduce time and space complexity if k < n. In worst case scenario, k = n and time and space complexity will be
+same as min heap implementation
+
+We can convert the heap to an array in increasing order of distance using: maxHeap.toArray().reverse().map((x) => x.element);
+
+n = points.length
+TC: O(nlogk)
+SC: O(k)
  */
-var kClosest = function (points, k) {
-  const maxHeap = new MaxPriorityQueue();
-  for (let [x, y] of points) {
-    const dist = Math.sqrt(x * x + y * y);
-    maxHeap.enqueue([x, y], dist);
-    if (maxHeap.size() > k) maxHeap.dequeue().element;
-  }
-  return maxHeap
-    .toArray()
-    .reverse()
-    .map((x) => x.element);
-};
-
-// Time: O(nlogk)
-// Space: O(k)
-
+// Min Heap
 var kClosest = function (points, k) {
   const res = [];
   const minHeap = new MinPriorityQueue();
@@ -37,23 +42,16 @@ var kClosest = function (points, k) {
   return res;
 };
 
-// Time: O(nlogn)
-// Space: O(n)
-
-/**
-We want to sort points in order of closeness to origin, so we will use a minHeap to prioritize the closest elements
-For each point, we will calculate the distance to the origin using the formula provided in the description
-[x2, y2] is [0, 0] in this case, so the formula is:
-
-Math.sqrt(x**2 + y**2);
-
-The second parameter in the heap.enqueue() function is the weight we want to apply to that element
-We pass the distance here, since we are storing arrays in the queue, which the queue cannot handle innately
-
-Then we will build a result array with the k closest elements
-
-While res.length is less than k, we take the smallest element from the heap and push it onto res array
-
-TC: O(nlogn) we have to build a heap with every point in point array. Addition to heap is logn time, repeated n times for every coordinate
-SC: O(n) the heap will hold every coordinate pair
- */
+// Max Heap
+var kClosest = function (points, k) {
+  const maxHeap = new MaxPriorityQueue();
+  for (let [x, y] of points) {
+    const dist = Math.sqrt(x * x + y * y);
+    maxHeap.enqueue([x, y], dist);
+    if (maxHeap.size() > k) maxHeap.dequeue().element;
+  }
+  return maxHeap
+    .toArray()
+    .reverse()
+    .map((x) => x.element);
+};
