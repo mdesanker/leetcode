@@ -1,33 +1,38 @@
 /**
- * @param {number[][]} intervals
- * @param {number[]} newInterval
- * @return {number[][]}
+Solution: Linear search
+
+Iterate through each interval
+
+There are 3 conditions to handle:
+1. newInterval comes before current interval - we can push newInterval onto result array, 
+  and then return the concatenation of the remaining intervals
+2. newInterval comes after current interval - push current interval onto result array and continue iteration
+3. newInterval overlaps with current interval - modify newInterval to be the merge of newInterval and current interval, continue iteration
+
+If we finish iterating through intervals, then we have not added newInterval to res yet and returned the concatenation.
+In this case, we push newInterval onto end of res array and return'
+
+n = intervals.length
+TC: O(n) 
+SC: O(1)
  */
+
 var insert = function (intervals, newInterval) {
   const res = [];
   for (let i = 0; i < intervals.length; i++) {
-    // newInterval doesn't overlap
-    // newInterval comes before current interval
-    if (newInterval[1] < intervals[i][0]) {
+    const [start, end] = intervals[i];
+    if (newInterval[1] < start) {
       res.push(newInterval);
       return res.concat(intervals.slice(i));
-      // newInterval comes after current interval
-    } else if (newInterval[0] > intervals[i][1]) {
+    } else if (newInterval[0] > end) {
       res.push(intervals[i]);
-
-      // newInterval overlaps
     } else {
-      // new interval is min of start points and max of end points
       newInterval = [
-        Math.min(newInterval[0], intervals[i][0]),
-        Math.max(newInterval[1], intervals[i][1]),
+        Math.min(newInterval[0], start),
+        Math.max(newInterval[1], end),
       ];
     }
   }
-  // insert newInterval if hasn't been added
   res.push(newInterval);
   return res;
 };
-
-// Time: O(n)
-// Space: O(n)
