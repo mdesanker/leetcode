@@ -1,8 +1,20 @@
 /**
- * @param {string} s
- * @return {number}
- */
+Solution: Sliding window, hash map
 
+Initialize l pointer at beginning, then loop through every element with for-loop for r pointer
+Store last occurence of an element in hash
+If we encounter an element that is already in the hash map, move left pointer to max of itself and 1 + index of last occurence
+l = Math.max(l, hash[rChar] + 1);
+This is incase the last occurence of this char happens outside the current window
+
+As we traverse string, add rChar and their index to hash
+
+At each step check max length
+
+n = s.length
+TC: O(n)
+SC: O(1)
+ */
 const lengthOfLongestSubstring = function (s) {
   let start = 0,
     length = 0,
@@ -25,25 +37,3 @@ const lengthOfLongestSubstring = function (s) {
   }
   return length;
 };
-
-/*
-Time: O(n)
-Space: O(n)
-*/
-
-/**
-Use a hash map to track visited chars and their last index of occurence.
-Iterate through string with r pointer.
-
-Check if the current right char is already in charMap, this means this char is 
-part of the current substring. To remove it from the substring, we need to advance 
-the left pointer to the max of itself and index of duplicate + 1.
-
-Then update the index of the right char (or add to hashmap if not already there)
-
-At end of each loop, check the current length of the substring and compare against max
-
-TC: O(n) iterate through string once
-SC: O(min(n, m)) if every character in the string is unique, then the hashmap will have to hold
-every character in the string (n), but is capped at the size of the alphabet (m)
- */
