@@ -1,16 +1,13 @@
-// https://leetcode.com/problems/clone-graph/solutions/42459/javascript-solution/?orderBy=most_votes&languageTags=javascript
-
 /**
- * // Definition for a Node.
- * function Node(val, neighbors) {
- *    this.val = val === undefined ? 0 : val;
- *    this.neighbors = neighbors === undefined ? [] : neighbors;
- * };
- */
+Solution: DFS
 
-/**
- * @param {Node} node
- * @return {Node}
+Use a map to map original nodes to their copies
+
+Recursively create nodes as we traverse tree and each node's neighbors
+
+v = number of nodes, e = number of edges
+TC: O(v + e)
+SC: O(v)
  */
 var cloneGraph = function (node) {
   if (!node) return null;
