@@ -1,48 +1,94 @@
-// https://leetcode.com/problems/number-of-islands/solutions/429842/javascript-dfs-commented-thought-process-beats-100-time-and-space/?orderBy=most_votes&languageTags=javascript
-
 /**
- * @param {character[][]} grid
- * @return {number}
+Solution: DFS/BFS
  */
+// DFS
 var numIslands = function (grid) {
-  if (!grid) return 0;
-
   const ROWS = grid.length,
     COLS = grid[0].length;
-  let islands = 0;
+  const dir = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ];
 
   function dfs(r, c) {
-    // base cases
-    if (r < 0 || r >= ROWS || c < 0 || c >= COLS || grid[r][c] === "0") return;
+    if (r < 0 || r >= ROWS || c < 0 || c >= COLS) return;
+    if (grid[r][c] !== "1") return;
 
-    // mark as visited
     grid[r][c] = "0";
-    // check all adjacent grid spaces and convert to "0"s
-    const directions = [
-      [1, 0],
-      [-1, 0],
-      [0, 1],
-      [0, -1],
-    ];
-    for (const [dr, dc] of directions) {
-      dfs(r + dr, c + dc);
+
+    for (let [dr, dc] of dir) {
+      let row = r + dr,
+        col = c + dc;
+      dfs(row, col);
     }
   }
 
-  // iterate through every grid space checking for "1"s
+  let count = 0;
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
       if (grid[r][c] === "1") {
-        dfs(r, c);
-        islands++;
+        count++;
+        bfs(r, c);
       }
     }
   }
-  return islands;
+  return count;
 };
+// TC: O(rc) traverse every cell
+// SC: O(rc) entire grid is land (recursive stack contains entire grid)
 
-// Time: O(r * c) where r and c are number of rows and cols
-// Space: O(r * c) in worst case scenario, entire grid is land, so the recursive stack will be r * c
+// BFS
+var numIslands = function (grid) {
+  const ROWS = grid.length,
+    COLS = grid[0].length;
+  const dir = [
+    [1, 0],
+    [-1, 0],
+    [0, 1],
+    [0, -1],
+  ];
+
+  function bfs(r, c) {
+    const q = [[r, c]];
+    while (q.length) {
+      let len = q.length;
+      for (let i = 0; i < len; i++) {
+        const [r, c] = q.shift();
+        if (grid[r][c] !== "1") continue;
+        grid[r][c] = "0";
+
+        for (let [dr, dc] of dir) {
+          let row = r + dr,
+            col = c + dc;
+          if (
+            row < 0 ||
+            row >= ROWS ||
+            col < 0 ||
+            col >= COLS ||
+            grid[row][col] !== "1"
+          )
+            continue;
+          q.push([row, col]);
+        }
+      }
+    }
+  }
+
+  let count = 0;
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (grid[r][c] === "1") {
+        count++;
+        bfs(r, c);
+      }
+    }
+  }
+  return count;
+};
+// TC: O(rc) traverse every cell
+// SC: O(min(r, c)) worst case scenario grid is all lang, size of q can grow to min(r, c)
 
 /**
 We will iterate through every cell in the grid and check for land
