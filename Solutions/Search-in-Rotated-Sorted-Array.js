@@ -1,7 +1,24 @@
 /**
- * @param {number[]} nums
- * @param {number} target
- * @return {number}
+Solution: Binary Search
+
+If the array is sorted and then rotated some amount, and we split at the mid point
+Either the left portion will be sorted or the right portion will be sorted. 
+We handle these two regions separately.
+
+Each iteration of binary search, check if nums[mid] === target
+
+1. Left is sorted 
+  - If target is within l and mid, update r = mid
+  - Else update l = mid + 1
+2. Right is sorted
+  - If target is outside mid and r, update r = mid
+  - Else update l = mid + 1
+
+Return -1 if we don't find target value
+
+n = nums.length
+TC: O(logn)
+SC: O(1)
  */
 var search = function (nums, target) {
   let l = 0,
