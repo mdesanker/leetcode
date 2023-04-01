@@ -1,3 +1,16 @@
+/**
+Solution: Arrays
+
+First array holds the stack (order of values added to the stack)
+Second array holds the minimum value in the stack up to that index
+
+Each push and pop operation is O(1) time complexity
+
+n = stack.length
+TC: O(n)
+SC: O(n)
+ */
+
 const MinStack = function () {
   this.stack = [];
   this.minStack = [];
