@@ -4,6 +4,22 @@
  * @return {number}
  */
 var search = function (nums, target) {
+  let l = 0,
+    r = nums.length - 1;
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+    if (target <= nums[mid]) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  return nums[l] === target ? l : -1;
+};
+// TC: O(logn)
+// SC: O(1)
+
+var search = function (nums, target) {
   let left = 0,
     right = nums.length - 1;
 
