@@ -1,10 +1,12 @@
 /**
- * Definition for a binary tree node.
- * function TreeNode(val, left, right) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.left = (left===undefined ? null : left)
- *     this.right = (right===undefined ? null : right)
- * }
+Solution -DFS
+
+Traverse child nodes making sure that left node is smaller than parent and right node is larger than parent
+To do this, need to pass a lower and upper limit with each function call so we know range of permissible values
+
+n = number of nodes in tree
+TC: O(n) must check every node in tree once
+SC: O(n) space needed for recursive stack. Worst case scenario (skewed tree), every node will be in the stack. O(logn) for balanced tree
  */
 /**
  * @param {TreeNode} root
