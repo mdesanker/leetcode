@@ -41,6 +41,26 @@ TimeMap.prototype.get = function (key, timestamp) {
   return res;
 };
 
+// Alternate binary search implementation in get function
+TimeMap.prototype.get = function (key, timestamp) {
+  if (!this.store.has(key)) return "";
+  let res = "";
+  const values = this.store.get(key) || [];
+
+  let l = 0;
+  r = values.length;
+  while (l < r) {
+    const mid = l + Math.floor((r - l) / 2);
+    if (values[mid][1] <= timestamp) {
+      // res = values[mid][0];
+      l = mid + 1;
+    } else {
+      r = mid;
+    }
+  }
+  return r === 0 ? "" : values[r - 1][0];
+};
+
 /**
  * Your TimeMap object will be instantiated and called as such:
  * var obj = new TimeMap()
