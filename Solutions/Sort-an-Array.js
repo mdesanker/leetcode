@@ -18,10 +18,10 @@ var sortArray = function (nums) {
 // Time: O(nlogn) each heap enqueue is logn, and every element is pushed into heap
 // Space: O(n)
 
-// Quick sort [TLE]
+// Quick sort - max pivot [TLE]
+// This one has O(n^2) time complexity in worst case because pivot is always chosen as max element in array
 var sortArray = function (nums) {
-  function quickSort(nums, l, r) {
-    // base case
+  function quickSelect(l, r) {
     if (l >= r) return nums;
 
     let pivot = nums[r],
@@ -34,12 +34,33 @@ var sortArray = function (nums) {
     }
     [nums[i], nums[r]] = [nums[r], nums[i]];
 
-    quickSort(nums, l, i - 1);
-    quickSort(nums, i + 1, r);
+    quickSelect(l, i - 1);
+    quickSelect(i + 1, r);
     return nums;
   }
-  return quickSort(nums, 0, nums.length - 1);
+  return quickSelect(0, nums.length - 1);
 };
+// TC: O(n) average, O(n^2) worst case
+// SC: O(logn)
 
-// Time: O(n) average, O(n^2) worst case
-// Space: O(logn)
+// Quick sort - random pivot
+// Randomized pivot avoids worst case time complexity, which can occur if pivot is consistently chosen as teh smallest or largest element in the array
+var sortArray = function (nums) {
+  const n = nums.length;
+  if (n <= 1) return nums;
+
+  const pivot = nums[Math.floor(Math.random() * n)];
+  const less = [],
+    equal = [],
+    greater = [];
+
+  for (let num of nums) {
+    if (num < pivot) less.push(num);
+    else if (num === pivot) equal.push(num);
+    else greater.push(num);
+  }
+
+  return sortArray(less).concat(equal, sortArray(greater));
+};
+// TC: O(n), O(n^2) worst case
+// SC: O(n)
