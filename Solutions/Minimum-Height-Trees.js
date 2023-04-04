@@ -1,8 +1,44 @@
 /**
- * @param {number} n
- * @param {number[][]} edges
- * @return {number[]}
+Solution: Topological Sort
+
+Use an indegrees array to remove leaf nodes until we are left with no more than 2 nodes
+Can be atmost 2 possible root nodes (even length linked list)
  */
+var findMinHeightTrees = function (n, edges) {
+  if (n === 1) return [0];
+
+  const adj = {};
+  const indegrees = new Array(n).fill(0);
+  for (let i = 0; i < n; i++) adj[i] = [];
+  for (let [a, b] of edges) {
+    adj[a].push(b);
+    adj[b].push(a);
+    indegrees[a]++;
+    indegrees[b]++;
+  }
+
+  const q = [];
+  for (let i = 0; i < n; i++) {
+    if (indegrees[i] === 1) {
+      q.push(i);
+    }
+  }
+
+  while (q.length && n > 2) {
+    let len = q.length;
+    for (let i = 0; i < len; i++) {
+      const node = q.shift();
+      n--;
+      for (let nei of adj[node]) {
+        indegrees[nei]--;
+        if (indegrees[nei] === 1) {
+          q.push(nei);
+        }
+      }
+    }
+  }
+  return q;
+};
 
 /**
 Key Insights for Problem:
