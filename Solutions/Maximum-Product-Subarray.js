@@ -1,26 +1,26 @@
 /**
- * @param {number[]} nums
- * @return {number}
+Solution: Dynamic Programming
+
+Negative numbers and 0 can throw off your result.
+Need to track currMax and currMin as we go along, because currMin can turn into currMin if we encounter another negative number
+
+n = nums.length
+TC: O(n)
+SC: O(1)
  */
 var maxProduct = function (nums) {
-  // edge case
-  if (nums.length === 0) return 0;
-
-  let currentMax = nums[0];
-  let currentMin = nums[0];
-  // placeholder for global max
-  let result = currentMax;
+  let currMax = (currMin = res = nums[0]);
 
   for (let i = 1; i < nums.length; i++) {
-    let curr = nums[i];
-    let tempMax = Math.max(curr, currentMax * curr, currentMin * curr);
-    currentMin = Math.min(curr, currentMax * curr, currentMin * curr);
+    const curr = nums[i];
 
-    currentMax = tempMax;
+    let tempMax = Math.max(curr, curr * currMax, curr * currMin);
+    currMin = Math.min(curr, curr * currMax, curr * currMin);
+    currMax = tempMax;
 
-    result = Math.max(result, currentMax);
+    res = Math.max(currMax, res);
   }
-  return result;
+  return res;
 };
 
 // Time: O(n)
