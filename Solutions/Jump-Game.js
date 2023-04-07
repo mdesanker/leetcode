@@ -2,34 +2,70 @@
  * @param {number[]} nums
  * @return {boolean}
  */
-
-// Greedy Implementation
-
+// Greedy
 var canJump = function (nums) {
-  // set goal to end of array
   let goal = nums.length - 1;
-
-  // iterate backwards through nums
-  for (let i = nums.length - 1; i >= 0; i--) {
-    // if can reach goal, move goal left
-    // jump result is index + the value at index
-    if (i + nums[i] >= goal) {
-      goal = i;
-    }
+  const n = nums.length;
+  for (let i = n - 2; i >= 0; i--) {
+    if (nums[i] + i >= goal) goal = i;
   }
-
-  // if goal is 0, can make it to end
   return goal === 0;
 };
+// TC: O(n)
+// SC: O(1)
 
-// Time: O(n)
-// Space: O(1)
+// Recursion
+var canJump = function (nums) {
+  let n = nums.length;
 
-/**
- * Brute Force
- * Time: O(2^n)
- *
- * DP
- * Time: O(n^2)
- * Space: O(n)
- */
+  function dp(i) {
+    if (i === n - 1) return true;
+
+    const furthest = Math.min(i + nums[i], n - 1);
+    for (let j = i + 1; j <= furthest; j++) {
+      if (dp(j)) return true;
+    }
+    return false;
+  }
+  return dp(0);
+};
+// TC: O(2^n)
+// SC: O(n)
+
+// Recursion + Memoization
+var canJump = function (nums) {
+  let n = nums.length;
+  const memo = new Array(n).fill(-1);
+
+  function dp(i) {
+    if (i === n - 1) return true;
+
+    if (memo[i] !== -1) return memo[i];
+
+    const furthest = Math.min(i + nums[i], n - 1);
+    for (let j = i + 1; j <= furthest; j++) {
+      if (dp(j)) return (memo[i] = true);
+    }
+    return (memo[i] = false);
+  }
+  return dp(0);
+};
+// TC: O(n^2)
+// SC: O(n)
+
+// Tabulation
+var canJump = function (nums) {
+  let n = nums.length;
+  const dp = new Array(n).fill(false);
+  dp[n - 1] = true;
+
+  for (let i = n - 2; i >= 0; i--) {
+    const furthest = Math.min(i + nums[i], n - 1);
+    for (let j = i + 1; j <= furthest; j++) {
+      if (dp[j]) dp[i] = true;
+    }
+  }
+  return dp[0];
+};
+// TC: O(n^2)
+// SC: O(n)
