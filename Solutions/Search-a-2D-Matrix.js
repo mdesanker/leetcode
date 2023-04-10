@@ -7,6 +7,29 @@ var searchMatrix = function (matrix, target) {
   const ROWS = matrix.length,
     COLS = matrix[0].length;
 
+  let l = 0,
+    r = ROWS * COLS;
+  while (l < r) {
+    let mid = l + Math.floor((r - l) / 2);
+    let midVal = matrix[Math.floor(mid / COLS)][mid % COLS];
+
+    if (midVal === target) return true;
+
+    if (midVal > target) {
+      r = mid;
+    } else {
+      l = mid + 1;
+    }
+  }
+  return false;
+};
+// Time: O(log(n * m))
+// Space: O(1)
+
+var searchMatrix = function (matrix, target) {
+  const ROWS = matrix.length,
+    COLS = matrix[0].length;
+
   // if matrix is empty, then return false because we can't find any value
   if (ROWS === 0) return false;
 
