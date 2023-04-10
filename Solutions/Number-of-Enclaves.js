@@ -30,7 +30,8 @@ var numEnclaves = function (grid) {
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
       if (grid[r][c] === 1) {
-        count += bfs(r, c);
+        // count += bfs(r, c);
+        count++;
       }
     }
   }
@@ -87,7 +88,8 @@ var numEnclaves = function (grid) {
   for (let r = 0; r < ROWS; r++) {
     for (let c = 0; c < COLS; c++) {
       if (grid[r][c] === 1) {
-        count += bfs(r, c);
+        // count += bfs(r, c);
+        count++;
       }
     }
   }
