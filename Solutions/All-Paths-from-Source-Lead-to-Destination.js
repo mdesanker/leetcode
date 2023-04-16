@@ -1,35 +1,37 @@
 /**
- * @param {number} n
- * @param {number[][]} edges
- * @param {number} source
- * @param {number} destination
- * @return {boolean}
+Solution: DFS + Memoization
  */
 var leadsToDestination = function (n, edges, source, destination) {
   const adj = {};
   for (let i = 0; i < n; i++) adj[i] = [];
-  for (let [src, dst] of edges) {
-    if (src === destination) return false;
-    adj[src].push(dst);
+  for (let [a, b] of edges) {
+    adj[a].push(b);
   }
 
-  const visited = new Set();
+  const visited = new Array(n).fill(false);
+  // memoization to avoid TLE
+  const memo = new Array(n).fill(-1);
 
   function dfs(node) {
-    if (visited.has(node)) return false;
-    if (node === destination) return true;
+    if (memo[node] !== -1) return memo[node];
+
+    if (visited[node]) return false;
+    if (node === destination) {
+      // destination must have no outgoing edges
+      if (!adj[node].length) return true;
+      else return false;
+    }
     if (!adj[node].length) return false;
 
-    visited.add(node);
+    visited[node] = true;
     for (let nei of adj[node]) {
-      if (!dfs(nei)) return false;
+      if (!dfs(nei)) return (memo[node] = false);
     }
-    visited.delete(node);
-    return true;
+    visited[node] = false;
+    return (memo[node] = true);
   }
 
   return dfs(source);
 };
-
-// Time: O(v + e)
-// Space: O(v + e)
+// TC: O(v + e)
+// SC: O(v + e)
