@@ -11,4 +11,4 @@ var map = function (arr, fn) {
   return res;
 };
 // TC: O(n)
-// SC: O(n)
+// SC: O(1)
