@@ -3,6 +3,17 @@
  * @param {character} target
  * @return {character}
  */
+// Brute Force
+var nextGreatestLetter = function (letters, target) {
+  for (const letter of letters) {
+    if (letter > target) return letter;
+  }
+  return letters[0];
+};
+// TC: O(n)
+// SC: O(1)
+
+// Binary Search
 var nextGreatestLetter = function (letters, target) {
   if (letters[letters.length - 1] <= target) return letters[0];
 
